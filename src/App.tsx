@@ -57,7 +57,7 @@ export default function App() {
 
       <div className={`fixed top-0 left-0 pointer-events-none z-[100] transition-all duration-75 flex items-center justify-center rounded-full mix-blend-screen hidden md:flex ${isHovering ? 'w-16 h-16 bg-blue-500/20 border border-blue-400/50 blur-[2px]' : 'w-8 h-8 border-2 border-zinc-500/50'}`} style={{ transform: `translate(${mousePos.x - (isHovering ? 32 : 16)}px, ${mousePos.y - (isHovering ? 32 : 16)}px)` }} />
       <div className="fixed top-0 left-0 pointer-events-none z-[100] w-2 h-2 bg-blue-400 rounded-full hidden md:block" style={{ transform: `translate(${mousePos.x - 4}px, ${mousePos.y - 4}px)` }} />
-      <div className="fixed top-0 left-0 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none z-0 transition-transform duration-1000 hidden md:block" style={{ transform: `translate(${mousePos.x - 300}px, ${mousePos.y - 300}px)` }} />
+      <div className="fixed top-0 left-0 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none z-0 transition-transform duration-300 hidden md:block" style={{ transform: `translate(${mousePos.x - 300}px, ${mousePos.y - 300}px)` }} />
 
       <nav className="fixed top-0 w-full z-50 bg-[#050505]/60 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
