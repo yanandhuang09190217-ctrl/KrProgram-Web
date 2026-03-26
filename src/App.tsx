@@ -73,7 +73,7 @@ export default function App() {
           <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 rounded-full blur-xl opacity-40 group-hover:opacity-70 transition duration-700 animate-pulse"></div>
           <div className="relative w-36 h-36 md:w-44 md:h-44 rounded-full bg-zinc-900 border-2 border-white/10 overflow-hidden shadow-2xl flex items-center justify-center">
              {/* 請確保你在 GitHub 根目錄有上傳這張圖片 */}
-             <img src="/KRYL工作中的闆闆(Q版).jpg" alt="Profile" className="w-full h-full object-cover transform group-hover:scale-110 transition duration-500 ease-out" />
+             <img src="avatar.jpg" alt="Profile" className="w-full h-full object-cover transform group-hover:scale-110 transition duration-500 ease-out" />
           </div>
         </div>
         
