@@ -135,15 +135,19 @@ export default function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [bootState, setBootState] = useState<'booting' | 'fading' | 'ready'>('booting');
   const [bootLogs, setBootLogs] = useState<string[]>(['> SYS.INIT()']);
-  const [sysStats, setSysStats] = useState({ cpu: 12, ram: 32, ping: 24 });
 
-  // 🚀 游標與環境光 Refs (取代 State，解決效能瓶頸)
+  // 🚀 游標與環境光 Refs (強制 GPU 硬體加速)
   const cursorOuterRef = useRef<HTMLDivElement>(null);
   const cursorInnerRef = useRef<HTMLDivElement>(null);
   const ambientGlowRef = useRef<HTMLDivElement>(null);
 
+  // 🚀 效能優化：把跳動數字改為 Ref 直接操作，防止 React 全域重新渲染
+  const cpuRef = useRef<HTMLSpanElement>(null);
+  const ramRef = useRef<HTMLSpanElement>(null);
+  const pingRef = useRef<HTMLSpanElement>(null);
+
   useEffect(() => {
-    // 1. 開機動畫邏輯
+    // 開機動畫邏輯
     const logs = [
       '> MOUNTING_FILE_SYSTEM... [OK]',
       '> ALLOCATING_MEMORY... [OK]',
@@ -169,35 +173,32 @@ export default function App() {
       }, 500); 
     }, 2000);
 
-    // 2. 系統監控面板跳動邏輯
+    // 🚀 效能優化：系統監控面板跳動邏輯 (直接修改 DOM，不觸發 React Render)
     const statsInterval = setInterval(() => {
-      setSysStats({
-        cpu: Math.floor(Math.random() * 5) + 10,
-        ram: Math.floor(Math.random() * 4) + 30,
-        ping: Math.floor(Math.random() * 8) + 20,
-      });
+      if (cpuRef.current) cpuRef.current.innerText = String(Math.floor(Math.random() * 5) + 10);
+      if (ramRef.current) ramRef.current.innerText = String(Math.floor(Math.random() * 4) + 30);
+      if (pingRef.current) pingRef.current.innerText = String(Math.floor(Math.random() * 8) + 20);
     }, 2000);
 
-    // 3. 🚀 效能優化：滑鼠追蹤 (直接操作 DOM，避免 React Re-render)
+    // 🚀 效能優化：滑鼠追蹤 (加入 translate3d 開啟顯示卡硬體加速)
     const handleMouseMove = (e: MouseEvent) => {
       if (cursorOuterRef.current) {
-        cursorOuterRef.current.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
+        cursorOuterRef.current.style.transform = `translate3d(${e.clientX - 20}px, ${e.clientY - 20}px, 0)`;
       }
       if (cursorInnerRef.current) {
-        cursorInnerRef.current.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
+        cursorInnerRef.current.style.transform = `translate3d(${e.clientX - 3}px, ${e.clientY - 3}px, 0)`;
       }
       if (ambientGlowRef.current) {
-        // 環境光需要一點延遲感才自然，但我們用 CSS transition 處理，這邊只要設定最終位置即可
-        ambientGlowRef.current.style.transform = `translate(${e.clientX - 300}px, ${e.clientY - 300}px)`;
+        ambientGlowRef.current.style.transform = `translate3d(${e.clientX - 300}px, ${e.clientY - 300}px, 0)`;
       }
     };
     
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
-    // 4. 🚀 效能優化：滾動偵測 (改用 Intersection Observer)
+    // 🚀 效能優化：滾動偵測 (Intersection Observer)
     const observerOptions = {
       root: null,
-      rootMargin: '-20% 0px -60% 0px', // 在螢幕中上方觸發
+      rootMargin: '-20% 0px -60% 0px',
       threshold: 0
     };
 
@@ -229,7 +230,6 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#020203] text-zinc-300 selection:bg-cyan-500/30 overflow-x-hidden relative cursor-none" style={{ fontFamily: "'Inter', 'Noto Sans TC', sans-serif" }}>
       
-      {/* 🚀 注入靈魂的 CSS 動畫庫 */}
       <style dangerouslySetInnerHTML={{__html: `
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
         * { cursor: none !important; }
@@ -248,6 +248,7 @@ export default function App() {
                             radial-gradient(circle at 70% 60%, rgba(59, 130, 246, 0.1) 1.5%, transparent 2%);
           background-size: 80vmax 80vmax;
           animation: particle-drift 30s infinite linear;
+          will-change: background-position;
         }
         @keyframes particle-drift {
           0% { background-position: 0% 0%; }
@@ -260,14 +261,14 @@ export default function App() {
           90% { opacity: 0.8; }
           100% { top: 110%; opacity: 0; }
         }
-        .animate-scan-beam { animation: scan-beam 6s linear infinite; }
+        .animate-scan-beam { animation: scan-beam 6s linear infinite; will-change: top; }
         
         @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
         .animate-shimmer { animation: shimmer 2.5s infinite linear; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         .animate-blink { animation: blink 1.5s infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float { animation: float 6s ease-in-out infinite; will-change: transform; }
         
         .glitch-text { position: relative; }
         .glitch-text::before, .glitch-text::after {
@@ -299,7 +300,7 @@ export default function App() {
         .barcode { background: repeating-linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.2) 2px, transparent 2px, transparent 4px); height: 8px; width: 40px; }
       `}} />
 
-      {/* 🚀 開機啟動畫面 (Boot Sequence) */}
+      {/* 開機啟動畫面 */}
       {bootState !== 'ready' && (
         <div className={`fixed inset-0 z-[999] bg-[#020203] flex flex-col items-center justify-center p-8 transition-opacity duration-500 ${bootState === 'fading' ? 'opacity-0' : 'opacity-100'}`}>
           <div className="w-full max-w-2xl">
@@ -322,26 +323,25 @@ export default function App() {
         </div>
       )}
 
-      {/* 背景光影與粒子層 */}
+      {/* 背景光影與粒子層 (加入 will-change 優化顯示卡負載) */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 tech-grid opacity-60 mix-blend-screen" style={{ maskImage: 'linear-gradient(to bottom, transparent, black, transparent)', WebkitMaskImage: 'linear-gradient(to bottom, transparent, black, transparent)' }}></div>
         <div className="absolute inset-0 particles-layer opacity-60"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#020203_85%)]"></div>
         
-        {/* 全域深層光暈 */}
-        <div className="absolute top-[10%] -left-[10%] w-[600px] h-[600px] bg-cyan-900/15 rounded-full blur-[120px] mix-blend-screen animate-pulse duration-[10s]"></div>
-        <div className="absolute bottom-[20%] -right-[10%] w-[500px] h-[500px] bg-indigo-900/15 rounded-full blur-[100px] mix-blend-screen animate-pulse duration-[8s]"></div>
+        <div className="absolute top-[10%] -left-[10%] w-[600px] h-[600px] bg-cyan-900/15 rounded-full blur-[120px] mix-blend-screen animate-pulse duration-[10s] will-change-transform"></div>
+        <div className="absolute bottom-[20%] -right-[10%] w-[500px] h-[500px] bg-indigo-900/15 rounded-full blur-[100px] mix-blend-screen animate-pulse duration-[8s] will-change-transform"></div>
       </div>
 
-      {/* 電腦版兩側 HUD 抬頭顯示裝飾 */}
-      <div className="fixed left-6 top-1/2 -translate-y-1/2 flex flex-col items-center gap-8 z-0 hidden xl:flex opacity-40 pointer-events-none mix-blend-screen">
+      {/* 電腦版兩側 HUD */}
+      <div className="fixed left-6 top-1/2 -translate-y-1/2 flex-col items-center gap-8 z-0 hidden xl:flex opacity-40 pointer-events-none mix-blend-screen">
         <div className="h-32 w-[1px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-4 bg-cyan-400 animate-[scan-beam_2s_linear_infinite]"></div>
         </div>
         <div className="font-mono text-[10px] text-cyan-400 -rotate-90 tracking-[0.4em] whitespace-nowrap">SYS.CORE_READY // V.24.1</div>
         <div className="h-32 w-[1px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent"></div>
       </div>
-      <div className="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col items-center gap-8 z-0 hidden xl:flex opacity-40 pointer-events-none mix-blend-screen">
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 flex-col items-center gap-8 z-0 hidden xl:flex opacity-40 pointer-events-none mix-blend-screen">
         <div className="h-24 w-[1px] bg-gradient-to-b from-transparent via-purple-500/50 to-transparent relative overflow-hidden">
            <div className="absolute top-0 left-0 w-full h-4 bg-purple-400 animate-[scan-beam_3s_linear_infinite_reverse]"></div>
         </div>
@@ -353,22 +353,21 @@ export default function App() {
         <div className="font-mono text-[10px] text-purple-400 rotate-90 tracking-[0.3em] whitespace-nowrap mt-16">SECURE_CONNECTION</div>
       </div>
 
-      {/* 🚀 效能優化版的科技感游標 */}
+      {/* 🚀 硬體加速游標 */}
       <div 
         ref={cursorOuterRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[100] transition-all duration-75 ease-out flex items-center justify-center rounded-full mix-blend-screen hidden md:flex border border-cyan-400/40 ${isHovering ? 'bg-cyan-500/10 scale-[2.5] backdrop-blur-[2px]' : ''}`} 
+        className={`fixed top-0 left-0 pointer-events-none z-[100] transition-all duration-75 ease-out flex items-center justify-center rounded-full mix-blend-screen hidden md:flex border border-cyan-400/40 will-change-transform ${isHovering ? 'bg-cyan-500/10 scale-[2.5] backdrop-blur-[2px]' : ''}`} 
         style={{ width: '40px', height: '40px' }}
       >
          {isHovering && <SafeIcon icon={Plus} className="w-4 h-4 text-cyan-400 absolute opacity-50 animate-pulse" />}
       </div>
       <div 
         ref={cursorInnerRef}
-        className="fixed top-0 left-0 pointer-events-none z-[100] w-1.5 h-1.5 bg-cyan-400 rounded-full hidden md:block shadow-[0_0_10px_#22d3ee]" 
+        className="fixed top-0 left-0 pointer-events-none z-[100] w-1.5 h-1.5 bg-cyan-400 rounded-full hidden md:block shadow-[0_0_10px_#22d3ee] will-change-transform" 
       />
-      {/* 隱藏式的巨大環境光圈，滑鼠移動時會有輕微延遲感 */}
       <div 
         ref={ambientGlowRef}
-        className="fixed top-0 left-0 w-[600px] h-[600px] bg-cyan-600/5 rounded-full blur-[120px] pointer-events-none z-0 transition-transform duration-[400ms] ease-out hidden md:block" 
+        className="fixed top-0 left-0 w-[600px] h-[600px] bg-cyan-600/5 rounded-full blur-[120px] pointer-events-none z-0 transition-transform duration-[400ms] ease-out hidden md:block will-change-transform" 
       />
 
       {/* 頂部導覽列 */}
@@ -398,8 +397,8 @@ export default function App() {
       <section id="home" className="relative pt-36 pb-20 px-6 min-h-screen flex flex-col items-center justify-center text-center z-10 overflow-hidden">
         <div className="absolute w-full h-[2px] bg-cyan-400/30 shadow-[0_0_15px_#22d3ee] animate-scan-beam blur-[1px] z-0"></div>
 
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-cyan-500/5 rounded-full z-0 pointer-events-none"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-cyan-500/10 rounded-full z-0 border-dashed animate-[spin_40s_linear_infinite] pointer-events-none"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-cyan-500/5 rounded-full z-0 pointer-events-none will-change-transform"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-cyan-500/10 rounded-full z-0 border-dashed animate-[spin_40s_linear_infinite] pointer-events-none will-change-transform"></div>
         
         <div className="flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 font-mono text-xs tracking-[0.2em] uppercase shadow-[0_0_20px_rgba(34,211,238,0.15)] backdrop-blur-md z-10">
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]"></span>
@@ -411,7 +410,7 @@ export default function App() {
           <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full bg-[#050505] border-2 border-cyan-500/40 overflow-hidden shadow-[0_0_50px_rgba(34,211,238,0.25)] flex items-center justify-center p-1 z-10">
              <img src="https://i.postimg.cc/pLm8hxSD/avatar.png" alt="Profile" className="w-full h-full object-cover rounded-full transform group-hover:scale-110 transition duration-500 ease-out" />
           </div>
-          <svg className="absolute -inset-10 w-[calc(100%+80px)] h-[calc(100%+80px)] animate-[spin_12s_linear_infinite] opacity-60 pointer-events-none z-0" viewBox="0 0 100 100">
+          <svg className="absolute -inset-10 w-[calc(100%+80px)] h-[calc(100%+80px)] animate-[spin_12s_linear_infinite] opacity-60 pointer-events-none z-0 will-change-transform" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="48" fill="none" stroke="#22d3ee" strokeWidth="0.4" strokeDasharray="3 6" />
             <circle cx="50" cy="50" r="42" fill="none" stroke="#3b82f6" strokeWidth="1" strokeDasharray="10 20 5 10" />
           </svg>
@@ -511,7 +510,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Discord 實機對話模擬 */}
+      {/* 🚀 Discord 實機對話模擬 */}
       <section id="demo" className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#020203] to-[#050508]">
         <div className="max-w-5xl mx-auto">
           <div className="mb-16 flex flex-col items-center text-center">
@@ -608,13 +607,13 @@ export default function App() {
           <div className="relative py-16" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 bg-[#050505] border-2 border-cyan-500/50 rounded-2xl flex items-center justify-center z-20 shadow-[0_0_50px_rgba(34,211,238,0.4)] backdrop-blur-md">
               <SafeIcon icon={Cpu} className="w-12 h-12 text-cyan-400" />
-              <div className="absolute -inset-6 border border-cyan-500/20 rounded-[2rem] animate-[spin_6s_linear_infinite]"></div>
-              <div className="absolute -inset-10 border border-blue-500/10 rounded-full animate-[spin_8s_linear_infinite_reverse] border-dashed"></div>
+              <div className="absolute -inset-6 border border-cyan-500/20 rounded-[2rem] animate-[spin_6s_linear_infinite] will-change-transform"></div>
+              <div className="absolute -inset-10 border border-blue-500/10 rounded-full animate-[spin_8s_linear_infinite_reverse] border-dashed will-change-transform"></div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-48 gap-y-16 relative z-10 max-w-4xl mx-auto">
               {integrations.map((item, i) => (
-                <div key={i} className={`p-6 bg-[#08080a]/80 backdrop-blur-md border border-white/5 rounded-3xl flex items-center gap-5 ${item.border} transition-all duration-500 hover:-translate-y-1 ${i % 2 === 0 ? 'md:mr-12' : 'md:ml-12'} group`}>
+                <div key={i} className={`p-6 bg-[#08080a]/80 backdrop-blur-md border border-white/5 rounded-3xl flex items-center gap-5 hover:${item.border} transition-all duration-500 hover:-translate-y-1 ${i % 2 === 0 ? 'md:mr-12' : 'md:ml-12'} group`}>
                   <div className={`p-4 rounded-2xl bg-black/50 border border-white/10 shadow-inner group-hover:bg-black/80 transition-colors`}>
                     {item.icon}
                   </div>
@@ -819,10 +818,10 @@ export default function App() {
             })}
           </div>
 
-          {/* 系統監控面板 (Server Monitor) */}
+          {/* 🚀 系統監控面板 (Server Monitor) */}
           <div className="mt-32 mb-20 max-w-4xl mx-auto">
             <div className="bg-[#08080a]/90 border border-white/10 rounded-[2rem] p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-10 shadow-[0_30px_60px_rgba(0,0,0,0.5)] relative overflow-hidden backdrop-blur-xl" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-emerald-500/60 to-transparent animate-scan-beam blur-[2px]"></div>
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-emerald-500/60 to-transparent animate-scan-beam blur-[2px] will-change-transform"></div>
               <div className="absolute inset-0 tech-grid opacity-20 mix-blend-screen pointer-events-none"></div>
 
               <div className="flex items-center gap-6 w-full md:w-auto relative z-10">
@@ -843,19 +842,19 @@ export default function App() {
                 <div className="text-left">
                   <div className="text-zinc-500 font-mono text-[10px] tracking-widest mb-1">CPU_LOAD</div>
                   <div className="text-white font-mono font-black text-3xl flex items-baseline gap-1">
-                    {sysStats.cpu}<span className="text-sm text-zinc-500 font-bold">%</span>
+                    <span ref={cpuRef}>12</span><span className="text-sm text-zinc-500 font-bold">%</span>
                   </div>
                 </div>
                 <div className="text-left">
                   <div className="text-zinc-500 font-mono text-[10px] tracking-widest mb-1">MEM_USAGE</div>
                   <div className="text-white font-mono font-black text-3xl flex items-baseline gap-1">
-                    {sysStats.ram}<span className="text-sm text-zinc-500 font-bold">%</span>
+                    <span ref={ramRef}>32</span><span className="text-sm text-zinc-500 font-bold">%</span>
                   </div>
                 </div>
                 <div className="text-left">
                   <div className="text-zinc-500 font-mono text-[10px] tracking-widest mb-1">NET_PING</div>
                   <div className="text-emerald-400 font-mono font-black text-3xl flex items-baseline gap-1 drop-shadow-[0_0_10px_rgba(52,211,153,0.4)]">
-                    {sysStats.ping}<span className="text-sm text-emerald-600 font-bold">ms</span>
+                    <span ref={pingRef}>24</span><span className="text-sm text-emerald-600 font-bold">ms</span>
                   </div>
                 </div>
               </div>
