@@ -6,13 +6,10 @@ export default function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
-  const [openFaq, setOpenFaq] = useState(null);
-
-  // 安全取出圖示，避免圖示不存在導致黑屏當機
-  const getIcon = (name: string) => {
-    const IconComponent = (LucideIcons as any)[name];
-    return IconComponent ? <IconComponent className="w-6 h-6" /> : <span className="w-6 h-6 inline-block" />;
-  };
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  
+  // 讓系統監控面板的數字產生「真實跳動」的特效
+  const [sysStats, setSysStats] = useState({ cpu: 12, ram: 32, ping: 24 });
 
   // 替換為絕對安全的基礎圖示
   const { 
@@ -21,10 +18,11 @@ export default function App() {
     Zap, Star, Server, Users, Activity, MessageSquare, CreditCard, 
     Settings, Rocket, ChevronDown, HelpCircle, Layers,
     Ticket, ShoppingCart, ShieldCheck, Gamepad2, Eye,
-    Cpu, Globe, Database, Monitor, MessageCircle
+    Cpu, Globe, Database, Monitor, MessageCircle, Link, Wifi,
+    Command, Webhook, PlayCircle, Coins
   } = LucideIcons as any;
 
-  // 如果某些圖示還是找不到，我們做一個安全渲染元件
+  // 安全渲染圖示元件
   const SafeIcon = ({ icon: IconComp, className }: any) => {
     return IconComp ? <IconComp className={className} /> : <span className={className}></span>;
   };
@@ -33,9 +31,18 @@ export default function App() {
     setIsLoaded(true);
     const handleMouseMove = (e: any) => setMousePos({ x: e.clientX, y: e.clientY });
     
+    // 系統監控面板的隨機跳動邏輯 (每 2 秒更新一次)
+    const interval = setInterval(() => {
+      setSysStats({
+        cpu: Math.floor(Math.random() * 5) + 10, // 10% - 14%
+        ram: Math.floor(Math.random() * 4) + 30, // 30% - 33%
+        ping: Math.floor(Math.random() * 8) + 20, // 20ms - 27ms
+      });
+    }, 2000);
+
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const sections = ['home', 'features', 'advantages', 'workflow', 'pricing', 'faq'];
+      const sections = ['home', 'features', 'demo', 'workflow', 'pricing'];
       
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
@@ -51,6 +58,7 @@ export default function App() {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('scroll', handleScroll);
+      clearInterval(interval);
     };
   }, []);
 
@@ -74,6 +82,13 @@ export default function App() {
     { title: '虛擬經濟與商城', desc: '客製化貨幣名稱、每日簽到、轉帳與實體/虛擬商品兌換功能。', icon: <SafeIcon icon={ShoppingCart} className="w-6 h-6 text-emerald-400" /> },
     { title: '進階防護機制', desc: '防洗頻、防惡意翻群、自動封鎖危險連結，24 小時守護社群安全。', icon: <SafeIcon icon={ShieldCheck} className="w-6 h-6 text-purple-400" /> },
     { title: '趣味互動模組', desc: 'RPG 抽卡、猜拳、運勢占卜等客製化小遊戲，活絡伺服器氣氛。', icon: <SafeIcon icon={Gamepad2} className="w-6 h-6 text-yellow-400" /> }
+  ];
+
+  const integrations = [
+    { title: 'OpenAI API', desc: '導入 ChatGPT 智慧對話', icon: <SafeIcon icon={MessageCircle} className="w-6 h-6 text-emerald-400" />, border: 'border-emerald-500/30' },
+    { title: 'Game APIs', desc: '串接 Riot/Steam 戰績查詢', icon: <SafeIcon icon={Gamepad2} className="w-6 h-6 text-blue-400" />, border: 'border-blue-500/30' },
+    { title: 'Webhooks', desc: 'Twitch/YouTube 直播推播', icon: <SafeIcon icon={PlayCircle} className="w-6 h-6 text-red-400" />, border: 'border-red-500/30' },
+    { title: 'Payment APIs', desc: '綠界/藍新金流自動贊助', icon: <SafeIcon icon={Coins} className="w-6 h-6 text-yellow-400" />, border: 'border-yellow-500/30' },
   ];
 
   const advantages = [
@@ -215,13 +230,13 @@ export default function App() {
             KrProgram<span className="text-cyan-400 animate-blink">_</span>
           </div>
           <div className="hidden md:flex gap-8 text-xs font-bold tracking-widest">
-            {['home', 'features', 'advantages', 'workflow', 'pricing'].map((id, index) => (
+            {['home', 'features', 'demo', 'workflow', 'pricing'].map((id, index) => (
               <button key={id} onClick={() => scrollTo(id)} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className={`transition-all duration-300 flex flex-col items-center group relative ${activeSection === id ? 'text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]' : 'text-zinc-500 hover:text-zinc-300'}`}>
                 <span className="font-mono text-[9px] uppercase mb-0.5 opacity-60 group-hover:opacity-100 transition-opacity">
-                  {id === 'home' ? 'HOME' : id === 'features' ? 'FEATURES' : id === 'advantages' ? 'SPECS' : id === 'workflow' ? 'PROCESS' : 'PLANS'}
+                  {id === 'home' ? 'HOME' : id === 'features' ? 'FEATURES' : id === 'demo' ? 'DEMO' : id === 'workflow' ? 'PROCESS' : 'PLANS'}
                 </span>
                 <span>
-                  {id === 'home' ? '首頁' : id === 'features' ? '核心模組' : id === 'advantages' ? '開發優勢' : id === 'workflow' ? '部署流程' : '方案與授權'}
+                  {id === 'home' ? '首頁' : id === 'features' ? '核心模組' : id === 'demo' ? '實機展示' : id === 'workflow' ? '部署流程' : '方案與授權'}
                 </span>
                 <div className={`absolute -bottom-[2px] w-full h-[2px] bg-cyan-400 blur-[2px] transition-all duration-300 ${activeSection === id ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'}`}></div>
               </button>
@@ -230,6 +245,7 @@ export default function App() {
         </div>
       </nav>
 
+      {/* 首頁 Hero */}
       <section id="home" className="relative pt-36 pb-20 px-6 min-h-screen flex flex-col items-center justify-center text-center z-10">
         <div className="flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border border-cyan-500/20 bg-cyan-500/5 text-cyan-400 font-mono text-xs tracking-[0.2em] uppercase shadow-[0_0_15px_rgba(34,211,238,0.1)] backdrop-blur-sm">
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
@@ -244,7 +260,6 @@ export default function App() {
           <svg className="absolute -inset-8 w-[calc(100%+64px)] h-[calc(100%+64px)] animate-[spin_15s_linear_infinite] opacity-50 pointer-events-none z-0" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="48" fill="none" stroke="#22d3ee" strokeWidth="0.3" strokeDasharray="2 4" />
             <circle cx="50" cy="50" r="42" fill="none" stroke="#3b82f6" strokeWidth="0.5" strokeDasharray="15 15 5 15" />
-            <path d="M 50 2 L 50 8 M 50 92 L 50 98 M 2 50 L 8 50 M 92 50 L 98 50" stroke="#8b5cf6" strokeWidth="1" />
           </svg>
         </div>
         
@@ -284,6 +299,7 @@ export default function App() {
         </div>
       </section>
 
+      {/* 數據統計 */}
       <section className="py-10 border-y border-white/5 bg-white/[0.02] backdrop-blur-sm relative z-10">
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-white/5">
           {stats.map((stat, i) => (
@@ -297,6 +313,7 @@ export default function App() {
         </div>
       </section>
 
+      {/* 核心模組 */}
       <section id="features" className="py-24 px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
           <div className="mb-16">
@@ -327,7 +344,126 @@ export default function App() {
         </div>
       </section>
 
-      <section id="skills" className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#020202] to-[#050505]">
+      {/* 🚀 Discord 實機對話模擬 */}
+      <section id="demo" className="py-24 px-6 relative z-10 border-t border-white/5 bg-[#050505]">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-16 flex flex-col items-center text-center">
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-2 inline-flex items-center gap-4 tracking-tight">
+              <span className="text-purple-500 font-mono text-2xl">{"//"}</span> 系統實機展示 <span className="animate-blink text-purple-500 font-mono">_</span>
+            </h2>
+            <p className="text-zinc-500 text-xs font-mono tracking-widest uppercase">DISCORD_UI_SIMULATION</p>
+          </div>
+
+          <div className="w-full max-w-3xl mx-auto bg-[#313338] rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5 font-sans" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            <div className="bg-[#2b2d31] px-4 py-3 border-b border-[#1e1f22] flex items-center gap-3">
+              <SafeIcon icon={Command} className="w-5 h-5 text-zinc-400" />
+              <span className="text-white font-bold text-sm tracking-wide">bot-指令測試區</span>
+            </div>
+            
+            <div className="p-6 space-y-6">
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center shrink-0">
+                  <SafeIcon icon={Users} className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <span className="text-[#f2f3f5] font-bold text-base hover:underline cursor-pointer">客戶_Client</span>
+                    <span className="text-[#949ba4] text-xs">今天 14:00</span>
+                  </div>
+                  <div className="text-[#dbdee1] font-mono bg-[#1e1f22] px-2 py-0.5 rounded text-sm w-fit">&gt; /查詢商品 ID: 1024</div>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 bg-black">
+                  <img src="https://i.postimg.cc/pLm8hxSD/avatar.png" alt="Bot Avatar" className="w-full h-full object-cover" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <span className="text-[#f2f3f5] font-bold text-base hover:underline cursor-pointer">KrProgram Bot</span>
+                    <span className="bg-[#5865F2] text-white text-[10px] px-1.5 py-0.5 rounded-[3px] font-bold uppercase tracking-wider flex items-center gap-1">
+                      <SafeIcon icon={CheckCircle2} className="w-3 h-3" /> BOT
+                    </span>
+                    <span className="text-[#949ba4] text-xs">今天 14:00</span>
+                  </div>
+                  
+                  <div className="mt-2 bg-[#2b2d31] border-l-4 border-cyan-400 rounded-lg p-4 max-w-lg shadow-md">
+                    <div className="flex items-center gap-2 mb-2">
+                      <SafeIcon icon={ShoppingCart} className="w-4 h-4 text-white" />
+                      <span className="text-white font-bold text-sm">系統商品查詢成功</span>
+                    </div>
+                    <h3 className="text-cyan-400 font-bold text-lg mb-2 cursor-pointer hover:underline">💎 頂級客製化機器人套餐</h3>
+                    <p className="text-[#dbdee1] text-sm mb-4 leading-relaxed">這是一套為您的社群量身打造的專屬系統，包含商城、經濟與進階管理防護，全自動化為您服務。</p>
+                    
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <div className="text-[#dbdee1] font-bold text-xs mb-1">💰 價格</div>
+                        <div className="text-[#949ba4] text-sm">20,000 Kr 幣</div>
+                      </div>
+                      <div>
+                        <div className="text-[#dbdee1] font-bold text-xs mb-1">📦 庫存狀態</div>
+                        <div className="text-emerald-400 text-sm font-bold">充足 (無限)</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-3 flex gap-2">
+                    <button className="bg-[#248046] hover:bg-[#1a6334] text-white text-sm font-bold px-4 py-2 rounded transition-colors flex items-center gap-2">
+                      <SafeIcon icon={CreditCard} className="w-4 h-4" /> 立即購買
+                    </button>
+                    <button className="bg-[#4e5058] hover:bg-[#6d6f78] text-white text-sm font-bold px-4 py-2 rounded transition-colors flex items-center gap-2">
+                      <SafeIcon icon={MessageCircle} className="w-4 h-4" /> 聯絡客服
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 🚀 API 串接生態系 */}
+      <section className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#050505] to-[#020202]">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-16 flex flex-col items-center text-center">
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-2 inline-flex items-center gap-4 tracking-tight">
+              <span className="text-blue-500 font-mono text-2xl">{"//"}</span> 無限 API 擴充生態 <span className="animate-blink text-blue-500 font-mono">_</span>
+            </h2>
+            <p className="text-zinc-500 text-xs font-mono tracking-widest uppercase">EXTERNAL_INTEGRATIONS</p>
+          </div>
+
+          <div className="relative py-10" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-[#0a0a0a] border-2 border-cyan-500/50 rounded-2xl flex items-center justify-center z-20 shadow-[0_0_40px_rgba(34,211,238,0.3)]">
+              <SafeIcon icon={Cpu} className="w-10 h-10 text-cyan-400" />
+              <div className="absolute -inset-4 border border-cyan-500/20 rounded-3xl animate-[spin_4s_linear_infinite]"></div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-40 gap-y-12 relative z-10">
+              {integrations.map((item, i) => (
+                <div key={i} className={`p-6 bg-[#0a0a0a]/80 backdrop-blur-md border border-white/5 rounded-2xl flex items-center gap-4 hover:${item.border} transition-all duration-300 ${i % 2 === 0 ? 'md:mr-10' : 'md:ml-10'}`}>
+                  <div className={`p-3 rounded-xl bg-white/5 border border-white/5`}>
+                    {item.icon}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-zinc-100">{item.title}</h4>
+                    <p className="text-xs text-zinc-500 mt-1">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-full pointer-events-none z-0 hidden md:block">
+              <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 border-t border-l border-dashed border-zinc-700/50 rounded-tl-[3rem]"></div>
+              <div className="absolute bottom-1/4 right-1/4 w-1/2 h-1/2 border-b border-r border-dashed border-zinc-700/50 rounded-br-[3rem]"></div>
+              <div className="absolute top-1/4 right-1/4 w-1/2 h-1/2 border-t border-r border-dashed border-zinc-700/50 rounded-tr-[3rem]"></div>
+              <div className="absolute bottom-1/4 left-1/4 w-1/2 h-1/2 border-b border-l border-dashed border-zinc-700/50 rounded-bl-[3rem]"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 技能與實績 */}
+      <section className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#020202] to-[#050505]">
         <div className="max-w-5xl mx-auto">
           <div className="mb-16">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-2 flex items-center gap-4 tracking-tight">
@@ -366,6 +502,7 @@ export default function App() {
         </div>
       </section>
 
+      {/* 開發優勢 */}
       <section id="advantages" className="py-24 px-6 relative z-10 border-t border-white/5 bg-[#050505]">
         <div className="max-w-6xl mx-auto">
           <div className="mb-16">
@@ -390,6 +527,7 @@ export default function App() {
         </div>
       </section>
 
+      {/* 合作流程 */}
       <section id="workflow" className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#020202] to-[#050505]">
         <div className="max-w-6xl mx-auto">
           <div className="mb-20 text-center flex flex-col items-center">
@@ -417,6 +555,7 @@ export default function App() {
         </div>
       </section>
 
+      {/* 方案與授權 */}
       <section id="pricing" className="py-24 px-6 relative z-10 border-t border-white/5 bg-[#050505]">
         <div className="max-w-6xl mx-auto text-center">
           <div className="mb-16 flex flex-col items-center">
@@ -454,12 +593,54 @@ export default function App() {
             })}
           </div>
 
-          <div className="mt-32 text-center">
+          {/* 🚀 系統監控面板 (Server Monitor) */}
+          <div className="mt-32 mb-16 max-w-4xl mx-auto">
+            <div className="bg-[#0a0a0a] border border-zinc-800 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-8 shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent animate-scan-beam blur-[2px]"></div>
+              
+              <div className="flex items-center gap-4 w-full md:w-auto">
+                <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0">
+                  <SafeIcon icon={Globe} className="w-8 h-8 text-emerald-400" />
+                </div>
+                <div className="text-left">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                    <span className="font-mono text-emerald-400 text-xs font-bold tracking-widest">MAIN_SERVER_ONLINE</span>
+                  </div>
+                  <h4 className="text-white font-bold text-xl">企業級伺服器節點</h4>
+                </div>
+              </div>
+
+              <div className="flex gap-8 w-full md:w-auto justify-between md:justify-end">
+                <div className="text-left">
+                  <div className="text-zinc-500 font-mono text-xs mb-1">CPU_LOAD</div>
+                  <div className="text-white font-mono font-bold text-2xl flex items-baseline gap-1">
+                    {sysStats.cpu}<span className="text-sm text-zinc-500">%</span>
+                  </div>
+                </div>
+                <div className="text-left">
+                  <div className="text-zinc-500 font-mono text-xs mb-1">MEM_USAGE</div>
+                  <div className="text-white font-mono font-bold text-2xl flex items-baseline gap-1">
+                    {sysStats.ram}<span className="text-sm text-zinc-500">%</span>
+                  </div>
+                </div>
+                <div className="text-left">
+                  <div className="text-zinc-500 font-mono text-xs mb-1">NET_PING</div>
+                  <div className="text-emerald-400 font-mono font-bold text-2xl flex items-baseline gap-1">
+                    {sysStats.ping}<span className="text-sm text-emerald-600">ms</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 伺服器代管方案 */}
+          <div className="text-center">
              <div className="mb-12 flex flex-col items-center">
               <h3 className="text-2xl md:text-3xl font-black text-white mb-2 inline-flex items-center gap-4 tracking-tight">
                 <span className="text-purple-500 font-mono text-xl">{"//"}</span> 伺服器代管 <span className="animate-blink text-purple-500 font-mono">_</span>
               </h3>
-              <p className="text-zinc-500 text-xs font-mono tracking-widest uppercase">SERVER_HOSTING</p>
+              <p className="text-zinc-500 text-xs font-mono tracking-widest uppercase">SERVER_HOSTING_PLANS</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-5xl mx-auto">
@@ -495,6 +676,7 @@ export default function App() {
         </div>
       </section>
 
+      {/* 常見問題 FAQ */}
       <section id="faq" className="py-24 px-6 relative z-10 border-t border-white/5 bg-[#020202]">
         <div className="max-w-4xl mx-auto">
           <div className="mb-16 text-center flex flex-col items-center">
@@ -529,6 +711,7 @@ export default function App() {
         </div>
       </section>
 
+      {/* 聯絡 CTA */}
       <section className="py-24 px-6 relative z-10 text-center border-t border-white/5 bg-[#050505]">
         <div className="max-w-4xl mx-auto p-12 md:p-16 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan-900/20 via-[#050505] to-[#050505] border border-cyan-900/30 rounded-[3rem] shadow-[0_0_80px_rgba(34,211,238,0.05)] relative overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
@@ -548,6 +731,7 @@ export default function App() {
         </div>
       </section>
 
+      {/* 頁尾 */}
       <footer className="py-12 text-center border-t border-white/5 bg-[#020202]">
         <div className="text-2xl font-black text-zinc-100 mb-4 tracking-wider">KrProgram<span className="text-cyan-500">_</span></div>
         <div className="flex justify-center gap-10 text-zinc-600 text-xs font-black tracking-widest font-mono mb-8">
