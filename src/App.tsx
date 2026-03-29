@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Github, ExternalLink, Code2, Terminal, Mail, 
   Code, Bot, CheckCircle2, Star, Server, Users, Activity, 
@@ -8,36 +8,142 @@ import {
   Command, PlayCircle, Coins, Plus
 } from 'lucide-react';
 
+// ==========================================
+// 🚀 靜態資料區 (移到元件外部，避免重複渲染消耗效能)
+// ==========================================
+const iconMap: Record<string, any> = {
+  Bot, Cpu, Star, Server, Activity, Globe, Terminal
+};
+
+const getIcon = (name: string) => {
+  const IconComp = iconMap[name];
+  return IconComp ? <IconComp className="w-6 h-6" /> : <div className="w-6 h-6" />;
+};
+
+const SafeIcon = ({ icon: IconComp, className }: any) => {
+  return IconComp ? <IconComp className={className} /> : <span className={className}></span>;
+};
+
+const generateHexId = () => Math.random().toString(16).substr(2, 4).toUpperCase();
+
+const projects = [
+  { title: '幻小月 (Huan-Yue)', role: '幻悅陪伴所常駐工程師', description: '一個專注於服務、商城、遊戲社群製作的客製化機器人', iconName: 'Terminal', link: 'https://discord.gg/AjmaRwrw4m', hex: generateHexId() }
+];
+
+const technicalSkills = [
+  { name: 'Python (Discord.py / Nextcord)', percent: 85, fromColor: 'from-cyan-400', toColor: 'to-blue-500' },
+  { name: 'JavaScript / React', percent: 15, fromColor: 'from-purple-400', toColor: 'to-pink-500' }
+];
+
+const stats = [
+  { label: '系統穩定度', value: '99.9%', icon: <SafeIcon icon={Activity} className="w-5 h-5 text-emerald-400" /> },
+  { label: '客製化程度', value: '100%', icon: <SafeIcon icon={Settings} className="w-5 h-5 text-cyan-400" /> },
+  { label: '專注服務', value: '1 V 1', icon: <SafeIcon icon={Users} className="w-5 h-5 text-purple-400" /> }
+];
+
+const botFeatures = [
+  { title: '客服表單系統 (Ticket)', desc: '支援多按鈕開啟、自動建立私密頻道與對話紀錄存檔，提升客服效率。', icon: <SafeIcon icon={Ticket} className="w-6 h-6 text-cyan-400" />, hex: generateHexId() },
+  { title: '虛擬經濟與商城', desc: '客製化貨幣名稱、每日簽到、轉帳與實體/虛擬商品兌換功能。', icon: <SafeIcon icon={ShoppingCart} className="w-6 h-6 text-emerald-400" />, hex: generateHexId() },
+  { title: '進階防護機制', desc: '防洗頻、防惡意翻群、自動封鎖危險連結，24 小時守護社群安全。', icon: <SafeIcon icon={ShieldCheck} className="w-6 h-6 text-purple-400" />, hex: generateHexId() },
+  { title: '趣味互動模組', desc: 'RPG 抽卡、猜拳、運勢占卜等客製化小遊戲，活絡伺服器氣氛。', icon: <SafeIcon icon={Gamepad2} className="w-6 h-6 text-yellow-400" />, hex: generateHexId() }
+];
+
+const integrations = [
+  { title: 'OpenAI API', desc: '導入 ChatGPT 智慧對話', icon: <SafeIcon icon={MessageCircle} className="w-6 h-6 text-emerald-400" />, border: 'border-emerald-500/40 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:border-emerald-400/80' },
+  { title: 'Game APIs', desc: '串接 Riot/Steam 戰績查詢', icon: <SafeIcon icon={Gamepad2} className="w-6 h-6 text-blue-400" />, border: 'border-blue-500/40 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] hover:border-blue-400/80' },
+  { title: 'Webhooks', desc: 'Twitch/YouTube 直播推播', icon: <SafeIcon icon={PlayCircle} className="w-6 h-6 text-red-400" />, border: 'border-red-500/40 hover:shadow-[0_0_20px_rgba(239,68,68,0.2)] hover:border-red-400/80' },
+  { title: 'Payment APIs', desc: '綠界/藍新金流自動贊助', icon: <SafeIcon icon={Coins} className="w-6 h-6 text-yellow-400" />, border: 'border-yellow-500/40 hover:shadow-[0_0_20px_rgba(234,179,8,0.2)] hover:border-yellow-400/80' },
+];
+
+const advantages = [
+  { title: '專注傾聽需求', desc: '沒有大公司的制式客服，由開發者本人直接與您溝通，確保精準命中痛點。', icon: <SafeIcon icon={MessageCircle} className="w-7 h-7 text-cyan-400" />, hex: generateHexId() },
+  { title: '價格透明不亂喊', desc: '依據功能複雜度實報實銷，事前提供明確報價單，絕不在中途加價。', icon: <SafeIcon icon={Eye} className="w-7 h-7 text-purple-400" />, hex: generateHexId() },
+  { title: '完整原始碼交付', desc: '旗艦專案提供完整機器人 Source Code，資產永遠掌握在自己手裡。', icon: <SafeIcon icon={Code} className="w-7 h-7 text-emerald-400" />, hex: generateHexId() }
+];
+
+const workflows = [
+  { step: '01', title: 'REQUIREMENTS', subtitle: '需求討論', desc: '確認機器人功能、指令細節與環境。', icon: <SafeIcon icon={MessageSquare} /> },
+  { step: '02', title: 'QUOTATION', subtitle: '報價與訂金', desc: '確認開發金額、交期與前期訂金。', icon: <SafeIcon icon={CreditCard} /> },
+  { step: '03', title: 'DEVELOPMENT', subtitle: '開發與測試', desc: '專屬測試伺服器，親自試用調整。', icon: <SafeIcon icon={Settings} /> },
+  { step: '04', title: 'DEPLOYMENT', subtitle: '上線與交付', desc: '正式上線，交付原始碼並提供保固。', icon: <SafeIcon icon={Rocket} /> }
+];
+
+const pricingPlans = [
+  { name: '基礎小精靈', badge: 'v1.0', price: '800', theme: 'blue', popular: false, iconName: 'Bot', features: ['自訂歡迎 / 離開圖片訊息', '基礎管理指令 (踢出/禁言/清訊息)', '自訂關鍵字自動回覆', '簡單身分組發放系統', '不需資料庫之輕量功能'] },
+  { name: '專業管家', badge: 'v2.0', price: '10,000', theme: 'cyan', popular: true, iconName: 'Cpu', features: ['包含所有「基礎版」功能', '客服表單 (Ticket) 創建系統', '經濟 / 等級 / 經驗值系統', '外部 API 串接 (如：遊戲戰績)', '專屬 SQLite/JSON 資料庫'] },
+  { name: '旗艦商城', badge: 'v3.0', price: '20,000', theme: 'emerald', popular: false, iconName: 'Star', features: ['包含所有「專業版」功能', 'Discord 商城 / 虛擬貨幣交易', '進階資料庫 (MongoDB/MySQL)', '高階防翻群 / 驗證防護系統', '原始碼提供與優先除錯'] }
+];
+
+const hostingPlans = [
+  { name: '輕量掛機', price: '200', period: '/月', theme: 'blue', iconName: 'Server', features: ['24/7 穩定運行', '適合無資料庫之機器人', '基礎運算資源', '免費次要更新部署'] },
+  { name: '進階效能', price: '500', period: '/月', theme: 'purple', popular: true, iconName: 'Activity', features: ['支援 SQLite/JSON 資料庫', '中等流量群組適用', '自動定期備份資料', '優先維護與重啟'] },
+  { name: '尊榮專屬', price: '1,200', period: '/月', theme: 'emerald', popular: false, iconName: 'Globe', features: ['專屬獨立虛擬主機 (VPS)', '支援 MongoDB 大型資料庫', '無限制流量與高效能', '即時監控與完整日誌'] }
+];
+
+const faqs = [
+  { q: '機器人需要我另外租伺服器來掛機嗎？', a: '您可以自行尋找主機掛機，或者使用我提供的「伺服器代管服務」（每月 200 元起）。我會幫您處理所有環境架設、24 小時監控與後續的程式碼更新，讓您完全免除煩惱。' },
+  { q: '如果 Discord 更新導致機器人壞掉，會幫忙修嗎？', a: '絕對會！只要是本工作室開發的機器人，在保固期內若因 Discord 官方 API 更新導致的非人為故障，皆提供免費修復支援。' },
+  { q: '我可以分期付款嗎？', a: '大型專案（如旗艦商城）支援階段性付款：簽約時支付訂金 50%，測試伺服器確認功能無誤後，再支付尾款 50%，保障雙方權益。' },
+  { q: '後續如果想增加新功能怎麼辦？', a: '歡迎隨時討論！我會根據新功能的複雜度進行單獨評估與報價，而且老客戶絕對享有額外折扣優惠。' }
+];
+
+const getPlanStyles = (theme: string) => {
+  const themes: any = {
+    cyan: {
+      card: 'bg-[#030a12]/80 border-cyan-500/30 hover:border-cyan-400/60 hover:shadow-[0_0_40px_rgba(34,211,238,0.15)] z-10 transform md:-translate-y-4 md:hover:-translate-y-6',
+      topBar: 'from-blue-500 via-cyan-400 to-blue-500 opacity-100',
+      iconBg: 'bg-cyan-500/10 border-cyan-500/30',
+      iconColor: 'text-cyan-400',
+      button: 'bg-cyan-500 text-black hover:bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.4)] border-transparent',
+      check: 'text-cyan-400'
+    },
+    purple: {
+      card: 'bg-[#0a0514]/80 border-purple-500/30 hover:border-purple-400/60 hover:shadow-[0_0_40px_rgba(168,85,247,0.15)] z-10 transform md:-translate-y-4 md:hover:-translate-y-6',
+      topBar: 'from-purple-600 via-fuchsia-400 to-purple-600 opacity-100',
+      iconBg: 'bg-purple-500/10 border-purple-500/30',
+      iconColor: 'text-purple-400',
+      button: 'bg-purple-500 text-white hover:bg-purple-400 shadow-[0_0_20px_rgba(168,85,247,0.4)] border-transparent',
+      check: 'text-purple-400'
+    },
+    emerald: {
+      card: 'bg-[#030e09]/80 border-white/10 hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] hover:-translate-y-2',
+      topBar: 'from-emerald-600/50 to-emerald-400/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500',
+      iconBg: 'bg-black/50 border-white/10 group-hover:border-emerald-500/30 group-hover:bg-emerald-500/10 transition-colors',
+      iconColor: 'text-zinc-400 group-hover:text-emerald-400',
+      button: 'bg-black/50 border border-white/10 text-zinc-300 group-hover:border-emerald-500/50 group-hover:text-emerald-400 hover:bg-emerald-500/10',
+      check: 'text-zinc-600 group-hover:text-emerald-400 transition-colors'
+    },
+    blue: {
+      card: 'bg-[#030610]/80 border-white/10 hover:border-blue-500/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] hover:-translate-y-2',
+      topBar: 'from-cyan-600/50 to-blue-400/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500',
+      iconBg: 'bg-black/50 border-white/10 group-hover:border-blue-500/30 group-hover:bg-blue-500/10 transition-colors',
+      iconColor: 'text-zinc-400 group-hover:text-blue-400',
+      button: 'bg-black/50 border border-white/10 text-zinc-300 group-hover:border-blue-500/50 group-hover:text-blue-400 hover:bg-blue-500/10',
+      check: 'text-zinc-600 group-hover:text-blue-400 transition-colors'
+    }
+  };
+  return themes[theme] || themes.blue;
+};
+
+// ==========================================
+// 主程式區塊
+// ==========================================
 export default function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [isLoaded, setIsLoaded] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  
-  // 🚀 新增：開機動畫狀態
   const [bootState, setBootState] = useState<'booting' | 'fading' | 'ready'>('booting');
   const [bootLogs, setBootLogs] = useState<string[]>(['> SYS.INIT()']);
-  
   const [sysStats, setSysStats] = useState({ cpu: 12, ram: 32, ping: 24 });
 
-  const iconMap: Record<string, any> = {
-    Bot, Cpu, Star, Server, Activity, Globe, Terminal
-  };
-
-  const getIcon = (name: string) => {
-    const IconComp = iconMap[name];
-    return IconComp ? <IconComp className="w-6 h-6" /> : <div className="w-6 h-6" />;
-  };
-
-  const SafeIcon = ({ icon: IconComp, className }: any) => {
-    return IconComp ? <IconComp className={className} /> : <span className={className}></span>;
-  };
-
-  const generateHexId = () => Math.random().toString(16).substr(2, 4).toUpperCase();
+  // 🚀 游標與環境光 Refs (取代 State，解決效能瓶頸)
+  const cursorOuterRef = useRef<HTMLDivElement>(null);
+  const cursorInnerRef = useRef<HTMLDivElement>(null);
+  const ambientGlowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // 🚀 開機動畫邏輯
+    // 1. 開機動畫邏輯
     const logs = [
       '> MOUNTING_FILE_SYSTEM... [OK]',
       '> ALLOCATING_MEMORY... [OK]',
@@ -60,11 +166,10 @@ export default function App() {
       setTimeout(() => {
         setBootState('ready');
         setIsLoaded(true);
-      }, 500); // 等待淡出動畫結束
-    }, 2000); // 總開機時間 2 秒
+      }, 500); 
+    }, 2000);
 
-    const handleMouseMove = (e: any) => setMousePos({ x: e.clientX, y: e.clientY });
-    
+    // 2. 系統監控面板跳動邏輯
     const statsInterval = setInterval(() => {
       setSysStats({
         cpu: Math.floor(Math.random() * 5) + 10,
@@ -73,129 +178,53 @@ export default function App() {
       });
     }, 2000);
 
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const sections = ['home', 'features', 'demo', 'workflow', 'pricing'];
-      
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
-        if (el && scrollY >= el.offsetTop - 300) {
-          setActiveSection(sections[i]);
-          break;
-        }
+    // 3. 🚀 效能優化：滑鼠追蹤 (直接操作 DOM，避免 React Re-render)
+    const handleMouseMove = (e: MouseEvent) => {
+      if (cursorOuterRef.current) {
+        cursorOuterRef.current.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
+      }
+      if (cursorInnerRef.current) {
+        cursorInnerRef.current.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
+      }
+      if (ambientGlowRef.current) {
+        // 環境光需要一點延遲感才自然，但我們用 CSS transition 處理，這邊只要設定最終位置即可
+        ambientGlowRef.current.style.transform = `translate(${e.clientX - 300}px, ${e.clientY - 300}px)`;
       }
     };
+    
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('scroll', handleScroll);
+    // 4. 🚀 效能優化：滾動偵測 (改用 Intersection Observer)
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -60% 0px', // 在螢幕中上方觸發
+      threshold: 0
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    const sections = ['home', 'features', 'demo', 'workflow', 'pricing', 'faq'];
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
       clearInterval(statsInterval);
       clearInterval(logInterval);
     };
   }, []);
 
-  const projects = [
-    { title: '幻小月 (Huan-Yue)', role: '幻悅陪伴所常駐工程師', description: '一個專注於服務、商城、遊戲社群製作的客製化機器人', iconName: 'Terminal', link: 'https://discord.gg/AjmaRwrw4m', hex: generateHexId() }
-  ];
-
-  const technicalSkills = [
-    { name: 'Python (Discord.py / Nextcord)', percent: 85, fromColor: 'from-cyan-400', toColor: 'to-blue-500' },
-    { name: 'JavaScript / React', percent: 15, fromColor: 'from-purple-400', toColor: 'to-pink-500' }
-  ];
-
-  const stats = [
-    { label: '系統穩定度', value: '99.9%', icon: <SafeIcon icon={Activity} className="w-5 h-5 text-emerald-400" /> },
-    { label: '客製化程度', value: '100%', icon: <SafeIcon icon={Settings} className="w-5 h-5 text-cyan-400" /> },
-    { label: '專注服務', value: '1 V 1', icon: <SafeIcon icon={Users} className="w-5 h-5 text-purple-400" /> }
-  ];
-
-  const botFeatures = [
-    { title: '客服表單系統 (Ticket)', desc: '支援多按鈕開啟、自動建立私密頻道與對話紀錄存檔，提升客服效率。', icon: <SafeIcon icon={Ticket} className="w-6 h-6 text-cyan-400" />, hex: generateHexId() },
-    { title: '虛擬經濟與商城', desc: '客製化貨幣名稱、每日簽到、轉帳與實體/虛擬商品兌換功能。', icon: <SafeIcon icon={ShoppingCart} className="w-6 h-6 text-emerald-400" />, hex: generateHexId() },
-    { title: '進階防護機制', desc: '防洗頻、防惡意翻群、自動封鎖危險連結，24 小時守護社群安全。', icon: <SafeIcon icon={ShieldCheck} className="w-6 h-6 text-purple-400" />, hex: generateHexId() },
-    { title: '趣味互動模組', desc: 'RPG 抽卡、猜拳、運勢占卜等客製化小遊戲，活絡伺服器氣氛。', icon: <SafeIcon icon={Gamepad2} className="w-6 h-6 text-yellow-400" />, hex: generateHexId() }
-  ];
-
-  const integrations = [
-    { title: 'OpenAI API', desc: '導入 ChatGPT 智慧對話', icon: <SafeIcon icon={MessageCircle} className="w-6 h-6 text-emerald-400" />, border: 'border-emerald-500/40 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:border-emerald-400/80' },
-    { title: 'Game APIs', desc: '串接 Riot/Steam 戰績查詢', icon: <SafeIcon icon={Gamepad2} className="w-6 h-6 text-blue-400" />, border: 'border-blue-500/40 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] hover:border-blue-400/80' },
-    { title: 'Webhooks', desc: 'Twitch/YouTube 直播推播', icon: <SafeIcon icon={PlayCircle} className="w-6 h-6 text-red-400" />, border: 'border-red-500/40 hover:shadow-[0_0_20px_rgba(239,68,68,0.2)] hover:border-red-400/80' },
-    { title: 'Payment APIs', desc: '綠界/藍新金流自動贊助', icon: <SafeIcon icon={Coins} className="w-6 h-6 text-yellow-400" />, border: 'border-yellow-500/40 hover:shadow-[0_0_20px_rgba(234,179,8,0.2)] hover:border-yellow-400/80' },
-  ];
-
-  const advantages = [
-    { title: '專注傾聽需求', desc: '沒有大公司的制式客服，由開發者本人直接與您溝通，確保精準命中痛點。', icon: <SafeIcon icon={MessageCircle} className="w-7 h-7 text-cyan-400" />, hex: generateHexId() },
-    { title: '價格透明不亂喊', desc: '依據功能複雜度實報實銷，事前提供明確報價單，絕不在中途加價。', icon: <SafeIcon icon={Eye} className="w-7 h-7 text-purple-400" />, hex: generateHexId() },
-    { title: '完整原始碼交付', desc: '旗艦專案提供完整機器人 Source Code，資產永遠掌握在自己手裡。', icon: <SafeIcon icon={Code} className="w-7 h-7 text-emerald-400" />, hex: generateHexId() }
-  ];
-
-  const workflows = [
-    { step: '01', title: 'REQUIREMENTS', subtitle: '需求討論', desc: '確認機器人功能、指令細節與環境。', icon: <SafeIcon icon={MessageSquare} /> },
-    { step: '02', title: 'QUOTATION', subtitle: '報價與訂金', desc: '確認開發金額、交期與前期訂金。', icon: <SafeIcon icon={CreditCard} /> },
-    { step: '03', title: 'DEVELOPMENT', subtitle: '開發與測試', desc: '專屬測試伺服器，親自試用調整。', icon: <SafeIcon icon={Settings} /> },
-    { step: '04', title: 'DEPLOYMENT', subtitle: '上線與交付', desc: '正式上線，交付原始碼並提供保固。', icon: <SafeIcon icon={Rocket} /> }
-  ];
-
-  const pricingPlans = [
-    { name: '基礎小精靈', badge: 'v1.0', price: '800', theme: 'blue', popular: false, iconName: 'Bot', features: ['自訂歡迎 / 離開圖片訊息', '基礎管理指令 (踢出/禁言/清訊息)', '自訂關鍵字自動回覆', '簡單身分組發放系統', '不需資料庫之輕量功能'] },
-    { name: '專業管家', badge: 'v2.0', price: '10,000', theme: 'cyan', popular: true, iconName: 'Cpu', features: ['包含所有「基礎版」功能', '客服表單 (Ticket) 創建系統', '經濟 / 等級 / 經驗值系統', '外部 API 串接 (如：遊戲戰績)', '專屬 SQLite/JSON 資料庫'] },
-    { name: '旗艦商城', badge: 'v3.0', price: '20,000', theme: 'emerald', popular: false, iconName: 'Star', features: ['包含所有「專業版」功能', 'Discord 商城 / 虛擬貨幣交易', '進階資料庫 (MongoDB/MySQL)', '高階防翻群 / 驗證防護系統', '原始碼提供與優先除錯'] }
-  ];
-
-  const hostingPlans = [
-    { name: '輕量掛機', price: '200', period: '/月', theme: 'blue', iconName: 'Server', features: ['24/7 穩定運行', '適合無資料庫之機器人', '基礎運算資源', '免費次要更新部署'] },
-    { name: '進階效能', price: '500', period: '/月', theme: 'purple', popular: true, iconName: 'Activity', features: ['支援 SQLite/JSON 資料庫', '中等流量群組適用', '自動定期備份資料', '優先維護與重啟'] },
-    { name: '尊榮專屬', price: '1,200', period: '/月', theme: 'emerald', popular: false, iconName: 'Globe', features: ['專屬獨立虛擬主機 (VPS)', '支援 MongoDB 大型資料庫', '無限制流量與高效能', '即時監控與完整日誌'] }
-  ];
-
-  const faqs = [
-    { q: '機器人需要我另外租伺服器來掛機嗎？', a: '您可以自行尋找主機掛機，或者使用我提供的「伺服器代管服務」（每月 200 元起）。我會幫您處理所有環境架設、24 小時監控與後續的程式碼更新，讓您完全免除煩惱。' },
-    { q: '如果 Discord 更新導致機器人壞掉，會幫忙修嗎？', a: '絕對會！只要是本工作室開發的機器人，在保固期內若因 Discord 官方 API 更新導致的非人為故障，皆提供免費修復支援。' },
-    { q: '我可以分期付款嗎？', a: '大型專案（如旗艦商城）支援階段性付款：簽約時支付訂金 50%，測試伺服器確認功能無誤後，再支付尾款 50%，保障雙方權益。' },
-    { q: '後續如果想增加新功能怎麼辦？', a: '歡迎隨時討論！我會根據新功能的複雜度進行單獨評估與報價，而且老客戶絕對享有額外折扣優惠。' }
-  ];
-
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-
-  const getPlanStyles = (theme: string) => {
-    const themes: any = {
-      cyan: {
-        card: 'bg-[#030a12]/80 border-cyan-500/30 hover:border-cyan-400/60 hover:shadow-[0_0_40px_rgba(34,211,238,0.15)] z-10 transform md:-translate-y-4 md:hover:-translate-y-6',
-        topBar: 'from-blue-500 via-cyan-400 to-blue-500 opacity-100',
-        iconBg: 'bg-cyan-500/10 border-cyan-500/30',
-        iconColor: 'text-cyan-400',
-        button: 'bg-cyan-500 text-black hover:bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.4)] border-transparent',
-        check: 'text-cyan-400'
-      },
-      purple: {
-        card: 'bg-[#0a0514]/80 border-purple-500/30 hover:border-purple-400/60 hover:shadow-[0_0_40px_rgba(168,85,247,0.15)] z-10 transform md:-translate-y-4 md:hover:-translate-y-6',
-        topBar: 'from-purple-600 via-fuchsia-400 to-purple-600 opacity-100',
-        iconBg: 'bg-purple-500/10 border-purple-500/30',
-        iconColor: 'text-purple-400',
-        button: 'bg-purple-500 text-white hover:bg-purple-400 shadow-[0_0_20px_rgba(168,85,247,0.4)] border-transparent',
-        check: 'text-purple-400'
-      },
-      emerald: {
-        card: 'bg-[#030e09]/80 border-white/10 hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] hover:-translate-y-2',
-        topBar: 'from-emerald-600/50 to-emerald-400/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500',
-        iconBg: 'bg-black/50 border-white/10 group-hover:border-emerald-500/30 group-hover:bg-emerald-500/10 transition-colors',
-        iconColor: 'text-zinc-400 group-hover:text-emerald-400',
-        button: 'bg-black/50 border border-white/10 text-zinc-300 group-hover:border-emerald-500/50 group-hover:text-emerald-400 hover:bg-emerald-500/10',
-        check: 'text-zinc-600 group-hover:text-emerald-400 transition-colors'
-      },
-      blue: {
-        card: 'bg-[#030610]/80 border-white/10 hover:border-blue-500/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] hover:-translate-y-2',
-        topBar: 'from-cyan-600/50 to-blue-400/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500',
-        iconBg: 'bg-black/50 border-white/10 group-hover:border-blue-500/30 group-hover:bg-blue-500/10 transition-colors',
-        iconColor: 'text-zinc-400 group-hover:text-blue-400',
-        button: 'bg-black/50 border border-white/10 text-zinc-300 group-hover:border-blue-500/50 group-hover:text-blue-400 hover:bg-blue-500/10',
-        check: 'text-zinc-600 group-hover:text-blue-400 transition-colors'
-      }
-    };
-    return themes[theme] || themes.blue;
-  };
 
   return (
     <div className="min-h-screen bg-[#020203] text-zinc-300 selection:bg-cyan-500/30 overflow-x-hidden relative cursor-none" style={{ fontFamily: "'Inter', 'Noto Sans TC', sans-serif" }}>
@@ -206,14 +235,12 @@ export default function App() {
         * { cursor: none !important; }
         .font-mono { font-family: 'JetBrains Mono', monospace !important; }
         
-        /* 超質感點陣陣列背景 */
         .tech-grid {
           background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
                             linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
           background-size: 30px 30px;
         }
 
-        /* 背景懸浮數據粒子 */
         .particles-layer {
           background-image: radial-gradient(circle at 15% 50%, rgba(34, 211, 238, 0.1) 2%, transparent 3%),
                             radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.08) 2%, transparent 3%),
@@ -227,7 +254,6 @@ export default function App() {
           100% { background-position: 100% 100%; }
         }
         
-        /* 掃描線動畫 */
         @keyframes scan-beam {
           0% { top: -10%; opacity: 0; }
           10% { opacity: 0.8; }
@@ -243,7 +269,6 @@ export default function App() {
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         .animate-float { animation: float 6s ease-in-out infinite; }
         
-        /* 🚀 駭客風 Glitch (故障) 特效 */
         .glitch-text { position: relative; }
         .glitch-text::before, .glitch-text::after {
           content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.8;
@@ -290,7 +315,6 @@ export default function App() {
                 <span className="w-2 h-4 bg-cyan-400 animate-blink inline-block"></span>
               </div>
             </div>
-            {/* 開機進度條 */}
             <div className="mt-8 h-1 w-full bg-zinc-900 rounded-full overflow-hidden">
               <div className="h-full bg-cyan-500 shadow-[0_0_15px_#06b6d4] transition-all duration-[1.5s] ease-out" style={{ width: bootLogs.length === 5 ? '100%' : `${(bootLogs.length / 5) * 100}%` }}></div>
             </div>
@@ -329,11 +353,23 @@ export default function App() {
         <div className="font-mono text-[10px] text-purple-400 rotate-90 tracking-[0.3em] whitespace-nowrap mt-16">SECURE_CONNECTION</div>
       </div>
 
-      {/* 🚀 升級科技感游標：帶有中心準星 */}
-      <div className={`fixed top-0 left-0 pointer-events-none z-[100] transition-all duration-75 ease-out flex items-center justify-center rounded-full mix-blend-screen hidden md:flex border border-cyan-400/40 ${isHovering ? 'bg-cyan-500/10 scale-[2.5] backdrop-blur-[2px]' : ''}`} style={{ width: '40px', height: '40px', transform: `translate(${mousePos.x - 20}px, ${mousePos.y - 20}px)` }}>
+      {/* 🚀 效能優化版的科技感游標 */}
+      <div 
+        ref={cursorOuterRef}
+        className={`fixed top-0 left-0 pointer-events-none z-[100] transition-all duration-75 ease-out flex items-center justify-center rounded-full mix-blend-screen hidden md:flex border border-cyan-400/40 ${isHovering ? 'bg-cyan-500/10 scale-[2.5] backdrop-blur-[2px]' : ''}`} 
+        style={{ width: '40px', height: '40px' }}
+      >
          {isHovering && <SafeIcon icon={Plus} className="w-4 h-4 text-cyan-400 absolute opacity-50 animate-pulse" />}
       </div>
-      <div className="fixed top-0 left-0 pointer-events-none z-[100] w-1.5 h-1.5 bg-cyan-400 rounded-full hidden md:block shadow-[0_0_10px_#22d3ee]" style={{ transform: `translate(${mousePos.x - 3}px, ${mousePos.y - 3}px)` }} />
+      <div 
+        ref={cursorInnerRef}
+        className="fixed top-0 left-0 pointer-events-none z-[100] w-1.5 h-1.5 bg-cyan-400 rounded-full hidden md:block shadow-[0_0_10px_#22d3ee]" 
+      />
+      {/* 隱藏式的巨大環境光圈，滑鼠移動時會有輕微延遲感 */}
+      <div 
+        ref={ambientGlowRef}
+        className="fixed top-0 left-0 w-[600px] h-[600px] bg-cyan-600/5 rounded-full blur-[120px] pointer-events-none z-0 transition-transform duration-[400ms] ease-out hidden md:block" 
+      />
 
       {/* 頂部導覽列 */}
       <nav className="fixed top-0 w-full z-50 bg-[#020203]/70 backdrop-blur-xl border-b border-white/5">
@@ -360,7 +396,6 @@ export default function App() {
 
       {/* 首頁 Hero */}
       <section id="home" className="relative pt-36 pb-20 px-6 min-h-screen flex flex-col items-center justify-center text-center z-10 overflow-hidden">
-        {/* 橫向全域掃描線 */}
         <div className="absolute w-full h-[2px] bg-cyan-400/30 shadow-[0_0_15px_#22d3ee] animate-scan-beam blur-[1px] z-0"></div>
 
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-cyan-500/5 rounded-full z-0 pointer-events-none"></div>
@@ -382,7 +417,6 @@ export default function App() {
           </svg>
         </div>
         
-        {/* 🚀 加入 Glitch 故障特效的主標題 */}
         <h1 className="text-6xl md:text-[7rem] font-black mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-100 to-zinc-500 text-glow-cyan z-10 leading-none glitch-text" data-text="KrProgram">KrProgram</h1>
         
         <div className="flex items-center justify-center gap-2 mb-12 text-cyan-400 font-bold text-xl md:text-2xl drop-shadow-[0_0_20px_rgba(34,211,238,0.6)] tracking-wide z-10">
@@ -429,7 +463,6 @@ export default function App() {
               <div className="flex items-center justify-center p-3 bg-black/40 border border-white/5 rounded-2xl mb-4 group-hover:border-cyan-500/30 group-hover:bg-cyan-500/5 transition-colors">
                 {stat.icon}
               </div>
-              {/* 讓數字具有閃爍光感 */}
               <div className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tighter group-hover:text-cyan-400 group-hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] transition-all duration-300 font-mono drop-shadow-md">{stat.value}</div>
               <div className="text-zinc-500 text-xs font-bold uppercase tracking-[0.2em]">{stat.label}</div>
             </div>
@@ -478,7 +511,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 🚀 Discord 實機對話模擬 */}
+      {/* Discord 實機對話模擬 */}
       <section id="demo" className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#020203] to-[#050508]">
         <div className="max-w-5xl mx-auto">
           <div className="mb-16 flex flex-col items-center text-center">
@@ -560,7 +593,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 🚀 API 串接生態系 */}
+      {/* API 串接生態系 */}
       <section className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#050508] to-[#020203]">
         <div className="max-w-5xl mx-auto">
           <div className="mb-16 flex flex-col items-center text-center">
@@ -581,8 +614,8 @@ export default function App() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-48 gap-y-16 relative z-10 max-w-4xl mx-auto">
               {integrations.map((item, i) => (
-                <div key={i} className={`p-6 bg-[#08080a]/80 backdrop-blur-md border border-white/5 rounded-3xl flex items-center gap-5 hover:${item.border} transition-all duration-500 hover:-translate-y-1 ${i % 2 === 0 ? 'md:mr-12' : 'md:ml-12'}`}>
-                  <div className={`p-4 rounded-2xl bg-black/50 border border-white/10 shadow-inner`}>
+                <div key={i} className={`p-6 bg-[#08080a]/80 backdrop-blur-md border border-white/5 rounded-3xl flex items-center gap-5 ${item.border} transition-all duration-500 hover:-translate-y-1 ${i % 2 === 0 ? 'md:mr-12' : 'md:ml-12'} group`}>
+                  <div className={`p-4 rounded-2xl bg-black/50 border border-white/10 shadow-inner group-hover:bg-black/80 transition-colors`}>
                     {item.icon}
                   </div>
                   <div>
@@ -728,7 +761,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 🚀 方案與授權 */}
+      {/* 方案與授權 */}
       <section id="pricing" className="py-24 px-6 relative z-10 border-t border-white/5 bg-[#030305]">
         <div className="max-w-6xl mx-auto text-center">
           <div className="mb-20 flex flex-col items-center">
@@ -786,7 +819,7 @@ export default function App() {
             })}
           </div>
 
-          {/* 🚀 系統監控面板 */}
+          {/* 系統監控面板 (Server Monitor) */}
           <div className="mt-32 mb-20 max-w-4xl mx-auto">
             <div className="bg-[#08080a]/90 border border-white/10 rounded-[2rem] p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-10 shadow-[0_30px_60px_rgba(0,0,0,0.5)] relative overflow-hidden backdrop-blur-xl" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
               <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-emerald-500/60 to-transparent animate-scan-beam blur-[2px]"></div>
@@ -829,6 +862,7 @@ export default function App() {
             </div>
           </div>
 
+          {/* 伺服器代管方案 */}
           <div className="text-center">
              <div className="mb-12 flex flex-col items-center">
               <h3 className="text-2xl md:text-4xl font-black text-white mb-2 inline-flex items-center gap-4 tracking-tight">
