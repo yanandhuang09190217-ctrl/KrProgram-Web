@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-// 明確指定引入基礎圖示，確保打包絕對安全
 import { 
   Github, ExternalLink, Code2, Terminal, Mail, 
   Code, Bot, CheckCircle2, Star, Server, Users, Activity, 
   MessageSquare, CreditCard, Settings, Rocket, ChevronDown, 
   Ticket, ShoppingCart, ShieldCheck, Gamepad2, Eye,
   Cpu, Globe, Database, Monitor, MessageCircle, 
-  Command, PlayCircle, Coins 
+  Command, PlayCircle, Coins, Plus
 } from 'lucide-react';
 
 export default function App() {
@@ -16,10 +15,12 @@ export default function App() {
   const [isHovering, setIsHovering] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   
-  // 系統監控面板跳動邏輯
+  // 🚀 新增：開機動畫狀態
+  const [bootState, setBootState] = useState<'booting' | 'fading' | 'ready'>('booting');
+  const [bootLogs, setBootLogs] = useState<string[]>(['> SYS.INIT()']);
+  
   const [sysStats, setSysStats] = useState({ cpu: 12, ram: 32, ping: 24 });
 
-  // 靜態圖示映射表 (安全對應)
   const iconMap: Record<string, any> = {
     Bot, Cpu, Star, Server, Activity, Globe, Terminal
   };
@@ -33,14 +34,38 @@ export default function App() {
     return IconComp ? <IconComp className={className} /> : <span className={className}></span>;
   };
 
-  // 生成假 Hex ID 增加科技感
   const generateHexId = () => Math.random().toString(16).substr(2, 4).toUpperCase();
 
   useEffect(() => {
-    setIsLoaded(true);
+    // 🚀 開機動畫邏輯
+    const logs = [
+      '> MOUNTING_FILE_SYSTEM... [OK]',
+      '> ALLOCATING_MEMORY... [OK]',
+      '> ESTABLISHING_SECURE_CONNECTION... [OK]',
+      '> BYPASSING_FIREWALL... [SUCCESS]',
+      '> LOADING_HOLO_INTERFACE... 100%'
+    ];
+    
+    let logIndex = 0;
+    const logInterval = setInterval(() => {
+      if (logIndex < logs.length) {
+        setBootLogs(prev => [...prev, logs[logIndex]]);
+        logIndex++;
+      }
+    }, 250);
+
+    setTimeout(() => {
+      clearInterval(logInterval);
+      setBootState('fading');
+      setTimeout(() => {
+        setBootState('ready');
+        setIsLoaded(true);
+      }, 500); // 等待淡出動畫結束
+    }, 2000); // 總開機時間 2 秒
+
     const handleMouseMove = (e: any) => setMousePos({ x: e.clientX, y: e.clientY });
     
-    const interval = setInterval(() => {
+    const statsInterval = setInterval(() => {
       setSysStats({
         cpu: Math.floor(Math.random() * 5) + 10,
         ram: Math.floor(Math.random() * 4) + 30,
@@ -66,7 +91,8 @@ export default function App() {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('scroll', handleScroll);
-      clearInterval(interval);
+      clearInterval(statsInterval);
+      clearInterval(logInterval);
     };
   }, []);
 
@@ -93,10 +119,10 @@ export default function App() {
   ];
 
   const integrations = [
-    { title: 'OpenAI API', desc: '導入 ChatGPT 智慧對話', icon: <SafeIcon icon={MessageCircle} className="w-6 h-6 text-emerald-400" />, border: 'border-emerald-500/40 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]' },
-    { title: 'Game APIs', desc: '串接 Riot/Steam 戰績查詢', icon: <SafeIcon icon={Gamepad2} className="w-6 h-6 text-blue-400" />, border: 'border-blue-500/40 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]' },
-    { title: 'Webhooks', desc: 'Twitch/YouTube 直播推播', icon: <SafeIcon icon={PlayCircle} className="w-6 h-6 text-red-400" />, border: 'border-red-500/40 hover:shadow-[0_0_20px_rgba(239,68,68,0.2)]' },
-    { title: 'Payment APIs', desc: '綠界/藍新金流自動贊助', icon: <SafeIcon icon={Coins} className="w-6 h-6 text-yellow-400" />, border: 'border-yellow-500/40 hover:shadow-[0_0_20px_rgba(234,179,8,0.2)]' },
+    { title: 'OpenAI API', desc: '導入 ChatGPT 智慧對話', icon: <SafeIcon icon={MessageCircle} className="w-6 h-6 text-emerald-400" />, border: 'border-emerald-500/40 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:border-emerald-400/80' },
+    { title: 'Game APIs', desc: '串接 Riot/Steam 戰績查詢', icon: <SafeIcon icon={Gamepad2} className="w-6 h-6 text-blue-400" />, border: 'border-blue-500/40 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)] hover:border-blue-400/80' },
+    { title: 'Webhooks', desc: 'Twitch/YouTube 直播推播', icon: <SafeIcon icon={PlayCircle} className="w-6 h-6 text-red-400" />, border: 'border-red-500/40 hover:shadow-[0_0_20px_rgba(239,68,68,0.2)] hover:border-red-400/80' },
+    { title: 'Payment APIs', desc: '綠界/藍新金流自動贊助', icon: <SafeIcon icon={Coins} className="w-6 h-6 text-yellow-400" />, border: 'border-yellow-500/40 hover:shadow-[0_0_20px_rgba(234,179,8,0.2)] hover:border-yellow-400/80' },
   ];
 
   const advantages = [
@@ -133,7 +159,6 @@ export default function App() {
 
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
-  // 進階卡片樣式生成
   const getPlanStyles = (theme: string) => {
     const themes: any = {
       cyan: {
@@ -173,9 +198,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#030305] text-zinc-300 selection:bg-cyan-500/30 overflow-x-hidden relative cursor-none" style={{ fontFamily: "'Inter', 'Noto Sans TC', sans-serif" }}>
+    <div className="min-h-screen bg-[#020203] text-zinc-300 selection:bg-cyan-500/30 overflow-x-hidden relative cursor-none" style={{ fontFamily: "'Inter', 'Noto Sans TC', sans-serif" }}>
       
-      {/* 科技感背景層 - 更明顯的網格與光影 */}
+      {/* 🚀 注入靈魂的 CSS 動畫庫 */}
       <style dangerouslySetInnerHTML={{__html: `
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
         * { cursor: none !important; }
@@ -187,6 +212,20 @@ export default function App() {
                             linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
           background-size: 30px 30px;
         }
+
+        /* 背景懸浮數據粒子 */
+        .particles-layer {
+          background-image: radial-gradient(circle at 15% 50%, rgba(34, 211, 238, 0.1) 2%, transparent 3%),
+                            radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.08) 2%, transparent 3%),
+                            radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.1) 2%, transparent 3%),
+                            radial-gradient(circle at 70% 60%, rgba(59, 130, 246, 0.1) 1.5%, transparent 2%);
+          background-size: 80vmax 80vmax;
+          animation: particle-drift 30s infinite linear;
+        }
+        @keyframes particle-drift {
+          0% { background-position: 0% 0%; }
+          100% { background-position: 100% 100%; }
+        }
         
         /* 掃描線動畫 */
         @keyframes scan-beam {
@@ -196,39 +235,108 @@ export default function App() {
           100% { top: 110%; opacity: 0; }
         }
         .animate-scan-beam { animation: scan-beam 6s linear infinite; }
+        
         @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
         .animate-shimmer { animation: shimmer 2.5s infinite linear; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         .animate-blink { animation: blink 1.5s infinite; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         .animate-float { animation: float 6s ease-in-out infinite; }
-        .text-glow-cyan { text-shadow: 0 0 25px rgba(34, 211, 238, 0.6); }
-
-        /* 卡片裝飾用的微小條碼 */
-        .barcode {
-          background: repeating-linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.2) 2px, transparent 2px, transparent 4px);
-          height: 8px; width: 40px;
+        
+        /* 🚀 駭客風 Glitch (故障) 特效 */
+        .glitch-text { position: relative; }
+        .glitch-text::before, .glitch-text::after {
+          content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.8;
         }
+        .glitch-text::before {
+          left: 2px; text-shadow: -2px 0 rgba(255,0,0,0.7);
+          clip: rect(24px, 550px, 90px, 0);
+          animation: glitch-anim 3s infinite linear alternate-reverse;
+        }
+        .glitch-text::after {
+          left: -2px; text-shadow: -2px 0 rgba(0,255,255,0.7);
+          clip: rect(85px, 550px, 140px, 0);
+          animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim {
+          0% { clip: rect(10px, 9999px, 81px, 0); }
+          5% { clip: rect(70px, 9999px, 96px, 0); }
+          10% { clip: rect(8px, 9999px, 14px, 0); }
+          15% { clip: rect(98px, 9999px, 47px, 0); }
+          20% { clip: rect(19px, 9999px, 20px, 0); }
+          25% { clip: rect(61px, 9999px, 51px, 0); }
+          30% { clip: rect(31px, 9999px, 100px, 0); }
+          35% { clip: rect(86px, 9999px, 67px, 0); }
+          40%, 100% { clip: rect(0, 0, 0, 0); }
+        }
+
+        .text-glow-cyan { text-shadow: 0 0 25px rgba(34, 211, 238, 0.6); }
+        .barcode { background: repeating-linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.2) 2px, transparent 2px, transparent 4px); height: 8px; width: 40px; }
       `}} />
 
-      {/* 背景光影層 */}
+      {/* 🚀 開機啟動畫面 (Boot Sequence) */}
+      {bootState !== 'ready' && (
+        <div className={`fixed inset-0 z-[999] bg-[#020203] flex flex-col items-center justify-center p-8 transition-opacity duration-500 ${bootState === 'fading' ? 'opacity-0' : 'opacity-100'}`}>
+          <div className="w-full max-w-2xl">
+            <div className="flex items-center gap-3 mb-6 border-b border-zinc-800 pb-4">
+              <SafeIcon icon={Terminal} className="w-6 h-6 text-cyan-500" />
+              <h2 className="text-cyan-500 font-mono font-bold tracking-widest text-lg">KrProgram.OS // BOOT_SEQUENCE</h2>
+            </div>
+            <div className="space-y-2 font-mono text-sm text-zinc-400">
+              {bootLogs.map((log, i) => (
+                <div key={i} className="animate-[fade-in_0.1s_ease-out]">{log}</div>
+              ))}
+              <div className="flex items-center gap-2 mt-4 text-cyan-400">
+                <span className="w-2 h-4 bg-cyan-400 animate-blink inline-block"></span>
+              </div>
+            </div>
+            {/* 開機進度條 */}
+            <div className="mt-8 h-1 w-full bg-zinc-900 rounded-full overflow-hidden">
+              <div className="h-full bg-cyan-500 shadow-[0_0_15px_#06b6d4] transition-all duration-[1.5s] ease-out" style={{ width: bootLogs.length === 5 ? '100%' : `${(bootLogs.length / 5) * 100}%` }}></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 背景光影與粒子層 */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 tech-grid opacity-60 mix-blend-screen" style={{ maskImage: 'linear-gradient(to bottom, transparent, black, transparent)', WebkitMaskImage: 'linear-gradient(to bottom, transparent, black, transparent)' }}></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#030305_80%)]"></div>
+        <div className="absolute inset-0 particles-layer opacity-60"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#020203_85%)]"></div>
         
         {/* 全域深層光暈 */}
         <div className="absolute top-[10%] -left-[10%] w-[600px] h-[600px] bg-cyan-900/15 rounded-full blur-[120px] mix-blend-screen animate-pulse duration-[10s]"></div>
         <div className="absolute bottom-[20%] -right-[10%] w-[500px] h-[500px] bg-indigo-900/15 rounded-full blur-[100px] mix-blend-screen animate-pulse duration-[8s]"></div>
       </div>
 
-      {/* 超靈敏游標 */}
-      <div className={`fixed top-0 left-0 pointer-events-none z-[100] transition-all duration-75 ease-out flex items-center justify-center rounded-full mix-blend-screen hidden md:flex border border-cyan-400/40 ${isHovering ? 'bg-cyan-500/10 scale-[2] backdrop-blur-[1px]' : ''}`} style={{ width: '32px', height: '32px', transform: `translate(${mousePos.x - 16}px, ${mousePos.y - 16}px)` }}>
-         {isHovering && <div className="absolute w-1 h-1 bg-cyan-400 rounded-full animate-ping"></div>}
+      {/* 電腦版兩側 HUD 抬頭顯示裝飾 */}
+      <div className="fixed left-6 top-1/2 -translate-y-1/2 flex flex-col items-center gap-8 z-0 hidden xl:flex opacity-40 pointer-events-none mix-blend-screen">
+        <div className="h-32 w-[1px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-4 bg-cyan-400 animate-[scan-beam_2s_linear_infinite]"></div>
+        </div>
+        <div className="font-mono text-[10px] text-cyan-400 -rotate-90 tracking-[0.4em] whitespace-nowrap">SYS.CORE_READY // V.24.1</div>
+        <div className="h-32 w-[1px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent"></div>
+      </div>
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col items-center gap-8 z-0 hidden xl:flex opacity-40 pointer-events-none mix-blend-screen">
+        <div className="h-24 w-[1px] bg-gradient-to-b from-transparent via-purple-500/50 to-transparent relative overflow-hidden">
+           <div className="absolute top-0 left-0 w-full h-4 bg-purple-400 animate-[scan-beam_3s_linear_infinite_reverse]"></div>
+        </div>
+        <div className="flex flex-col gap-2 text-purple-400">
+          <div className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse shadow-[0_0_8px_#c084fc]"></div>
+          <div className="w-1.5 h-1.5 rounded-full bg-purple-400/50"></div>
+          <div className="w-1.5 h-1.5 rounded-full bg-purple-400/20"></div>
+        </div>
+        <div className="font-mono text-[10px] text-purple-400 rotate-90 tracking-[0.3em] whitespace-nowrap mt-16">SECURE_CONNECTION</div>
+      </div>
+
+      {/* 🚀 升級科技感游標：帶有中心準星 */}
+      <div className={`fixed top-0 left-0 pointer-events-none z-[100] transition-all duration-75 ease-out flex items-center justify-center rounded-full mix-blend-screen hidden md:flex border border-cyan-400/40 ${isHovering ? 'bg-cyan-500/10 scale-[2.5] backdrop-blur-[2px]' : ''}`} style={{ width: '40px', height: '40px', transform: `translate(${mousePos.x - 20}px, ${mousePos.y - 20}px)` }}>
+         {isHovering && <SafeIcon icon={Plus} className="w-4 h-4 text-cyan-400 absolute opacity-50 animate-pulse" />}
       </div>
       <div className="fixed top-0 left-0 pointer-events-none z-[100] w-1.5 h-1.5 bg-cyan-400 rounded-full hidden md:block shadow-[0_0_10px_#22d3ee]" style={{ transform: `translate(${mousePos.x - 3}px, ${mousePos.y - 3}px)` }} />
 
       {/* 頂部導覽列 */}
-      <nav className="fixed top-0 w-full z-50 bg-[#030305]/80 backdrop-blur-xl border-b border-white/5">
+      <nav className="fixed top-0 w-full z-50 bg-[#020203]/70 backdrop-blur-xl border-b border-white/5">
         <div className="absolute bottom-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="font-black text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 hover:scale-105 transition duration-300 cursor-none drop-shadow-lg" onClick={() => scrollTo('home')} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
@@ -252,9 +360,11 @@ export default function App() {
 
       {/* 首頁 Hero */}
       <section id="home" className="relative pt-36 pb-20 px-6 min-h-screen flex flex-col items-center justify-center text-center z-10 overflow-hidden">
-        {/* 背景巨型雷達網圈 */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-cyan-500/5 rounded-full z-0"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-cyan-500/10 rounded-full z-0 border-dashed animate-[spin_40s_linear_infinite]"></div>
+        {/* 橫向全域掃描線 */}
+        <div className="absolute w-full h-[2px] bg-cyan-400/30 shadow-[0_0_15px_#22d3ee] animate-scan-beam blur-[1px] z-0"></div>
+
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-cyan-500/5 rounded-full z-0 pointer-events-none"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-cyan-500/10 rounded-full z-0 border-dashed animate-[spin_40s_linear_infinite] pointer-events-none"></div>
         
         <div className="flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 font-mono text-xs tracking-[0.2em] uppercase shadow-[0_0_20px_rgba(34,211,238,0.15)] backdrop-blur-md z-10">
           <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]"></span>
@@ -272,7 +382,8 @@ export default function App() {
           </svg>
         </div>
         
-        <h1 className="text-6xl md:text-[7rem] font-black mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-100 to-zinc-500 text-glow-cyan z-10 leading-none">KrProgram</h1>
+        {/* 🚀 加入 Glitch 故障特效的主標題 */}
+        <h1 className="text-6xl md:text-[7rem] font-black mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-100 to-zinc-500 text-glow-cyan z-10 leading-none glitch-text" data-text="KrProgram">KrProgram</h1>
         
         <div className="flex items-center justify-center gap-2 mb-12 text-cyan-400 font-bold text-xl md:text-2xl drop-shadow-[0_0_20px_rgba(34,211,238,0.6)] tracking-wide z-10">
           <span className="text-cyan-500/50 font-mono font-light text-xl">{"<"}</span> 成為你商城路上的得力機器人助手 <span className="text-cyan-500/50 font-mono font-light text-xl">{"/>"}</span>
@@ -304,7 +415,7 @@ export default function App() {
               <span className="font-mono text-[10px] uppercase opacity-70 tracking-widest">Start Project</span>
               <span className="text-lg">啟動專案</span>
             </span>
-            <SafeIcon icon={Terminal} className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
+            <SafeIcon icon={Terminal} className="w-5 h-5 relative z-10 ml-1 group-hover:translate-x-1 transition-transform" />
           </button>
           <a href="https://github.com/yanandhuang09190217-ctrl" target="_blank" rel="noopener noreferrer" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="flex items-center justify-center w-[72px] h-[72px] bg-[#0a0a0c]/80 backdrop-blur-md border border-white/10 rounded-2xl hover:bg-white/10 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(34,211,238,0.2)] transition-all"><SafeIcon icon={Github} className="w-6 h-6 text-zinc-300" /></a>
         </div>
@@ -318,14 +429,15 @@ export default function App() {
               <div className="flex items-center justify-center p-3 bg-black/40 border border-white/5 rounded-2xl mb-4 group-hover:border-cyan-500/30 group-hover:bg-cyan-500/5 transition-colors">
                 {stat.icon}
               </div>
-              <div className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tighter group-hover:text-cyan-400 transition-colors duration-300 font-mono drop-shadow-md">{stat.value}</div>
+              {/* 讓數字具有閃爍光感 */}
+              <div className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tighter group-hover:text-cyan-400 group-hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] transition-all duration-300 font-mono drop-shadow-md">{stat.value}</div>
               <div className="text-zinc-500 text-xs font-bold uppercase tracking-[0.2em]">{stat.label}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 核心模組 - 玻璃擬態資料卡 */}
+      {/* 核心模組 */}
       <section id="features" className="py-24 px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
           <div className="mb-16 flex flex-col items-center md:items-start text-center md:text-left">
@@ -340,10 +452,8 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {botFeatures.map((feat, i) => (
               <div key={i} className="relative p-8 bg-[#08080a]/80 border border-white/5 rounded-3xl hover:border-cyan-500/40 hover:bg-[#0a0f18]/90 hover:shadow-[0_0_40px_rgba(34,211,238,0.1)] transition-all duration-500 group overflow-hidden backdrop-blur-md" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                {/* 頂部科技亮條 */}
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500/0 to-transparent group-hover:via-cyan-500/60 transition-all duration-700"></div>
                 
-                {/* 右上角 HUD 標籤 */}
                 <div className="absolute top-6 right-6 flex items-center gap-2">
                    <div className="barcode opacity-20 group-hover:opacity-50 transition-opacity"></div>
                    <span className="font-mono text-[9px] text-zinc-600 group-hover:text-cyan-500/70 tracking-widest">[MOD_{feat.hex}]</span>
@@ -369,7 +479,7 @@ export default function App() {
       </section>
 
       {/* 🚀 Discord 實機對話模擬 */}
-      <section id="demo" className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#030305] to-[#050508]">
+      <section id="demo" className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#020203] to-[#050508]">
         <div className="max-w-5xl mx-auto">
           <div className="mb-16 flex flex-col items-center text-center">
             <h2 className="text-3xl md:text-5xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
@@ -381,7 +491,6 @@ export default function App() {
           </div>
 
           <div className="w-full max-w-3xl mx-auto bg-[#313338] rounded-2xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.6)] border border-white/10 font-sans relative" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-            {/* 實機面板背景光 */}
             <div className="absolute -top-32 -right-32 w-64 h-64 bg-purple-500/10 rounded-full blur-[80px] pointer-events-none"></div>
 
             <div className="bg-[#2b2d31] px-5 py-4 border-b border-[#1e1f22] flex items-center gap-3 relative z-10">
@@ -390,7 +499,6 @@ export default function App() {
             </div>
             
             <div className="p-6 md:p-8 space-y-8 relative z-10">
-              {/* 客戶端指令 */}
               <div className="flex gap-4">
                 <div className="w-12 h-12 rounded-full bg-indigo-500 flex items-center justify-center shrink-0 shadow-md">
                   <SafeIcon icon={Users} className="w-6 h-6 text-white" />
@@ -404,7 +512,6 @@ export default function App() {
                 </div>
               </div>
 
-              {/* 機器人回覆 */}
               <div className="flex gap-4">
                 <div className="w-12 h-12 rounded-full overflow-hidden shrink-0 bg-black shadow-md border border-[#1e1f22]">
                   <img src="https://i.postimg.cc/pLm8hxSD/avatar.png" alt="Bot Avatar" className="w-full h-full object-cover" />
@@ -418,7 +525,6 @@ export default function App() {
                     <span className="text-[#949ba4] text-xs">今天 14:00</span>
                   </div>
                   
-                  {/* 精美 Embed */}
                   <div className="mt-2 bg-[#2b2d31] border-l-4 border-cyan-400 rounded-lg p-5 max-w-lg shadow-[0_4px_15px_rgba(0,0,0,0.2)]">
                     <div className="flex items-center gap-2 mb-3">
                       <SafeIcon icon={ShoppingCart} className="w-4 h-4 text-white" />
@@ -439,7 +545,6 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* 互動按鈕 */}
                   <div className="mt-3 flex gap-2">
                     <button className="bg-[#248046] hover:bg-[#1a6334] text-white text-sm font-bold px-4 py-2.5 rounded transition-colors flex items-center gap-2 shadow-sm">
                       <SafeIcon icon={CreditCard} className="w-4 h-4" /> 立即購買
@@ -456,7 +561,7 @@ export default function App() {
       </section>
 
       {/* 🚀 API 串接生態系 */}
-      <section className="py-24 px-6 relative z-10 border-t border-white/5 bg-[#030305]">
+      <section className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#050508] to-[#020203]">
         <div className="max-w-5xl mx-auto">
           <div className="mb-16 flex flex-col items-center text-center">
             <h2 className="text-3xl md:text-5xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
@@ -468,7 +573,6 @@ export default function App() {
           </div>
 
           <div className="relative py-16" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-            {/* 中間主核心 */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 bg-[#050505] border-2 border-cyan-500/50 rounded-2xl flex items-center justify-center z-20 shadow-[0_0_50px_rgba(34,211,238,0.4)] backdrop-blur-md">
               <SafeIcon icon={Cpu} className="w-12 h-12 text-cyan-400" />
               <div className="absolute -inset-6 border border-cyan-500/20 rounded-[2rem] animate-[spin_6s_linear_infinite]"></div>
@@ -489,7 +593,6 @@ export default function App() {
               ))}
             </div>
             
-            {/* 科技連接線 */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-full pointer-events-none z-0 hidden md:block">
               <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 border-t border-l border-dashed border-white/10 rounded-tl-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
               <div className="absolute bottom-1/4 right-1/4 w-1/2 h-1/2 border-b border-r border-dashed border-white/10 rounded-br-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
@@ -500,8 +603,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* 技能與實績 - 科技卡片升級 */}
-      <section className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#030305] to-[#050508]">
+      {/* 技能與實績 */}
+      <section className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#020203] to-[#050508]">
         <div className="max-w-5xl mx-auto">
           <div className="mb-16 flex flex-col items-center md:items-start text-center md:text-left">
             <h2 className="text-3xl md:text-5xl font-black text-white mb-3 flex items-center gap-4 tracking-tight">
@@ -513,7 +616,6 @@ export default function App() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {/* Projects */}
             <div className="space-y-6 text-left">
               <h3 className="text-sm font-bold text-zinc-500 flex items-center gap-2 tracking-[0.2em] uppercase mb-6 font-mono">
                 <SafeIcon icon={Monitor} className="w-4 h-4 text-blue-500" /> root/projects
@@ -522,7 +624,6 @@ export default function App() {
                 <div key={i} className="p-8 bg-[#08080a]/80 border border-white/5 rounded-3xl hover:border-blue-500/40 hover:shadow-[0_0_40px_rgba(59,130,246,0.15)] transition-all duration-500 group relative overflow-hidden backdrop-blur-sm" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   
-                  {/* HUD Elements */}
                   <div className="absolute top-6 right-6 flex items-center gap-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
                     <span className="font-mono text-[9px] text-blue-500/50 tracking-widest uppercase">ID_{p.hex}</span>
@@ -538,7 +639,6 @@ export default function App() {
               ))}
             </div>
 
-            {/* Skills */}
             <div className="p-8 bg-[#08080a]/80 border border-white/5 rounded-3xl space-y-10 text-left relative overflow-hidden backdrop-blur-sm group hover:border-cyan-500/30 transition-colors duration-500">
               <div className="absolute -right-10 -bottom-10 text-cyan-500/5 rotate-12 pointer-events-none group-hover:text-cyan-500/10 transition-colors duration-700">
                 <SafeIcon icon={Database} className="w-48 h-48" />
@@ -552,9 +652,7 @@ export default function App() {
                     <span>{s.name}</span>
                     <span className="font-mono text-cyan-400">{s.percent}%</span>
                   </div>
-                  {/* 分段式科技進度條 */}
                   <div className="h-3 bg-black rounded-sm overflow-hidden relative border border-white/10 shadow-inner">
-                    {/* 背景刻度 */}
                     <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0px,transparent_4px,rgba(255,255,255,0.05)_4px,rgba(255,255,255,0.05)_5px)] bg-[length:5px_100%] z-20 pointer-events-none"></div>
                     <div className={`absolute inset-y-0 left-0 bg-gradient-to-r ${s.fromColor} ${s.toColor} transition-all duration-1000 ease-out z-10`} style={{ width: isLoaded ? `${s.percent}%` : '0%' }}>
                       <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/50 to-transparent"></div>
@@ -582,10 +680,8 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {advantages.map((adv, i) => (
               <div key={i} className="flex flex-col items-start text-left p-8 bg-[#08080a]/80 border border-white/5 rounded-3xl hover:border-purple-500/40 hover:bg-purple-900/10 hover:shadow-[0_0_40px_rgba(168,85,247,0.15)] transition-all duration-500 relative overflow-hidden backdrop-blur-sm group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                {/* 裝飾性漸層光 */}
                 <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-purple-500/10 to-transparent rounded-bl-[100%] pointer-events-none group-hover:scale-110 transition-transform"></div>
                 
-                {/* HUD 標籤 */}
                 <div className="absolute top-6 right-6 font-mono text-[9px] text-zinc-600 tracking-widest uppercase">
                   [ADV_{adv.hex}]
                 </div>
@@ -614,7 +710,6 @@ export default function App() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-6 relative">
-            {/* 背景連接線 */}
             <div className="hidden md:block absolute top-[40px] left-[12%] right-[12%] h-[2px] bg-gradient-to-r from-emerald-500/10 via-cyan-500/40 to-emerald-500/10 z-0 blur-[2px]"></div>
             <div className="hidden md:block absolute top-[41px] left-[12%] right-[12%] h-[1px] bg-gradient-to-r from-emerald-500/30 via-cyan-500/80 to-emerald-500/30 z-0"></div>
             
@@ -625,7 +720,7 @@ export default function App() {
                   {flow.icon}
                 </div>
                 <div className="text-emerald-500 font-bold font-mono text-[10px] mb-2 opacity-80 tracking-[0.3em] uppercase bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">{flow.title}</div>
-                <h3 className="text-xl font-bold text-zinc-100 mb-3 tracking-wide">{flow.subtitle}</h3>
+                <h3 className="text-lg font-black text-zinc-100 mb-3 tracking-wide">{flow.subtitle}</h3>
                 <p className="text-zinc-400 text-sm leading-relaxed max-w-[200px]">{flow.desc}</p>
               </div>
             ))}
@@ -633,7 +728,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 🚀 方案與授權 (權限金鑰卡片設計) */}
+      {/* 🚀 方案與授權 */}
       <section id="pricing" className="py-24 px-6 relative z-10 border-t border-white/5 bg-[#030305]">
         <div className="max-w-6xl mx-auto text-center">
           <div className="mb-20 flex flex-col items-center">
@@ -651,20 +746,14 @@ export default function App() {
               return (
                 <div key={i} className={`group flex flex-col p-8 rounded-[2rem] transition-all duration-500 text-left relative overflow-hidden border backdrop-blur-xl ${styles.card}`} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                   
-                  {/* 科技卡片頂部裝飾 */}
                   <div className={`absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r ${styles.topBar}`}></div>
-                  
-                  {/* 推薦標籤 */}
                   {plan.popular && <div className="absolute top-0 right-0 bg-cyan-500/20 text-cyan-300 text-[9px] font-black px-5 py-2 font-mono tracking-[0.2em] uppercase rounded-bl-3xl border-b border-l border-cyan-500/30 shadow-lg z-20">Recommended</div>}
-                  
-                  {/* HUD 左側條碼裝飾 */}
                   <div className="absolute left-0 top-1/4 bottom-1/4 w-[2px] bg-gradient-to-b from-transparent via-white/5 to-transparent"></div>
                   
                   <div className="flex justify-between items-start mb-8 relative z-10">
                     <div className={`p-4 rounded-2xl border shadow-inner ${styles.iconBg}`}>
                       <div className={styles.iconColor}>{getIcon(plan.iconName)}</div>
                     </div>
-                    {/* 右上角權限等級 */}
                     <div className="text-right">
                       <div className="text-[9px] font-mono text-zinc-500 tracking-widest uppercase mb-1">AUTH_LEVEL</div>
                       <div className={`text-xs font-mono font-bold tracking-widest border px-2 py-1 rounded-md ${plan.popular ? 'border-cyan-500/40 text-cyan-400 bg-cyan-500/10' : 'border-white/10 text-zinc-400 bg-black/50'}`}>
@@ -684,7 +773,6 @@ export default function App() {
                     {plan.features.map((f, fi) => <li key={fi} className="flex items-start gap-3 text-sm"><span className={`${styles.check} font-mono text-xs mt-1`}>{">"}</span><span className="text-zinc-300 leading-relaxed">{f}</span></li>)}
                   </ul>
 
-                  {/* 假條碼裝飾底端 */}
                   <div className="flex justify-center mb-6 opacity-30 group-hover:opacity-70 transition-opacity">
                     <div className="barcode"></div>
                   </div>
@@ -698,13 +786,10 @@ export default function App() {
             })}
           </div>
 
-          {/* 🚀 系統監控面板 (Server Monitor) */}
+          {/* 🚀 系統監控面板 */}
           <div className="mt-32 mb-20 max-w-4xl mx-auto">
             <div className="bg-[#08080a]/90 border border-white/10 rounded-[2rem] p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-10 shadow-[0_30px_60px_rgba(0,0,0,0.5)] relative overflow-hidden backdrop-blur-xl" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-              {/* 掃描線光暈 */}
               <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-emerald-500/60 to-transparent animate-scan-beam blur-[2px]"></div>
-              
-              {/* 網格背景 */}
               <div className="absolute inset-0 tech-grid opacity-20 mix-blend-screen pointer-events-none"></div>
 
               <div className="flex items-center gap-6 w-full md:w-auto relative z-10">
@@ -744,7 +829,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* 伺服器代管方案 */}
           <div className="text-center">
              <div className="mb-12 flex flex-col items-center">
               <h3 className="text-2xl md:text-4xl font-black text-white mb-2 inline-flex items-center gap-4 tracking-tight">
@@ -780,7 +864,7 @@ export default function App() {
                     </div>
                     
                     <ul className="space-y-3.5 flex-grow font-medium">
-                      {plan.features.map((f, fi) => <li key={fi} className="flex items-center gap-3 text-sm"><span className={`${styles.check} font-mono text-[10px]`}>{">"}</span><span className="text-zinc-400">{f}</span></li>)}
+                      {plan.features.map((f, fi) => <li key={fi} className="flex items-center gap-3 text-xs"><span className={`${styles.check} font-mono text-[10px]`}>{">"}</span><span className="text-zinc-300">{f}</span></li>)}
                     </ul>
                   </div>
                 );
@@ -832,7 +916,6 @@ export default function App() {
       {/* 聯絡 CTA */}
       <section className="py-24 px-6 relative z-10 text-center border-t border-white/5 bg-[#030305]">
         <div className="max-w-4xl mx-auto p-12 md:p-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan-900/20 via-[#050508] to-[#050508] border border-cyan-900/40 rounded-[3rem] shadow-[0_0_100px_rgba(34,211,238,0.1)] relative overflow-hidden group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-          {/* 掃描雷射光環 */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent blur-[1px] group-hover:shadow-[0_0_20px_#22d3ee] transition-all"></div>
           
           <div className="text-cyan-500 font-mono text-[10px] tracking-[0.4em] uppercase mb-8 flex justify-center items-center gap-3 bg-cyan-500/10 w-fit mx-auto px-4 py-1.5 rounded-full border border-cyan-500/20">
@@ -862,7 +945,7 @@ export default function App() {
         </div>
         <div className="text-zinc-700 text-[9px] font-mono tracking-[0.3em] uppercase flex flex-col items-center gap-2">
           <span>© {new Date().getFullYear()} KrProgram. All Rights Reserved.</span>
-          <span>SYS_VERSION: 3.1.4 // SECURE_NODE</span>
+          <span>SYS_VERSION: 3.1.5 // SECURE_NODE</span>
         </div>
       </footer>
     </div>
