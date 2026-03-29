@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import * as LucideIcons from 'lucide-react';
+// 改為「明確指定引入」確保 Vercel 打包時不會出錯崩潰
+import { 
+  Github, ExternalLink, Code2, Terminal, Mail, 
+  Code, Bot, CheckCircle2, Star, Server, Users, Activity, 
+  MessageSquare, CreditCard, Settings, Rocket, ChevronDown, 
+  Ticket, ShoppingCart, ShieldCheck, Gamepad2, Eye,
+  Cpu, Globe, Database, Monitor, MessageCircle, 
+  Command, PlayCircle, Coins 
+} from 'lucide-react';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('home');
@@ -11,20 +19,14 @@ export default function App() {
   // 讓系統監控面板的數字產生「真實跳動」的特效
   const [sysStats, setSysStats] = useState({ cpu: 12, ram: 32, ping: 24 });
 
-  // 替換為絕對安全的基礎圖示
-  const { 
-    Github, ExternalLink, Code2, Terminal, ChevronRight, Mail, 
-    Sparkles, Code, GraduationCap, Bot, BadgeDollarSign, CheckCircle2, 
-    Zap, Star, Server, Users, Activity, MessageSquare, CreditCard, 
-    Settings, Rocket, ChevronDown, HelpCircle, Layers,
-    Ticket, ShoppingCart, ShieldCheck, Gamepad2, Eye,
-    Cpu, Globe, Database, Monitor, MessageCircle, Link, Wifi,
-    Command, Webhook, PlayCircle, Coins
-  } = LucideIcons as any;
+  // 靜態圖示映射表 (專門給動態陣列使用，絕對安全)
+  const iconMap: Record<string, any> = {
+    Bot, Cpu, Star, Server, Activity, Globe, Terminal
+  };
 
-  // 安全渲染圖示元件
-  const SafeIcon = ({ icon: IconComp, className }: any) => {
-    return IconComp ? <IconComp className={className} /> : <span className={className}></span>;
+  const getIcon = (name: string) => {
+    const IconComp = iconMap[name];
+    return IconComp ? <IconComp className="w-6 h-6" /> : <div className="w-6 h-6" />;
   };
 
   useEffect(() => {
@@ -72,36 +74,36 @@ export default function App() {
   ];
 
   const stats = [
-    { label: '系統穩定度', value: '99.9%', icon: <SafeIcon icon={Activity} className="w-6 h-6 text-emerald-400" /> },
-    { label: '客製化程度', value: '100%', icon: <SafeIcon icon={Settings} className="w-6 h-6 text-cyan-400" /> },
-    { label: '專注服務', value: '1 V 1', icon: <SafeIcon icon={Users} className="w-6 h-6 text-purple-400" /> }
+    { label: '系統穩定度', value: '99.9%', icon: <Activity className="w-6 h-6 text-emerald-400" /> },
+    { label: '客製化程度', value: '100%', icon: <Settings className="w-6 h-6 text-cyan-400" /> },
+    { label: '專注服務', value: '1 V 1', icon: <Users className="w-6 h-6 text-purple-400" /> }
   ];
 
   const botFeatures = [
-    { title: '客服表單系統 (Ticket)', desc: '支援多按鈕開啟、自動建立私密頻道與對話紀錄存檔，提升客服效率。', icon: <SafeIcon icon={Ticket} className="w-6 h-6 text-cyan-400" /> },
-    { title: '虛擬經濟與商城', desc: '客製化貨幣名稱、每日簽到、轉帳與實體/虛擬商品兌換功能。', icon: <SafeIcon icon={ShoppingCart} className="w-6 h-6 text-emerald-400" /> },
-    { title: '進階防護機制', desc: '防洗頻、防惡意翻群、自動封鎖危險連結，24 小時守護社群安全。', icon: <SafeIcon icon={ShieldCheck} className="w-6 h-6 text-purple-400" /> },
-    { title: '趣味互動模組', desc: 'RPG 抽卡、猜拳、運勢占卜等客製化小遊戲，活絡伺服器氣氛。', icon: <SafeIcon icon={Gamepad2} className="w-6 h-6 text-yellow-400" /> }
+    { title: '客服表單系統 (Ticket)', desc: '支援多按鈕開啟、自動建立私密頻道與對話紀錄存檔，提升客服效率。', icon: <Ticket className="w-6 h-6 text-cyan-400" /> },
+    { title: '虛擬經濟與商城', desc: '客製化貨幣名稱、每日簽到、轉帳與實體/虛擬商品兌換功能。', icon: <ShoppingCart className="w-6 h-6 text-emerald-400" /> },
+    { title: '進階防護機制', desc: '防洗頻、防惡意翻群、自動封鎖危險連結，24 小時守護社群安全。', icon: <ShieldCheck className="w-6 h-6 text-purple-400" /> },
+    { title: '趣味互動模組', desc: 'RPG 抽卡、猜拳、運勢占卜等客製化小遊戲，活絡伺服器氣氛。', icon: <Gamepad2 className="w-6 h-6 text-yellow-400" /> }
   ];
 
   const integrations = [
-    { title: 'OpenAI API', desc: '導入 ChatGPT 智慧對話', icon: <SafeIcon icon={MessageCircle} className="w-6 h-6 text-emerald-400" />, border: 'border-emerald-500/30' },
-    { title: 'Game APIs', desc: '串接 Riot/Steam 戰績查詢', icon: <SafeIcon icon={Gamepad2} className="w-6 h-6 text-blue-400" />, border: 'border-blue-500/30' },
-    { title: 'Webhooks', desc: 'Twitch/YouTube 直播推播', icon: <SafeIcon icon={PlayCircle} className="w-6 h-6 text-red-400" />, border: 'border-red-500/30' },
-    { title: 'Payment APIs', desc: '綠界/藍新金流自動贊助', icon: <SafeIcon icon={Coins} className="w-6 h-6 text-yellow-400" />, border: 'border-yellow-500/30' },
+    { title: 'OpenAI API', desc: '導入 ChatGPT 智慧對話', icon: <MessageCircle className="w-6 h-6 text-emerald-400" />, border: 'border-emerald-500/30' },
+    { title: 'Game APIs', desc: '串接 Riot/Steam 戰績查詢', icon: <Gamepad2 className="w-6 h-6 text-blue-400" />, border: 'border-blue-500/30' },
+    { title: 'Webhooks', desc: 'Twitch/YouTube 直播推播', icon: <PlayCircle className="w-6 h-6 text-red-400" />, border: 'border-red-500/30' },
+    { title: 'Payment APIs', desc: '綠界/藍新金流自動贊助', icon: <Coins className="w-6 h-6 text-yellow-400" />, border: 'border-yellow-500/30' },
   ];
 
   const advantages = [
-    { title: '專注傾聽需求', desc: '沒有大公司的制式客服，由開發者本人直接與您溝通，確保精準命中痛點。', icon: <SafeIcon icon={MessageCircle} className="w-8 h-8 text-rose-400" /> },
-    { title: '價格透明不亂喊', desc: '依據功能複雜度實報實銷，事前提供明確報價單，絕不在中途加價。', icon: <SafeIcon icon={Eye} className="w-8 h-8 text-cyan-400" /> },
-    { title: '完整原始碼交付', desc: '旗艦專案提供完整機器人 Source Code，資產永遠掌握在自己手裡。', icon: <SafeIcon icon={Code} className="w-8 h-8 text-emerald-400" /> }
+    { title: '專注傾聽需求', desc: '沒有大公司的制式客服，由開發者本人直接與您溝通，確保精準命中痛點。', icon: <MessageCircle className="w-8 h-8 text-rose-400" /> },
+    { title: '價格透明不亂喊', desc: '依據功能複雜度實報實銷，事前提供明確報價單，絕不在中途加價。', icon: <Eye className="w-8 h-8 text-cyan-400" /> },
+    { title: '完整原始碼交付', desc: '旗艦專案提供完整機器人 Source Code，資產永遠掌握在自己手裡。', icon: <Code className="w-8 h-8 text-emerald-400" /> }
   ];
 
   const workflows = [
-    { step: '01', title: 'REQUIREMENTS', subtitle: '需求討論', desc: '確認機器人功能、指令細節與環境。', icon: <SafeIcon icon={MessageSquare} /> },
-    { step: '02', title: 'QUOTATION', subtitle: '報價與訂金', desc: '確認開發金額、交期與前期訂金。', icon: <SafeIcon icon={CreditCard} /> },
-    { step: '03', title: 'DEVELOPMENT', subtitle: '開發與測試', desc: '專屬測試伺服器，親自試用調整。', icon: <SafeIcon icon={Settings} /> },
-    { step: '04', title: 'DEPLOYMENT', subtitle: '上線與交付', desc: '正式上線，交付原始碼並提供保固。', icon: <SafeIcon icon={Rocket} /> }
+    { step: '01', title: 'REQUIREMENTS', subtitle: '需求討論', desc: '確認機器人功能、指令細節與環境。', icon: <MessageSquare /> },
+    { step: '02', title: 'QUOTATION', subtitle: '報價與訂金', desc: '確認開發金額、交期與前期訂金。', icon: <CreditCard /> },
+    { step: '03', title: 'DEVELOPMENT', subtitle: '開發與測試', desc: '專屬測試伺服器，親自試用調整。', icon: <Settings /> },
+    { step: '04', title: 'DEPLOYMENT', subtitle: '上線與交付', desc: '正式上線，交付原始碼並提供保固。', icon: <Rocket /> }
   ];
 
   const pricingPlans = [
@@ -293,9 +295,9 @@ export default function App() {
               <span className="font-mono text-[10px] uppercase opacity-70">Start Project</span>
               <span>啟動專案</span>
             </span>
-            <SafeIcon icon={Terminal} className="w-5 h-5 relative z-10 ml-1 group-hover:translate-x-1 transition-transform" />
+            <Terminal className="w-5 h-5 relative z-10 ml-1 group-hover:translate-x-1 transition-transform" />
           </button>
-          <a href="https://github.com/yanandhuang09190217-ctrl" target="_blank" rel="noopener noreferrer" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="flex items-center justify-center w-[72px] h-[72px] bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl hover:bg-white/10 hover:border-cyan-500/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.2)] transition-all"><SafeIcon icon={Github} className="w-6 h-6 text-zinc-300" /></a>
+          <a href="https://github.com/yanandhuang09190217-ctrl" target="_blank" rel="noopener noreferrer" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="flex items-center justify-center w-[72px] h-[72px] bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl hover:bg-white/10 hover:border-cyan-500/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.2)] transition-all"><Github className="w-6 h-6 text-zinc-300" /></a>
         </div>
       </section>
 
@@ -356,14 +358,14 @@ export default function App() {
 
           <div className="w-full max-w-3xl mx-auto bg-[#313338] rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5 font-sans" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
             <div className="bg-[#2b2d31] px-4 py-3 border-b border-[#1e1f22] flex items-center gap-3">
-              <SafeIcon icon={Command} className="w-5 h-5 text-zinc-400" />
+              <Command className="w-5 h-5 text-zinc-400" />
               <span className="text-white font-bold text-sm tracking-wide">bot-指令測試區</span>
             </div>
             
             <div className="p-6 space-y-6">
               <div className="flex gap-4">
                 <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center shrink-0">
-                  <SafeIcon icon={Users} className="w-6 h-6 text-white" />
+                  <Users className="w-6 h-6 text-white" />
                 </div>
                 <div>
                   <div className="flex items-baseline gap-2 mb-1">
@@ -382,14 +384,14 @@ export default function App() {
                   <div className="flex items-baseline gap-2 mb-1">
                     <span className="text-[#f2f3f5] font-bold text-base hover:underline cursor-pointer">KrProgram Bot</span>
                     <span className="bg-[#5865F2] text-white text-[10px] px-1.5 py-0.5 rounded-[3px] font-bold uppercase tracking-wider flex items-center gap-1">
-                      <SafeIcon icon={CheckCircle2} className="w-3 h-3" /> BOT
+                      <CheckCircle2 className="w-3 h-3" /> BOT
                     </span>
                     <span className="text-[#949ba4] text-xs">今天 14:00</span>
                   </div>
                   
                   <div className="mt-2 bg-[#2b2d31] border-l-4 border-cyan-400 rounded-lg p-4 max-w-lg shadow-md">
                     <div className="flex items-center gap-2 mb-2">
-                      <SafeIcon icon={ShoppingCart} className="w-4 h-4 text-white" />
+                      <ShoppingCart className="w-4 h-4 text-white" />
                       <span className="text-white font-bold text-sm">系統商品查詢成功</span>
                     </div>
                     <h3 className="text-cyan-400 font-bold text-lg mb-2 cursor-pointer hover:underline">💎 頂級客製化機器人套餐</h3>
@@ -409,10 +411,10 @@ export default function App() {
 
                   <div className="mt-3 flex gap-2">
                     <button className="bg-[#248046] hover:bg-[#1a6334] text-white text-sm font-bold px-4 py-2 rounded transition-colors flex items-center gap-2">
-                      <SafeIcon icon={CreditCard} className="w-4 h-4" /> 立即購買
+                      <CreditCard className="w-4 h-4" /> 立即購買
                     </button>
                     <button className="bg-[#4e5058] hover:bg-[#6d6f78] text-white text-sm font-bold px-4 py-2 rounded transition-colors flex items-center gap-2">
-                      <SafeIcon icon={MessageCircle} className="w-4 h-4" /> 聯絡客服
+                      <MessageCircle className="w-4 h-4" /> 聯絡客服
                     </button>
                   </div>
                 </div>
@@ -434,7 +436,7 @@ export default function App() {
 
           <div className="relative py-10" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-[#0a0a0a] border-2 border-cyan-500/50 rounded-2xl flex items-center justify-center z-20 shadow-[0_0_40px_rgba(34,211,238,0.3)]">
-              <SafeIcon icon={Cpu} className="w-10 h-10 text-cyan-400" />
+              <Cpu className="w-10 h-10 text-cyan-400" />
               <div className="absolute -inset-4 border border-cyan-500/20 rounded-3xl animate-[spin_4s_linear_infinite]"></div>
             </div>
 
@@ -473,20 +475,20 @@ export default function App() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div className="space-y-6 text-left">
-              <h3 className="text-sm font-bold text-zinc-500 flex items-center gap-2 tracking-[0.2em] uppercase mb-6 font-mono"><SafeIcon icon={Monitor} className="w-4 h-4 text-blue-500" /> root/projects</h3>
+              <h3 className="text-sm font-bold text-zinc-500 flex items-center gap-2 tracking-[0.2em] uppercase mb-6 font-mono"><Monitor className="w-4 h-4 text-blue-500" /> root/projects</h3>
               {projects.map((p, i) => (
                 <div key={i} className="p-8 bg-white/[0.02] border border-white/5 rounded-3xl hover:border-blue-500/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] transition-all duration-500 group relative overflow-hidden" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <div className="absolute top-6 right-6 font-mono text-[9px] text-blue-500/30 tracking-widest border border-blue-500/20 px-2 py-1 rounded">ACTIVE</div>
-                  <h4 className="text-2xl font-black text-zinc-100 mb-2 flex items-center gap-2 relative z-10 tracking-wide">{p.title} <a href={p.link} target="_blank" rel="noopener noreferrer"><SafeIcon icon={ExternalLink} className="w-5 h-5 text-blue-400 opacity-0 group-hover:opacity-100 transition translate-x-1" /></a></h4>
+                  <h4 className="text-2xl font-black text-zinc-100 mb-2 flex items-center gap-2 relative z-10 tracking-wide">{p.title} <a href={p.link} target="_blank" rel="noopener noreferrer"><ExternalLink className="w-5 h-5 text-blue-400 opacity-0 group-hover:opacity-100 transition translate-x-1" /></a></h4>
                   <p className="text-blue-400 text-xs font-bold mb-5 relative z-10 tracking-[0.1em] uppercase font-mono">{p.role}</p>
                   <p className="text-zinc-400 text-sm leading-relaxed relative z-10">{p.description}</p>
                 </div>
               ))}
             </div>
             <div className="p-8 bg-white/[0.02] border border-white/5 rounded-3xl space-y-10 text-left relative overflow-hidden backdrop-blur-sm">
-              <div className="absolute -right-10 -top-10 text-cyan-500/5 rotate-12 pointer-events-none"><SafeIcon icon={Database} className="w-32 h-32" /></div>
-              <h3 className="text-sm font-bold text-zinc-500 flex items-center gap-2 tracking-[0.2em] uppercase mb-2 font-mono"><SafeIcon icon={Code2} className="w-4 h-4 text-cyan-500" /> root/skills</h3>
+              <div className="absolute -right-10 -top-10 text-cyan-500/5 rotate-12 pointer-events-none"><Database className="w-32 h-32" /></div>
+              <h3 className="text-sm font-bold text-zinc-500 flex items-center gap-2 tracking-[0.2em] uppercase mb-2 font-mono"><Code2 className="w-4 h-4 text-cyan-500" /> root/skills</h3>
               {technicalSkills.map((s, i) => (
                 <div key={i} className="relative z-10">
                   <div className="flex justify-between text-xs font-bold mb-3 uppercase tracking-wider text-zinc-300"><span>{s.name}</span><span className="font-mono text-cyan-400">{s.percent}%</span></div>
@@ -600,7 +602,7 @@ export default function App() {
               
               <div className="flex items-center gap-4 w-full md:w-auto">
                 <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0">
-                  <SafeIcon icon={Globe} className="w-8 h-8 text-emerald-400" />
+                  <Globe className="w-8 h-8 text-emerald-400" />
                 </div>
                 <div className="text-left">
                   <div className="flex items-center gap-2 mb-1">
@@ -700,7 +702,7 @@ export default function App() {
                   <span className="font-bold text-base text-zinc-200 tracking-wide flex items-center gap-3">
                     <span className="text-blue-500 opacity-60 font-mono">Q{i+1}</span> {faq.q}
                   </span>
-                  <SafeIcon icon={ChevronDown} className={`w-5 h-5 text-zinc-500 transition-transform duration-300 ${openFaq === i ? 'rotate-180 text-blue-400' : ''}`} />
+                  <ChevronDown className={`w-5 h-5 text-zinc-500 transition-transform duration-300 ${openFaq === i ? 'rotate-180 text-blue-400' : ''}`} />
                 </button>
                 <div className={`px-8 overflow-hidden transition-all duration-300 ease-in-out ${openFaq === i ? 'max-h-40 pb-6 opacity-100' : 'max-h-0 opacity-0'}`}>
                   <p className="text-zinc-400 text-sm leading-relaxed border-t border-white/10 pt-5">{faq.a}</p>
@@ -722,7 +724,7 @@ export default function App() {
           <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">準備好啟動專案了嗎？</h2>
           <p className="text-zinc-400 mb-12 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">不論是簡單的管理模組，還是高度客製化的商城系統，<br className="hidden md:block" />我們都能為您建置最穩定的伺服器核心。</p>
           <a href="https://discordapp.com/users/1284764153038503990" target="_blank" rel="noopener noreferrer" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="inline-flex items-center gap-3 px-10 py-4 bg-cyan-500 text-black rounded-2xl hover:bg-cyan-400 shadow-[0_0_30px_rgba(34,211,238,0.3)] transition-all duration-300">
-            <SafeIcon icon={Mail} className="w-5 h-5" />
+            <Mail className="w-5 h-5" />
             <span className="flex flex-col items-start leading-tight">
               <span className="font-mono text-[10px] font-black tracking-widest uppercase opacity-70">Initialize Contact</span>
               <span className="font-bold text-base tracking-wide">啟動專案對話</span>
