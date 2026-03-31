@@ -87,8 +87,8 @@ const webPricingPlans = [
 ];
 
 const webHostingPlans = [
-  { name: '靜態邊緣節點', price: '0', period: '/月', theme: 'blue', popular: false, iconName: 'Cloud', features: ['採用 Vercel 全球 CDN 節點', '自動發放免費 SSL 安全憑證', '超快的靜態頁面載入速度', '適合無後端之形象網站'] },
-  { name: '全端雲端主機', price: '300', period: '/月', theme: 'purple', popular: true, iconName: 'Server', features: ['專屬 Node.js 執行環境', '包含基礎資料庫儲存空間', '自動化部屬與 24/7 連線監控', '適合中小型動態資料網站'] },
+  { name: '靜態邊緣節點', price: '200', period: '/月', theme: 'blue', popular: false, iconName: 'Cloud', features: ['採用 Vercel 全球 CDN 節點', '發放 SSL 安全憑證', '超快的靜態頁面載入速度', '適合無後端之形象網站'] },
+  { name: '全端雲端主機', price: '500', period: '/月', theme: 'purple', popular: true, iconName: 'Server', features: ['專屬 Node.js 執行環境', '包含基礎資料庫儲存空間', '自動化部屬與 24/7 連線監控', '適合中小型動態資料網站'] },
   { name: '企業級獨立 VPS', price: '1,000', period: '/月', theme: 'emerald', popular: false, iconName: 'Globe', features: ['獨享高規格 CPU 運算資源', '支援大型關聯式資料庫存取', '無限制流量與完整後台權限', '最高級別的客製化資安防護'] }
 ];
 
