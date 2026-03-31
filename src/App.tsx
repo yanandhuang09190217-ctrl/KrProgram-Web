@@ -107,7 +107,9 @@ const getPlanStyles = (theme: string) => {
       iconBg: 'bg-cyan-500/10 border-cyan-500/30',
       iconColor: 'text-cyan-400',
       button: 'bg-cyan-500 text-black hover:bg-cyan-400 border-transparent',
-      check: 'text-cyan-400'
+      check: 'text-cyan-400',
+      sweep: 'sweep-cyan',
+      accent: 'bg-cyan-500 shadow-[0_0_10px_#22d3ee]'
     },
     purple: {
       card: 'bg-[#0a0a0c] border-purple-500/30 hover:border-purple-400/60 z-10 transform md:-translate-y-2',
@@ -115,7 +117,9 @@ const getPlanStyles = (theme: string) => {
       iconBg: 'bg-purple-500/10 border-purple-500/30',
       iconColor: 'text-purple-400',
       button: 'bg-purple-500 text-white hover:bg-purple-400 border-transparent',
-      check: 'text-purple-400'
+      check: 'text-purple-400',
+      sweep: 'sweep-purple',
+      accent: 'bg-purple-500 shadow-[0_0_10px_#c084fc]'
     },
     emerald: {
       card: 'bg-[#08080a] border-white/10 hover:border-emerald-500/40 hover:-translate-y-1',
@@ -123,7 +127,9 @@ const getPlanStyles = (theme: string) => {
       iconBg: 'bg-zinc-900 border-white/10 group-hover:border-emerald-500/30 group-hover:bg-emerald-500/10 transition-colors',
       iconColor: 'text-zinc-400 group-hover:text-emerald-400',
       button: 'bg-zinc-900 border border-white/10 text-zinc-300 group-hover:border-emerald-500/50 group-hover:text-emerald-400 hover:bg-emerald-500/10',
-      check: 'text-zinc-600 group-hover:text-emerald-400 transition-colors'
+      check: 'text-zinc-600 group-hover:text-emerald-400 transition-colors',
+      sweep: 'sweep-emerald',
+      accent: 'bg-emerald-500 shadow-[0_0_10px_#34d399]'
     },
     blue: {
       card: 'bg-[#08080a] border-white/10 hover:border-blue-500/40 hover:-translate-y-1',
@@ -131,7 +137,9 @@ const getPlanStyles = (theme: string) => {
       iconBg: 'bg-zinc-900 border-white/10 group-hover:border-blue-500/30 group-hover:bg-blue-500/10 transition-colors',
       iconColor: 'text-zinc-400 group-hover:text-blue-400',
       button: 'bg-zinc-900 border border-white/10 text-zinc-300 group-hover:border-blue-500/50 group-hover:text-blue-400 hover:bg-blue-500/10',
-      check: 'text-zinc-600 group-hover:text-blue-400 transition-colors'
+      check: 'text-zinc-600 group-hover:text-blue-400 transition-colors',
+      sweep: 'sweep-blue',
+      accent: 'bg-blue-500 shadow-[0_0_10px_#3b82f6]'
     }
   };
   return themes[theme] || themes.blue;
@@ -173,7 +181,7 @@ export default function App() {
         setBootLogs(prev => [...prev, logs[logIndex]]);
         logIndex++;
       }
-    }, 150); // 加快載入速度
+    }, 150);
 
     setTimeout(() => {
       clearInterval(logInterval);
@@ -241,7 +249,6 @@ export default function App() {
         * { cursor: none !important; }
         .font-mono { font-family: 'JetBrains Mono', monospace !important; }
         
-        /* 靜態極簡網格，無 GPU 負擔 */
         .tech-grid {
           background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                             linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
@@ -262,6 +269,31 @@ export default function App() {
           100% { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-slide { animation: fade-slide-up 0.4s ease-out forwards; }
+
+        /* 🚀 科技卡片專屬的 GPU 加速特效 */
+        @keyframes card-sweep {
+          0% { transform: translateY(-100%); }
+          100% { transform: translateY(200%); }
+        }
+        .card-sweep-fx {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          z-index: 0;
+          will-change: transform;
+          transform: translateY(-100%);
+        }
+        /* 只有在 hover 時才執行動畫，節省效能 */
+        .group:hover .card-sweep-fx {
+          animation: card-sweep 2s linear infinite;
+        }
+        /* 為不同主題調配對應的掃描光束顏色 */
+        .sweep-cyan { background: linear-gradient(to bottom, transparent, rgba(34, 211, 238, 0.05), transparent); }
+        .sweep-blue { background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.05), transparent); }
+        .sweep-purple { background: linear-gradient(to bottom, transparent, rgba(168, 85, 247, 0.05), transparent); }
+        .sweep-emerald { background: linear-gradient(to bottom, transparent, rgba(16, 185, 129, 0.05), transparent); }
+        .sweep-red { background: linear-gradient(to bottom, transparent, rgba(239, 68, 68, 0.05), transparent); }
+        .sweep-yellow { background: linear-gradient(to bottom, transparent, rgba(234, 179, 8, 0.05), transparent); }
       `}} />
 
       {/* 開機啟動畫面 */}
@@ -287,11 +319,11 @@ export default function App() {
         </div>
       )}
 
-      {/* 🚀 極簡靜態背景 (效能大幅提升) */}
+      {/* 🚀 極簡靜態背景 */}
       <div className="fixed inset-0 pointer-events-none z-0 bg-[#050505]">
         <div className="absolute inset-0 tech-grid opacity-30" style={{ maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)', WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)' }}></div>
         
-        {/* 靜態光暈，移除耗能的 mix-blend-screen 和 animate-pulse */}
+        {/* 靜態光暈 */}
         <div className="absolute top-[10%] left-[10%] w-[500px] h-[500px] bg-cyan-900/20 rounded-full blur-[100px]"></div>
         <div className="absolute bottom-[20%] right-[10%] w-[400px] h-[400px] bg-indigo-900/20 rounded-full blur-[100px]"></div>
       </div>
@@ -343,7 +375,6 @@ export default function App() {
           <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full bg-[#0a0a0a] border border-cyan-500/30 overflow-hidden flex items-center justify-center p-1 z-10">
              <img src="https://i.postimg.cc/pLm8hxSD/avatar.png" alt="Profile" className="w-full h-full object-cover rounded-full transform group-hover:scale-110 transition duration-500 ease-out" />
           </div>
-          {/* 靜態科技裝飾圈，不使用高耗能動畫 */}
           <svg className="absolute -inset-8 w-[calc(100%+64px)] h-[calc(100%+64px)] opacity-30 pointer-events-none z-0" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="48" fill="none" stroke="#22d3ee" strokeWidth="0.4" strokeDasharray="4 8" />
             <circle cx="50" cy="50" r="44" fill="none" stroke="#3b82f6" strokeWidth="0.8" strokeDasharray="20 10" opacity="0.5" />
@@ -356,8 +387,13 @@ export default function App() {
           <span className="text-cyan-500/50 font-mono font-light">{"<"}</span> 將想像化為現實的全端開發者 <span className="text-cyan-500/50 font-mono font-light">{"/>"}</span>
         </div>
 
-        <div className="w-full max-w-lg mx-auto bg-[#0a0a0c] border border-zinc-800 rounded-xl mb-12 text-left font-mono text-sm md:text-base overflow-hidden z-10 hover:border-cyan-500/40 transition-colors shadow-lg" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-          <div className="flex items-center justify-between px-4 py-3 bg-zinc-900 border-b border-zinc-800">
+        <div className="w-full max-w-lg mx-auto bg-[#0a0a0c] border border-zinc-800 rounded-xl mb-12 text-left font-mono text-sm md:text-base overflow-hidden z-10 hover:border-cyan-500/40 transition-colors shadow-lg relative group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+          {/* 掃描線 */}
+          <div className="card-sweep-fx sweep-cyan"></div>
+          {/* 側邊科幻資料條 */}
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-cyan-500 group-hover:h-1/2 transition-all duration-500 shadow-[0_0_10px_#22d3ee] z-20"></div>
+          
+          <div className="flex items-center justify-between px-4 py-3 bg-zinc-900 border-b border-zinc-800 relative z-10">
             <div className="flex gap-2">
               <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
               <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
@@ -365,7 +401,7 @@ export default function App() {
             </div>
             <div className="text-[10px] text-zinc-500 tracking-widest uppercase">kr-terminal_v2.0</div>
           </div>
-          <div className="p-6 space-y-3 bg-[#050505]">
+          <div className="p-6 space-y-3 bg-[#050505] relative z-10">
             <div className="text-cyan-400">krprogram@root:~$ <span className="text-zinc-200">npm start dev-server</span></div>
             <div className="text-zinc-500">▶ 正在初始化核心模組... <span className="text-cyan-500/60">[完成]</span></div>
             <div className="text-zinc-500">▶ 正在載入必要環境... <span className="text-cyan-500/60">[完成]</span></div>
@@ -418,21 +454,25 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {botFeatures.map((feat, i) => (
               <div key={i} className="relative p-8 bg-[#0a0a0c] border border-zinc-800 rounded-2xl hover:border-cyan-500/40 hover:bg-[#0c1218] transition-all duration-300 group overflow-hidden" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500/0 to-transparent group-hover:via-cyan-500/50 transition-all duration-500"></div>
+                {/* 🚀 卡片專屬科技光束 */}
+                <div className="card-sweep-fx sweep-cyan"></div>
+                {/* 🚀 側邊科幻資料條 */}
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-cyan-500 group-hover:h-2/3 transition-all duration-500 shadow-[0_0_10px_#22d3ee] z-20"></div>
                 
-                <div className="absolute top-6 right-6 flex items-center gap-2">
+                <div className="absolute top-6 right-6 flex items-center gap-2 relative z-10">
                    <div className="barcode opacity-20 group-hover:opacity-40 transition-opacity"></div>
                    <span className="font-mono text-[9px] text-zinc-600 tracking-widest">[MOD_{feat.hex}]</span>
                 </div>
 
                 <div className="flex gap-6 relative z-10">
                   <div className="shrink-0">
-                    <div className="p-4 bg-black border border-zinc-800 rounded-xl group-hover:border-cyan-500/40 transition-all duration-300">
+                    <div className="p-4 bg-black border border-zinc-800 rounded-xl group-hover:border-cyan-500/40 transition-all duration-300 relative overflow-hidden">
+                       <div className="absolute inset-0 bg-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       {feat.icon}
                     </div>
                   </div>
                   <div className="pt-1">
-                    <h3 className="text-xl font-bold text-zinc-100 mb-2 tracking-wide group-hover:text-white transition-colors">
+                    <h3 className="text-xl font-bold text-zinc-100 mb-2 tracking-wide group-hover:text-cyan-300 transition-colors">
                       {feat.title}
                     </h3>
                     <p className="text-zinc-500 text-sm leading-relaxed">{feat.desc}</p>
@@ -456,13 +496,17 @@ export default function App() {
             </div>
           </div>
 
-          <div className="w-full max-w-3xl mx-auto bg-[#313338] rounded-xl overflow-hidden border border-zinc-700 font-sans relative" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-            <div className="bg-[#2b2d31] px-5 py-3 border-b border-[#1e1f22] flex items-center gap-3">
+          <div className="w-full max-w-3xl mx-auto bg-[#313338] rounded-xl overflow-hidden border border-zinc-700 font-sans relative group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            {/* 實機面板也加入掃描光 */}
+            <div className="card-sweep-fx sweep-purple"></div>
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-purple-500 group-hover:h-3/4 transition-all duration-700 shadow-[0_0_10px_#c084fc] z-20"></div>
+
+            <div className="bg-[#2b2d31] px-5 py-3 border-b border-[#1e1f22] flex items-center gap-3 relative z-10">
               <SafeIcon icon={Command} className="w-4 h-4 text-zinc-400" />
               <span className="text-white font-bold text-sm tracking-wide">bot-指令測試區</span>
             </div>
             
-            <div className="p-6 md:p-8 space-y-6">
+            <div className="p-6 md:p-8 space-y-6 relative z-10">
               <div className="flex gap-4">
                 <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center shrink-0">
                   <SafeIcon icon={Users} className="w-5 h-5 text-white" />
@@ -537,22 +581,36 @@ export default function App() {
           </div>
 
           <div className="relative py-12" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-zinc-900 border border-cyan-500/40 rounded-2xl flex items-center justify-center z-20">
-              <SafeIcon icon={Cpu} className="w-10 h-10 text-cyan-400" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-zinc-900 border border-cyan-500/40 rounded-2xl flex items-center justify-center z-20 group">
+              <SafeIcon icon={Cpu} className="w-10 h-10 text-cyan-400 group-hover:scale-110 transition-transform" />
+              <div className="absolute -inset-2 border border-cyan-500/30 rounded-[1.25rem] opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-40 gap-y-12 relative z-10 max-w-4xl mx-auto">
-              {integrations.map((item, i) => (
-                <div key={i} className={`p-5 bg-zinc-900/50 border border-zinc-800 rounded-2xl flex items-center gap-4 hover:${item.border} transition-colors duration-300 ${i % 2 === 0 ? 'md:mr-8' : 'md:ml-8'}`}>
-                  <div className={`p-3 rounded-xl bg-black border border-zinc-800`}>
-                    {item.icon}
+              {integrations.map((item, i) => {
+                // Determine sweep color based on integration border
+                const sweepClass = item.border.includes('emerald') ? 'sweep-emerald' : 
+                                   item.border.includes('blue') ? 'sweep-blue' : 
+                                   item.border.includes('red') ? 'sweep-red' : 'sweep-yellow';
+                const accentColor = item.border.includes('emerald') ? 'bg-emerald-500 shadow-[0_0_10px_#10b981]' : 
+                                    item.border.includes('blue') ? 'bg-blue-500 shadow-[0_0_10px_#3b82f6]' : 
+                                    item.border.includes('red') ? 'bg-red-500 shadow-[0_0_10px_#ef4444]' : 'bg-yellow-500 shadow-[0_0_10px_#eab308]';
+
+                return (
+                  <div key={i} className={`p-5 bg-zinc-900/50 border border-zinc-800 rounded-2xl flex items-center gap-4 hover:${item.border} transition-colors duration-300 ${i % 2 === 0 ? 'md:mr-8' : 'md:ml-8'} relative overflow-hidden group`}>
+                    <div className={`card-sweep-fx ${sweepClass}`}></div>
+                    <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 group-hover:h-2/3 transition-all duration-500 z-20 ${accentColor}`}></div>
+                    
+                    <div className={`p-3 rounded-xl bg-black border border-zinc-800 relative z-10`}>
+                      {item.icon}
+                    </div>
+                    <div className="relative z-10">
+                      <h4 className="font-bold text-zinc-200 text-base group-hover:text-white transition-colors">{item.title}</h4>
+                      <p className="text-xs text-zinc-500 mt-1">{item.desc}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-bold text-zinc-200 text-base">{item.title}</h4>
-                    <p className="text-xs text-zinc-500 mt-1">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
             
             {/* 靜態連線裝飾 */}
@@ -584,27 +642,33 @@ export default function App() {
                 <SafeIcon icon={Monitor} className="w-4 h-4 text-blue-500" /> root/projects
               </h3>
               {projects.map((p, i) => (
-                <div key={i} className="p-6 bg-[#0a0a0c] border border-zinc-800 rounded-2xl hover:border-blue-500/40 transition-colors duration-300 relative overflow-hidden" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                  <div className="absolute top-5 right-5 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                <div key={i} className="p-6 bg-[#0a0a0c] border border-zinc-800 rounded-2xl hover:border-blue-500/40 transition-colors duration-300 relative overflow-hidden group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                  <div className="card-sweep-fx sweep-blue"></div>
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-blue-500 group-hover:h-2/3 transition-all duration-500 shadow-[0_0_10px_#3b82f6] z-20"></div>
+
+                  <div className="absolute top-5 right-5 flex items-center gap-2 relative z-10">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 group-hover:animate-ping"></span>
                     <span className="font-mono text-[9px] text-zinc-600 tracking-widest uppercase">ID_{p.hex}</span>
                   </div>
 
-                  <h4 className="text-xl font-black text-zinc-100 mb-2 flex items-center gap-2 tracking-wide">
+                  <h4 className="text-xl font-black text-zinc-100 mb-2 flex items-center gap-2 tracking-wide relative z-10 group-hover:text-blue-300 transition-colors">
                     {p.title} 
                     <a href={p.link} target="_blank" rel="noopener noreferrer"><SafeIcon icon={ExternalLink} className="w-4 h-4 text-zinc-500 hover:text-blue-400 transition-colors" /></a>
                   </h4>
-                  <p className="text-blue-400 text-xs font-bold mb-4 tracking-widest uppercase font-mono">{p.role}</p>
-                  <p className="text-zinc-500 text-sm leading-relaxed">{p.description}</p>
+                  <p className="text-blue-400 text-xs font-bold mb-4 tracking-widest uppercase font-mono relative z-10">{p.role}</p>
+                  <p className="text-zinc-500 text-sm leading-relaxed relative z-10">{p.description}</p>
                 </div>
               ))}
             </div>
 
             <div className="p-6 bg-[#0a0a0c] border border-zinc-800 rounded-2xl space-y-8 text-left relative overflow-hidden group hover:border-cyan-500/30 transition-colors duration-300">
-              <div className="absolute -right-8 -bottom-8 text-zinc-800/50 rotate-12 pointer-events-none">
+              <div className="card-sweep-fx sweep-cyan"></div>
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-cyan-500 group-hover:h-1/2 transition-all duration-500 shadow-[0_0_10px_#22d3ee] z-20"></div>
+
+              <div className="absolute -right-8 -bottom-8 text-zinc-800/50 rotate-12 pointer-events-none group-hover:scale-110 transition-transform duration-500 z-0">
                 <SafeIcon icon={Database} className="w-40 h-40" />
               </div>
-              <h3 className="text-sm font-bold text-zinc-500 flex items-center gap-2 tracking-[0.2em] uppercase mb-4 font-mono">
+              <h3 className="text-sm font-bold text-zinc-500 flex items-center gap-2 tracking-[0.2em] uppercase mb-4 font-mono relative z-10">
                 <SafeIcon icon={Code2} className="w-4 h-4 text-cyan-500" /> root/skills
               </h3>
               {technicalSkills.map((s, i) => (
@@ -638,15 +702,18 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {advantages.map((adv, i) => (
               <div key={i} className="flex flex-col items-start text-left p-6 bg-[#0a0a0c] border border-zinc-800 rounded-2xl hover:border-purple-500/30 transition-colors duration-300 relative overflow-hidden group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                <div className="absolute top-4 right-4 font-mono text-[9px] text-zinc-600 tracking-widest uppercase">
+                <div className="card-sweep-fx sweep-purple"></div>
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-purple-500 group-hover:h-2/3 transition-all duration-500 shadow-[0_0_10px_#c084fc] z-20"></div>
+
+                <div className="absolute top-4 right-4 font-mono text-[9px] text-zinc-600 tracking-widest uppercase relative z-10">
                   [ADV_{adv.hex}]
                 </div>
 
-                <div className="mb-6 p-3 bg-black rounded-xl border border-zinc-800 group-hover:border-purple-500/30 transition-colors">
+                <div className="mb-6 p-3 bg-black rounded-xl border border-zinc-800 group-hover:border-purple-500/30 transition-colors relative z-10">
                   {adv.icon}
                 </div>
-                <h3 className="text-lg font-bold text-zinc-200 mb-3 group-hover:text-purple-300 transition-colors">{adv.title}</h3>
-                <p className="text-zinc-500 text-sm leading-relaxed">{adv.desc}</p>
+                <h3 className="text-lg font-bold text-zinc-200 mb-3 group-hover:text-purple-300 transition-colors relative z-10">{adv.title}</h3>
+                <p className="text-zinc-500 text-sm leading-relaxed relative z-10">{adv.desc}</p>
               </div>
             ))}
           </div>
@@ -670,11 +737,13 @@ export default function App() {
             
             {workflows.map((flow, i) => (
               <div key={i} className="relative z-10 flex flex-col items-center text-center group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                <div className="w-16 h-16 bg-[#0a0a0c] border border-zinc-700 rounded-xl flex items-center justify-center mb-6 group-hover:border-emerald-500/50 transition-colors duration-300 text-zinc-500 group-hover:text-emerald-400 bg-[#050505]">
-                  {flow.icon}
+                <div className="w-16 h-16 bg-[#0a0a0c] border border-zinc-700 rounded-xl flex items-center justify-center mb-6 group-hover:border-emerald-500/50 transition-colors duration-300 text-zinc-500 group-hover:text-emerald-400 bg-[#050505] relative overflow-hidden">
+                  {/* 流程圖標的專屬掃描 */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/10 to-transparent -translate-y-[100%] group-hover:animate-[card-sweep_1.5s_linear_infinite] pointer-events-none will-change-transform z-0"></div>
+                  <div className="relative z-10">{flow.icon}</div>
                 </div>
                 <div className="text-emerald-500 font-bold font-mono text-[10px] mb-2 opacity-80 tracking-widest uppercase">{flow.title}</div>
-                <h3 className="text-base font-bold text-zinc-200 mb-2">{flow.subtitle}</h3>
+                <h3 className="text-base font-bold text-zinc-200 mb-2 group-hover:text-emerald-300 transition-colors">{flow.subtitle}</h3>
                 <p className="text-zinc-500 text-xs leading-relaxed max-w-[180px]">{flow.desc}</p>
               </div>
             ))}
@@ -682,7 +751,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 🚀 方案與授權 (極簡版) */}
+      {/* 🚀 方案與授權 (極簡版 + 側邊光條) */}
       <section id="pricing" className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#050505]">
         <div className="max-w-6xl mx-auto text-center">
           <div className="mb-12 flex flex-col items-center">
@@ -695,16 +764,17 @@ export default function App() {
           </div>
 
           <div className="flex justify-center mb-12 relative z-10" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-            <div className="bg-[#0a0a0c] border border-zinc-800 p-1.5 rounded-xl flex gap-1">
+            <div className="bg-[#0a0a0c] border border-zinc-800 p-1.5 rounded-xl flex gap-1 relative overflow-hidden group">
+              <div className="card-sweep-fx sweep-cyan"></div>
               <button
                 onClick={() => setPricingType('bot')}
-                className={`px-6 py-2.5 rounded-lg font-mono text-sm font-bold tracking-wider transition-colors flex items-center gap-2 ${pricingMode === 'bot' ? 'bg-cyan-500/10 text-cyan-400' : 'text-zinc-500 hover:text-zinc-300'}`}
+                className={`relative z-10 px-6 py-2.5 rounded-lg font-mono text-sm font-bold tracking-wider transition-colors flex items-center gap-2 ${pricingMode === 'bot' ? 'bg-cyan-500/10 text-cyan-400' : 'text-zinc-500 hover:text-zinc-300'}`}
               >
                 <SafeIcon icon={Bot} className="w-4 h-4" /> BOT_MODS
               </button>
               <button
                 onClick={() => setPricingType('web')}
-                className={`px-6 py-2.5 rounded-lg font-mono text-sm font-bold tracking-wider transition-colors flex items-center gap-2 ${pricingMode === 'web' ? 'bg-blue-500/10 text-blue-400' : 'text-zinc-500 hover:text-zinc-300'}`}
+                className={`relative z-10 px-6 py-2.5 rounded-lg font-mono text-sm font-bold tracking-wider transition-colors flex items-center gap-2 ${pricingMode === 'web' ? 'bg-blue-500/10 text-blue-400' : 'text-zinc-500 hover:text-zinc-300'}`}
               >
                 <SafeIcon icon={Layout} className="w-4 h-4" /> WEB_DEV
               </button>
@@ -717,6 +787,10 @@ export default function App() {
               return (
                 <div key={`${pricingMode}-${i}`} className={`group flex flex-col p-6 rounded-2xl transition-all duration-300 text-left relative overflow-hidden border animate-fade-slide ${styles.card}`} style={{ animationDelay: `${i * 0.1}s` }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                   
+                  {/* 🚀 卡片專屬科技光束與側邊資料條 */}
+                  <div className={`card-sweep-fx ${styles.sweep}`}></div>
+                  <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 group-hover:h-3/4 transition-all duration-500 z-20 ${styles.accent}`}></div>
+
                   <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${styles.topBar}`}></div>
                   {plan.popular && <div className="absolute top-0 right-0 bg-cyan-500/10 text-cyan-400 text-[9px] font-bold px-3 py-1.5 font-mono tracking-widest uppercase rounded-bl-lg border-b border-l border-cyan-500/20 z-20">Recommended</div>}
                   
@@ -731,18 +805,18 @@ export default function App() {
                     </div>
                   </div>
                   
-                  <h3 className="text-xl font-bold text-zinc-100 mb-4 tracking-wide">{plan.name}</h3>
+                  <h3 className="text-xl font-bold text-zinc-100 mb-4 tracking-wide relative z-10">{plan.name}</h3>
                   
-                  <div className="mb-6 flex items-baseline gap-1 border-b border-zinc-800 pb-6">
+                  <div className="mb-6 flex items-baseline gap-1 border-b border-zinc-800 pb-6 relative z-10">
                     <span className="text-xs font-bold text-zinc-500 font-mono">NT$</span>
                     <span className="text-4xl font-black text-white tracking-tighter">{plan.price}</span>
                   </div>
                   
-                  <ul className="space-y-3 mb-8 flex-grow font-medium">
+                  <ul className="space-y-3 mb-8 flex-grow font-medium relative z-10">
                     {plan.features.map((f, fi) => <li key={fi} className="flex items-start gap-2 text-sm"><span className={`${styles.check} font-mono text-xs mt-0.5`}>{">"}</span><span className="text-zinc-400 leading-snug">{f}</span></li>)}
                   </ul>
 
-                  <a href="https://discordapp.com/users/1284764153038503990" target="_blank" rel="noopener noreferrer" className={`flex items-center justify-center w-full py-3 transition-colors rounded-lg font-bold tracking-widest text-sm border ${styles.button}`}>
+                  <a href="https://discordapp.com/users/1284764153038503990" target="_blank" rel="noopener noreferrer" className={`flex items-center justify-center w-full py-3 transition-colors rounded-lg font-bold tracking-widest text-sm border relative z-10 ${styles.button}`}>
                     獲取方案
                   </a>
                 </div>
@@ -752,9 +826,11 @@ export default function App() {
 
           {/* 系統監控面板 (輕量化) */}
           <div className="mt-24 mb-16 max-w-4xl mx-auto">
-            <div className="bg-[#0a0a0c] border border-zinc-800 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-8" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            <div className="bg-[#0a0a0c] border border-zinc-800 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+              {/* 監控面板專屬掃描 */}
+              <div className="card-sweep-fx sweep-emerald"></div>
               
-              <div className="flex items-center gap-5 w-full md:w-auto">
+              <div className="flex items-center gap-5 w-full md:w-auto relative z-10">
                 <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0">
                   <SafeIcon icon={Globe} className="w-6 h-6 text-emerald-400" />
                 </div>
@@ -767,7 +843,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="flex gap-8 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 md:border-l border-zinc-800 pt-6 md:pt-0 md:pl-8">
+              <div className="flex gap-8 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 md:border-l border-zinc-800 pt-6 md:pt-0 md:pl-8 relative z-10">
                 <div className="text-left">
                   <div className="text-zinc-500 font-mono text-[10px] tracking-widest mb-1">CPU_LOAD</div>
                   <div className="text-zinc-200 font-mono font-bold text-2xl flex items-baseline gap-1">
@@ -802,10 +878,14 @@ export default function App() {
               {currentHostingPlans.map((plan, i) => {
                 const styles = getPlanStyles(plan.theme);
                 return (
-                  <div key={`${pricingMode}-host-${i}`} className={`group flex flex-col p-6 bg-[#0a0a0c] rounded-2xl transition-all duration-300 relative border animate-fade-slide ${styles.card}`} style={{ animationDelay: `${i * 0.1}s` }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                    {plan.popular && <div className="absolute top-0 right-0 bg-purple-500/10 text-purple-400 text-[9px] font-bold tracking-widest uppercase px-3 py-1 rounded-bl-lg border-b border-l border-purple-500/20">熱門選擇</div>}
+                  <div key={`${pricingMode}-host-${i}`} className={`group flex flex-col p-6 bg-[#0a0a0c] rounded-2xl transition-all duration-300 relative border animate-fade-slide overflow-hidden ${styles.card}`} style={{ animationDelay: `${i * 0.1}s` }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                    {/* 🚀 卡片專屬科技光束與側邊資料條 */}
+                    <div className={`card-sweep-fx ${styles.sweep}`}></div>
+                    <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 group-hover:h-2/3 transition-all duration-500 z-20 ${styles.accent}`}></div>
+
+                    {plan.popular && <div className="absolute top-0 right-0 bg-purple-500/10 text-purple-400 text-[9px] font-bold tracking-widest uppercase px-3 py-1 rounded-bl-lg border-b border-l border-purple-500/20 relative z-10">熱門選擇</div>}
                     
-                    <div className="flex items-center gap-4 mb-5">
+                    <div className="flex items-center gap-4 mb-5 relative z-10">
                       <div className={`p-3 rounded-xl border ${styles.iconBg}`}>
                         <div className={styles.iconColor}>{getIcon(plan.iconName)}</div>
                       </div>
@@ -815,13 +895,13 @@ export default function App() {
                       </div>
                     </div>
                     
-                    <div className="flex items-baseline gap-1 mb-5 border-b border-zinc-800 pb-5">
+                    <div className="flex items-baseline gap-1 mb-5 border-b border-zinc-800 pb-5 relative z-10">
                       <span className="text-xs font-bold text-zinc-500 font-mono">NT$</span>
                       <span className="text-3xl font-black text-white tracking-tighter">{plan.price}</span>
                       <span className="text-xs font-bold text-zinc-500 font-mono">{plan.period}</span>
                     </div>
                     
-                    <ul className="space-y-2.5 flex-grow font-medium">
+                    <ul className="space-y-2.5 flex-grow font-medium relative z-10">
                       {plan.features.map((f, fi) => <li key={fi} className="flex items-center gap-2 text-xs"><span className={`${styles.check} font-mono`}>{">"}</span><span className="text-zinc-400">{f}</span></li>)}
                     </ul>
                   </div>
@@ -849,19 +929,21 @@ export default function App() {
             {faqs.map((faq, i) => (
               <div 
                 key={i} 
-                className="bg-[#0a0a0c] border border-zinc-800 rounded-xl transition-colors duration-300 hover:border-blue-500/30 overflow-hidden"
+                className="bg-[#0a0a0c] border border-zinc-800 rounded-xl transition-colors duration-300 hover:border-blue-500/30 overflow-hidden relative group"
                 onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
               >
+                {/* 簡單的 Hover 左側邊條 */}
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 h-0 group-hover:h-full transition-all duration-300 ease-out"></div>
                 <button 
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
+                  className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none relative z-10"
                 >
                   <span className="font-bold text-sm md:text-base text-zinc-300 flex items-center gap-3">
                     <span className="text-blue-500 font-mono text-xs bg-blue-500/10 px-2 py-0.5 rounded">Q{i+1}</span> {faq.q}
                   </span>
                   <SafeIcon icon={ChevronDown} className={`w-5 h-5 text-zinc-600 transition-transform duration-300 ${openFaq === i ? 'rotate-180 text-blue-400' : ''}`} />
                 </button>
-                <div className={`px-6 overflow-hidden transition-all duration-300 ease-in-out ${openFaq === i ? 'max-h-40 pb-5 opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div className={`px-6 overflow-hidden transition-all duration-300 ease-in-out relative z-10 ${openFaq === i ? 'max-h-40 pb-5 opacity-100' : 'max-h-0 opacity-0'}`}>
                   <p className="text-zinc-500 text-sm leading-relaxed border-t border-zinc-800 pt-4 ml-10">{faq.a}</p>
                 </div>
               </div>
@@ -874,14 +956,16 @@ export default function App() {
       <section className="py-24 px-6 relative z-10 text-center border-t border-zinc-900 bg-[#050505]">
         <div className="max-w-4xl mx-auto p-10 md:p-16 bg-[#0a0a0c] border border-zinc-800 rounded-[2rem] relative overflow-hidden group hover:border-cyan-500/30 transition-colors duration-500" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
           
-          <div className="text-cyan-500 font-mono text-[10px] tracking-[0.2em] uppercase mb-6 flex justify-center items-center gap-2 bg-cyan-500/10 w-fit mx-auto px-3 py-1 rounded-full border border-cyan-500/20">
+          <div className="card-sweep-fx sweep-cyan"></div>
+          
+          <div className="text-cyan-500 font-mono text-[10px] tracking-[0.2em] uppercase mb-6 flex justify-center items-center gap-2 bg-cyan-500/10 w-fit mx-auto px-3 py-1 rounded-full border border-cyan-500/20 relative z-10">
              <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse"></span> SYSTEM READY
           </div>
           
-          <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">準備好啟動專案了嗎？</h2>
-          <p className="text-zinc-400 mb-10 text-sm md:text-base leading-relaxed max-w-xl mx-auto">不論是單純的社群管理機器人，還是高度客製化的全端網站系統，我們都能為您建置最穩定、最現代化的解決方案。</p>
+          <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight relative z-10">準備好啟動專案了嗎？</h2>
+          <p className="text-zinc-400 mb-10 text-sm md:text-base leading-relaxed max-w-xl mx-auto relative z-10">不論是單純的社群管理機器人，還是高度客製化的全端網站系統，我們都能為您建置最穩定、最現代化的解決方案。</p>
           
-          <a href="https://discordapp.com/users/1284764153038503990" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black rounded-xl font-bold hover:bg-zinc-200 active:scale-95 transition-all">
+          <a href="https://discordapp.com/users/1284764153038503990" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black rounded-xl font-bold hover:bg-zinc-200 active:scale-95 transition-all relative z-10">
             <SafeIcon icon={Mail} className="w-5 h-5" />
             <span className="tracking-wide">啟動專案對話</span>
           </a>
@@ -898,7 +982,7 @@ export default function App() {
         </div>
         <div className="text-zinc-600 text-[9px] font-mono tracking-[0.2em] uppercase flex flex-col items-center gap-1">
           <span>© {new Date().getFullYear()} KrProgram. All Rights Reserved.</span>
-          <span>SYS_VERSION: 3.2.0 // PERFORMANCE_OPTIMIZED</span>
+          <span>SYS_VERSION: 3.3.0 // HIGH_PERF_HUD</span>
         </div>
       </footer>
     </div>
