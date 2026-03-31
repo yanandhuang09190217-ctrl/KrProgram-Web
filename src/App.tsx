@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 
 // ==========================================
-// 🚀 靜態資料區 (移到元件外部，避免重複渲染消耗效能)
+// 🚀 靜態資料區
 // ==========================================
 const iconMap: Record<string, any> = {
   Bot, Cpu, Star, Server, Activity, Globe, Terminal, Layout, MonitorSmartphone, Cloud, Database
@@ -24,7 +24,7 @@ const SafeIcon = ({ icon: IconComp, className }: any) => {
   return IconComp ? <IconComp className={className} /> : <span className={className}></span>;
 };
 
-const generateHexId = () => Math.random().toString(16).substr(2, 4).toUpperCase();
+const generateHexId = () => Math.random().toString(16).substring(2, 6).toUpperCase();
 
 const projects = [
   { title: '幻小月 (Huan-Yue)', role: '幻悅陪伴所常駐工程師', description: '一個專注於服務、商城、遊戲社群製作的客製化機器人', iconName: 'Terminal', link: 'https://discord.gg/AjmaRwrw4m', hex: generateHexId() }
@@ -68,7 +68,6 @@ const workflows = [
   { step: '04', title: 'DEPLOYMENT', subtitle: '上線與交付', desc: '正式部屬上線，交付程式碼並提供保固。', icon: <SafeIcon icon={Rocket} /> }
 ];
 
-// --- 機器人專屬方案 ---
 const botPricingPlans = [
   { name: '基礎小精靈', badge: 'v1.0', price: '800', theme: 'blue', popular: false, iconName: 'Bot', features: ['自訂歡迎 / 離開圖片訊息', '基礎管理指令 (踢出/禁言/清訊息)', '自訂關鍵字自動回覆', '簡單身分組發放系統', '不需資料庫之輕量功能'] },
   { name: '專業管家', badge: 'v2.0', price: '10,000', theme: 'cyan', popular: true, iconName: 'Cpu', features: ['包含所有「基礎版」功能', '客服表單 (Ticket) 創建系統', '經濟 / 等級 / 經驗值系統', '外部 API 串接 (如：遊戲戰績)', '專屬 SQLite/JSON 資料庫'] },
@@ -81,7 +80,6 @@ const botHostingPlans = [
   { name: '尊榮專屬', price: '1,200', period: '/月', theme: 'emerald', popular: false, iconName: 'Globe', features: ['專屬獨立虛擬主機 (VPS)', '支援 MongoDB 大型資料庫', '無限制流量與高效能', '即時監控與完整日誌'] }
 ];
 
-// --- 網頁設計專屬方案 ---
 const webPricingPlans = [
   { name: '單頁形象官網', badge: 'Landing', price: '5,000', theme: 'blue', popular: false, iconName: 'Layout', features: ['RWD 響應式手機版設計', '現代化滾動與進入動畫', '聯絡表單與社群連結整合', '適合個人履歷/工作室展示', '享有「免費代管」極大優勢'] },
   { name: '多頁企業網站', badge: 'Corporate', price: '15,000', theme: 'cyan', popular: true, iconName: 'MonitorSmartphone', features: ['包含單頁版所有視覺功能', '多頁面路由 (關於/服務/作品)', '基礎 SEO 搜尋引擎優化設計', '整合 Google Analytics 追蹤', '輕量級系統狀態或資料展示'] },
@@ -104,35 +102,35 @@ const faqs = [
 const getPlanStyles = (theme: string) => {
   const themes: any = {
     cyan: {
-      card: 'bg-[#030a12]/80 border-cyan-500/30 hover:border-cyan-400/60 hover:shadow-[0_0_40px_rgba(34,211,238,0.15)] z-10 transform md:-translate-y-4 md:hover:-translate-y-6',
+      card: 'bg-[#0a0a0c] border-cyan-500/30 hover:border-cyan-400/60 z-10 transform md:-translate-y-2',
       topBar: 'from-blue-500 via-cyan-400 to-blue-500 opacity-100',
       iconBg: 'bg-cyan-500/10 border-cyan-500/30',
       iconColor: 'text-cyan-400',
-      button: 'bg-cyan-500 text-black hover:bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.4)] border-transparent',
+      button: 'bg-cyan-500 text-black hover:bg-cyan-400 border-transparent',
       check: 'text-cyan-400'
     },
     purple: {
-      card: 'bg-[#0a0514]/80 border-purple-500/30 hover:border-purple-400/60 hover:shadow-[0_0_40px_rgba(168,85,247,0.15)] z-10 transform md:-translate-y-4 md:hover:-translate-y-6',
+      card: 'bg-[#0a0a0c] border-purple-500/30 hover:border-purple-400/60 z-10 transform md:-translate-y-2',
       topBar: 'from-purple-600 via-fuchsia-400 to-purple-600 opacity-100',
       iconBg: 'bg-purple-500/10 border-purple-500/30',
       iconColor: 'text-purple-400',
-      button: 'bg-purple-500 text-white hover:bg-purple-400 shadow-[0_0_20px_rgba(168,85,247,0.4)] border-transparent',
+      button: 'bg-purple-500 text-white hover:bg-purple-400 border-transparent',
       check: 'text-purple-400'
     },
     emerald: {
-      card: 'bg-[#030e09]/80 border-white/10 hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.1)] hover:-translate-y-2',
-      topBar: 'from-emerald-600/50 to-emerald-400/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500',
-      iconBg: 'bg-black/50 border-white/10 group-hover:border-emerald-500/30 group-hover:bg-emerald-500/10 transition-colors',
+      card: 'bg-[#08080a] border-white/10 hover:border-emerald-500/40 hover:-translate-y-1',
+      topBar: 'from-emerald-600/50 to-emerald-400/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300',
+      iconBg: 'bg-zinc-900 border-white/10 group-hover:border-emerald-500/30 group-hover:bg-emerald-500/10 transition-colors',
       iconColor: 'text-zinc-400 group-hover:text-emerald-400',
-      button: 'bg-black/50 border border-white/10 text-zinc-300 group-hover:border-emerald-500/50 group-hover:text-emerald-400 hover:bg-emerald-500/10',
+      button: 'bg-zinc-900 border border-white/10 text-zinc-300 group-hover:border-emerald-500/50 group-hover:text-emerald-400 hover:bg-emerald-500/10',
       check: 'text-zinc-600 group-hover:text-emerald-400 transition-colors'
     },
     blue: {
-      card: 'bg-[#030610]/80 border-white/10 hover:border-blue-500/40 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] hover:-translate-y-2',
-      topBar: 'from-cyan-600/50 to-blue-400/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500',
-      iconBg: 'bg-black/50 border-white/10 group-hover:border-blue-500/30 group-hover:bg-blue-500/10 transition-colors',
+      card: 'bg-[#08080a] border-white/10 hover:border-blue-500/40 hover:-translate-y-1',
+      topBar: 'from-cyan-600/50 to-blue-400/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300',
+      iconBg: 'bg-zinc-900 border-white/10 group-hover:border-blue-500/30 group-hover:bg-blue-500/10 transition-colors',
       iconColor: 'text-zinc-400 group-hover:text-blue-400',
-      button: 'bg-black/50 border border-white/10 text-zinc-300 group-hover:border-blue-500/50 group-hover:text-blue-400 hover:bg-blue-500/10',
+      button: 'bg-zinc-900 border border-white/10 text-zinc-300 group-hover:border-blue-500/50 group-hover:text-blue-400 hover:bg-blue-500/10',
       check: 'text-zinc-600 group-hover:text-blue-400 transition-colors'
     }
   };
@@ -150,18 +148,17 @@ export default function App() {
   const [bootState, setBootState] = useState<'booting' | 'fading' | 'ready'>('booting');
   const [bootLogs, setBootLogs] = useState<string[]>(['> SYS.INIT()']);
   
-  // 🚀 新增：控制目前顯示的是機器人方案還是網頁方案
   const [pricingMode, setPricingType] = useState<'bot' | 'web'>('bot');
 
   const cursorOuterRef = useRef<HTMLDivElement>(null);
   const cursorInnerRef = useRef<HTMLDivElement>(null);
-  const ambientGlowRef = useRef<HTMLDivElement>(null);
 
   const cpuRef = useRef<HTMLSpanElement>(null);
   const ramRef = useRef<HTMLSpanElement>(null);
   const pingRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
+    // 快速流暢的開機動畫
     const logs = [
       '> MOUNTING_FILE_SYSTEM... [OK]',
       '> ALLOCATING_MEMORY... [OK]',
@@ -176,7 +173,7 @@ export default function App() {
         setBootLogs(prev => [...prev, logs[logIndex]]);
         logIndex++;
       }
-    }, 250);
+    }, 150); // 加快載入速度
 
     setTimeout(() => {
       clearInterval(logInterval);
@@ -184,15 +181,17 @@ export default function App() {
       setTimeout(() => {
         setBootState('ready');
         setIsLoaded(true);
-      }, 500); 
-    }, 2000);
+      }, 400); 
+    }, 1200);
 
+    // 面板數字跳動
     const statsInterval = setInterval(() => {
       if (cpuRef.current) cpuRef.current.innerText = String(Math.floor(Math.random() * 5) + 10);
       if (ramRef.current) ramRef.current.innerText = String(Math.floor(Math.random() * 4) + 30);
       if (pingRef.current) pingRef.current.innerText = String(Math.floor(Math.random() * 8) + 20);
     }, 2000);
 
+    // 輕量級滑鼠游標追蹤
     const handleMouseMove = (e: MouseEvent) => {
       if (cursorOuterRef.current) {
         cursorOuterRef.current.style.transform = `translate3d(${e.clientX - 20}px, ${e.clientY - 20}px, 0)`;
@@ -200,13 +199,11 @@ export default function App() {
       if (cursorInnerRef.current) {
         cursorInnerRef.current.style.transform = `translate3d(${e.clientX - 3}px, ${e.clientY - 3}px, 0)`;
       }
-      if (ambientGlowRef.current) {
-        ambientGlowRef.current.style.transform = `translate3d(${e.clientX - 300}px, ${e.clientY - 300}px, 0)`;
-      }
     };
     
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
+    // 滾動偵測
     const observerOptions = { root: null, rootMargin: '-20% 0px -60% 0px', threshold: 0 };
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
@@ -233,93 +230,43 @@ export default function App() {
 
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
-  // 動態根據選擇的模式渲染對應的方案陣列
   const currentPricingPlans = pricingMode === 'bot' ? botPricingPlans : webPricingPlans;
   const currentHostingPlans = pricingMode === 'bot' ? botHostingPlans : webHostingPlans;
 
   return (
-    <div className="min-h-screen bg-[#020203] text-zinc-300 selection:bg-cyan-500/30 overflow-x-hidden relative cursor-none" style={{ fontFamily: "'Inter', 'Noto Sans TC', sans-serif" }}>
+    <div className="min-h-screen bg-[#050505] text-zinc-300 selection:bg-cyan-500/30 overflow-x-hidden relative cursor-none" style={{ fontFamily: "'Inter', 'Noto Sans TC', sans-serif" }}>
       
       <style dangerouslySetInnerHTML={{__html: `
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
         * { cursor: none !important; }
         .font-mono { font-family: 'JetBrains Mono', monospace !important; }
         
+        /* 靜態極簡網格，無 GPU 負擔 */
         .tech-grid {
-          background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-          background-size: 30px 30px;
+          background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+          background-size: 40px 40px;
         }
 
-        .particles-layer {
-          background-image: radial-gradient(circle at 15% 50%, rgba(34, 211, 238, 0.1) 2%, transparent 3%),
-                            radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.08) 2%, transparent 3%),
-                            radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.1) 2%, transparent 3%),
-                            radial-gradient(circle at 70% 60%, rgba(59, 130, 246, 0.1) 1.5%, transparent 2%);
-          background-size: 80vmax 80vmax;
-          animation: particle-drift 30s infinite linear;
-          will-change: background-position;
-        }
-        @keyframes particle-drift {
-          0% { background-position: 0% 0%; }
-          100% { background-position: 100% 100%; }
-        }
-        
-        @keyframes scan-beam {
-          0% { top: -10%; opacity: 0; }
-          10% { opacity: 0.8; }
-          90% { opacity: 0.8; }
-          100% { top: 110%; opacity: 0; }
-        }
-        .animate-scan-beam { animation: scan-beam 6s linear infinite; will-change: top; }
-        
+        /* 輕量級動畫 */
         @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
         .animate-shimmer { animation: shimmer 2.5s infinite linear; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         .animate-blink { animation: blink 1.5s infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        .animate-float { animation: float 6s ease-in-out infinite; will-change: transform; }
         
-        .glitch-text { position: relative; }
-        .glitch-text::before, .glitch-text::after {
-          content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.8;
-        }
-        .glitch-text::before {
-          left: 2px; text-shadow: -2px 0 rgba(255,0,0,0.7);
-          clip: rect(24px, 550px, 90px, 0);
-          animation: glitch-anim 3s infinite linear alternate-reverse;
-        }
-        .glitch-text::after {
-          left: -2px; text-shadow: -2px 0 rgba(0,255,255,0.7);
-          clip: rect(85px, 550px, 140px, 0);
-          animation: glitch-anim 2.5s infinite linear alternate-reverse;
-        }
-        @keyframes glitch-anim {
-          0% { clip: rect(10px, 9999px, 81px, 0); }
-          5% { clip: rect(70px, 9999px, 96px, 0); }
-          10% { clip: rect(8px, 9999px, 14px, 0); }
-          15% { clip: rect(98px, 9999px, 47px, 0); }
-          20% { clip: rect(19px, 9999px, 20px, 0); }
-          25% { clip: rect(61px, 9999px, 51px, 0); }
-          30% { clip: rect(31px, 9999px, 100px, 0); }
-          35% { clip: rect(86px, 9999px, 67px, 0); }
-          40%, 100% { clip: rect(0, 0, 0, 0); }
-        }
-
-        .text-glow-cyan { text-shadow: 0 0 25px rgba(34, 211, 238, 0.6); }
+        .text-glow-cyan { text-shadow: 0 0 20px rgba(34, 211, 238, 0.4); }
         .barcode { background: repeating-linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.2) 2px, transparent 2px, transparent 4px); height: 8px; width: 40px; }
 
-        /* 卡片切換淡入動畫 */
         @keyframes fade-slide-up {
-          0% { opacity: 0; transform: translateY(20px); }
+          0% { opacity: 0; transform: translateY(10px); }
           100% { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade-slide { animation: fade-slide-up 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .animate-fade-slide { animation: fade-slide-up 0.4s ease-out forwards; }
       `}} />
 
       {/* 開機啟動畫面 */}
       {bootState !== 'ready' && (
-        <div className={`fixed inset-0 z-[999] bg-[#020203] flex flex-col items-center justify-center p-8 transition-opacity duration-500 ${bootState === 'fading' ? 'opacity-0' : 'opacity-100'}`}>
+        <div className={`fixed inset-0 z-[999] bg-[#050505] flex flex-col items-center justify-center p-8 transition-opacity duration-500 ${bootState === 'fading' ? 'opacity-0' : 'opacity-100'}`}>
           <div className="w-full max-w-2xl">
             <div className="flex items-center gap-3 mb-6 border-b border-zinc-800 pb-4">
               <SafeIcon icon={Terminal} className="w-6 h-6 text-cyan-500" />
@@ -334,75 +281,50 @@ export default function App() {
               </div>
             </div>
             <div className="mt-8 h-1 w-full bg-zinc-900 rounded-full overflow-hidden">
-              <div className="h-full bg-cyan-500 shadow-[0_0_15px_#06b6d4] transition-all duration-[1.5s] ease-out" style={{ width: bootLogs.length === 5 ? '100%' : `${(bootLogs.length / 5) * 100}%` }}></div>
+              <div className="h-full bg-cyan-500 transition-all duration-[1s] ease-out" style={{ width: bootLogs.length === 5 ? '100%' : `${(bootLogs.length / 5) * 100}%` }}></div>
             </div>
           </div>
         </div>
       )}
 
-      {/* 背景光影與粒子層 */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 tech-grid opacity-60 mix-blend-screen" style={{ maskImage: 'linear-gradient(to bottom, transparent, black, transparent)', WebkitMaskImage: 'linear-gradient(to bottom, transparent, black, transparent)' }}></div>
-        <div className="absolute inset-0 particles-layer opacity-60"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#020203_85%)]"></div>
-        <div className="absolute top-[10%] -left-[10%] w-[600px] h-[600px] bg-cyan-900/15 rounded-full blur-[120px] mix-blend-screen animate-pulse duration-[10s] will-change-transform"></div>
-        <div className="absolute bottom-[20%] -right-[10%] w-[500px] h-[500px] bg-indigo-900/15 rounded-full blur-[100px] mix-blend-screen animate-pulse duration-[8s] will-change-transform"></div>
+      {/* 🚀 極簡靜態背景 (效能大幅提升) */}
+      <div className="fixed inset-0 pointer-events-none z-0 bg-[#050505]">
+        <div className="absolute inset-0 tech-grid opacity-30" style={{ maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)', WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)' }}></div>
+        
+        {/* 靜態光暈，移除耗能的 mix-blend-screen 和 animate-pulse */}
+        <div className="absolute top-[10%] left-[10%] w-[500px] h-[500px] bg-cyan-900/20 rounded-full blur-[100px]"></div>
+        <div className="absolute bottom-[20%] right-[10%] w-[400px] h-[400px] bg-indigo-900/20 rounded-full blur-[100px]"></div>
       </div>
 
-      {/* 電腦版兩側 HUD */}
-      <div className="fixed left-6 top-1/2 -translate-y-1/2 flex-col items-center gap-8 z-0 hidden xl:flex opacity-40 pointer-events-none mix-blend-screen">
-        <div className="h-32 w-[1px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-4 bg-cyan-400 animate-[scan-beam_2s_linear_infinite]"></div>
-        </div>
-        <div className="font-mono text-[10px] text-cyan-400 -rotate-90 tracking-[0.4em] whitespace-nowrap">SYS.CORE_READY // V.24.1</div>
-        <div className="h-32 w-[1px] bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent"></div>
-      </div>
-      <div className="fixed right-6 top-1/2 -translate-y-1/2 flex-col items-center gap-8 z-0 hidden xl:flex opacity-40 pointer-events-none mix-blend-screen">
-        <div className="h-24 w-[1px] bg-gradient-to-b from-transparent via-purple-500/50 to-transparent relative overflow-hidden">
-           <div className="absolute top-0 left-0 w-full h-4 bg-purple-400 animate-[scan-beam_3s_linear_infinite_reverse]"></div>
-        </div>
-        <div className="flex flex-col gap-2 text-purple-400">
-          <div className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse shadow-[0_0_8px_#c084fc]"></div>
-          <div className="w-1.5 h-1.5 rounded-full bg-purple-400/50"></div>
-          <div className="w-1.5 h-1.5 rounded-full bg-purple-400/20"></div>
-        </div>
-        <div className="font-mono text-[10px] text-purple-400 rotate-90 tracking-[0.3em] whitespace-nowrap mt-16">SECURE_CONNECTION</div>
-      </div>
-
-      {/* 硬體加速游標 */}
+      {/* 輕量級游標 */}
       <div 
         ref={cursorOuterRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[100] transition-all duration-75 ease-out flex items-center justify-center rounded-full mix-blend-screen hidden md:flex border border-cyan-400/40 will-change-transform ${isHovering ? 'bg-cyan-500/10 scale-[2.5] backdrop-blur-[2px]' : ''}`} 
+        className={`fixed top-0 left-0 pointer-events-none z-[100] transition-all duration-75 ease-out flex items-center justify-center rounded-full hidden md:flex border border-cyan-400/30 will-change-transform ${isHovering ? 'bg-cyan-500/10 scale-150' : ''}`} 
         style={{ width: '40px', height: '40px' }}
       >
-         {isHovering && <SafeIcon icon={Plus} className="w-4 h-4 text-cyan-400 absolute opacity-50 animate-pulse" />}
+         {isHovering && <SafeIcon icon={Plus} className="w-4 h-4 text-cyan-400 absolute opacity-80" />}
       </div>
       <div 
         ref={cursorInnerRef}
-        className="fixed top-0 left-0 pointer-events-none z-[100] w-1.5 h-1.5 bg-cyan-400 rounded-full hidden md:block shadow-[0_0_10px_#22d3ee] will-change-transform" 
-      />
-      <div 
-        ref={ambientGlowRef}
-        className="fixed top-0 left-0 w-[600px] h-[600px] bg-cyan-600/5 rounded-full blur-[120px] pointer-events-none z-0 transition-transform duration-[400ms] ease-out hidden md:block will-change-transform" 
+        className="fixed top-0 left-0 pointer-events-none z-[100] w-1.5 h-1.5 bg-cyan-400 rounded-full hidden md:block will-change-transform" 
       />
 
       {/* 頂部導覽列 */}
-      <nav className="fixed top-0 w-full z-50 bg-[#020203]/70 backdrop-blur-xl border-b border-white/5">
-        <div className="absolute bottom-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
+      <nav className="fixed top-0 w-full z-50 bg-[#050505]/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="font-black text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 hover:scale-105 transition duration-300 cursor-none drop-shadow-lg" onClick={() => scrollTo('home')} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-            KrProgram<span className="text-cyan-400 animate-blink">_</span>
+          <div className="font-black text-xl tracking-wider text-white hover:text-cyan-400 transition duration-300 cursor-none" onClick={() => scrollTo('home')} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            KrProgram<span className="text-cyan-500 animate-blink">_</span>
           </div>
           <div className="hidden md:flex gap-8 text-xs font-bold tracking-widest">
             {['home', 'features', 'demo', 'workflow', 'pricing'].map((id, index) => (
-              <button key={id} onClick={() => scrollTo(id)} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className={`transition-all duration-300 flex flex-col items-center group relative ${activeSection === id ? 'text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]' : 'text-zinc-400 hover:text-zinc-200'}`}>
+              <button key={id} onClick={() => scrollTo(id)} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className={`transition-all duration-300 flex flex-col items-center group relative ${activeSection === id ? 'text-cyan-400' : 'text-zinc-500 hover:text-zinc-300'}`}>
                 <span className="font-mono text-[9px] uppercase mb-0.5 opacity-60 group-hover:opacity-100 transition-opacity">
                   {id === 'home' ? 'HOME' : id === 'features' ? 'FEATURES' : id === 'demo' ? 'DEMO' : id === 'workflow' ? 'PROCESS' : 'PLANS'}
                 </span>
                 <span>
                   {id === 'home' ? '首頁' : id === 'features' ? '核心模組' : id === 'demo' ? '實機展示' : id === 'workflow' ? '部署流程' : '方案與授權'}
                 </span>
-                <div className={`absolute -bottom-[4px] w-[120%] h-[2px] bg-cyan-400 blur-[2px] transition-all duration-300 rounded-full ${activeSection === id ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'}`}></div>
+                <div className={`absolute -bottom-[4px] w-full h-[2px] bg-cyan-400 transition-all duration-300 ${activeSection === id ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'}`}></div>
               </button>
             ))}
           </div>
@@ -411,74 +333,70 @@ export default function App() {
 
       {/* 首頁 Hero */}
       <section id="home" className="relative pt-36 pb-20 px-6 min-h-screen flex flex-col items-center justify-center text-center z-10 overflow-hidden">
-        <div className="absolute w-full h-[2px] bg-cyan-400/30 shadow-[0_0_15px_#22d3ee] animate-scan-beam blur-[1px] z-0"></div>
-
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-cyan-500/5 rounded-full z-0 pointer-events-none will-change-transform"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-cyan-500/10 rounded-full z-0 border-dashed animate-[spin_40s_linear_infinite] pointer-events-none will-change-transform"></div>
-        
-        <div className="flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 font-mono text-xs tracking-[0.2em] uppercase shadow-[0_0_20px_rgba(34,211,238,0.15)] backdrop-blur-md z-10">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]"></span>
+        <div className="flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border border-cyan-500/20 bg-cyan-500/10 text-cyan-400 font-mono text-xs tracking-[0.2em] uppercase">
+          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
           全端工程伺服器 // NODE: ACTIVE
         </div>
 
-        <div className="relative mb-10 group animate-float z-10" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-          <div className="absolute -inset-6 bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 rounded-full blur-3xl opacity-30 group-hover:opacity-70 transition duration-700 animate-pulse"></div>
-          <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full bg-[#050505] border-2 border-cyan-500/40 overflow-hidden shadow-[0_0_50px_rgba(34,211,238,0.25)] flex items-center justify-center p-1 z-10">
+        <div className="relative mb-10 group z-10" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+          <div className="absolute -inset-4 bg-cyan-600/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition duration-500"></div>
+          <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full bg-[#0a0a0a] border border-cyan-500/30 overflow-hidden flex items-center justify-center p-1 z-10">
              <img src="https://i.postimg.cc/pLm8hxSD/avatar.png" alt="Profile" className="w-full h-full object-cover rounded-full transform group-hover:scale-110 transition duration-500 ease-out" />
           </div>
-          <svg className="absolute -inset-10 w-[calc(100%+80px)] h-[calc(100%+80px)] animate-[spin_12s_linear_infinite] opacity-60 pointer-events-none z-0 will-change-transform" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="48" fill="none" stroke="#22d3ee" strokeWidth="0.4" strokeDasharray="3 6" />
-            <circle cx="50" cy="50" r="42" fill="none" stroke="#3b82f6" strokeWidth="1" strokeDasharray="10 20 5 10" />
+          {/* 靜態科技裝飾圈，不使用高耗能動畫 */}
+          <svg className="absolute -inset-8 w-[calc(100%+64px)] h-[calc(100%+64px)] opacity-30 pointer-events-none z-0" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="48" fill="none" stroke="#22d3ee" strokeWidth="0.4" strokeDasharray="4 8" />
+            <circle cx="50" cy="50" r="44" fill="none" stroke="#3b82f6" strokeWidth="0.8" strokeDasharray="20 10" opacity="0.5" />
           </svg>
         </div>
         
-        <h1 className="text-6xl md:text-[7rem] font-black mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-100 to-zinc-500 text-glow-cyan z-10 leading-none glitch-text" data-text="KrProgram">KrProgram</h1>
+        <h1 className="text-6xl md:text-[6rem] font-black mb-6 tracking-tight text-white z-10 leading-none">KrProgram</h1>
         
-        <div className="flex items-center justify-center gap-2 mb-12 text-cyan-400 font-bold text-xl md:text-2xl drop-shadow-[0_0_20px_rgba(34,211,238,0.6)] tracking-wide z-10">
-          <span className="text-cyan-500/50 font-mono font-light text-xl">{"<"}</span> 將想像化為現實的全端開發者 <span className="text-cyan-500/50 font-mono font-light text-xl">{"/>"}</span>
+        <div className="flex items-center justify-center gap-2 mb-12 text-cyan-400 font-bold text-lg md:text-xl tracking-wide z-10">
+          <span className="text-cyan-500/50 font-mono font-light">{"<"}</span> 將想像化為現實的全端開發者 <span className="text-cyan-500/50 font-mono font-light">{"/>"}</span>
         </div>
 
-        <div className="w-full max-w-lg mx-auto bg-[#0a0a0c]/80 border border-white/10 rounded-2xl mb-12 text-left font-mono text-sm md:text-base shadow-[0_30px_60px_rgba(0,0,0,0.6)] backdrop-blur-xl overflow-hidden z-10 hover:border-cyan-500/30 transition-colors" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-          <div className="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/5">
+        <div className="w-full max-w-lg mx-auto bg-[#0a0a0c] border border-zinc-800 rounded-xl mb-12 text-left font-mono text-sm md:text-base overflow-hidden z-10 hover:border-cyan-500/40 transition-colors shadow-lg" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+          <div className="flex items-center justify-between px-4 py-3 bg-zinc-900 border-b border-zinc-800">
             <div className="flex gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#ff5f56] shadow-[0_0_5px_#ff5f56]"></div>
-              <div className="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-[0_0_5px_#ffbd2e]"></div>
-              <div className="w-3 h-3 rounded-full bg-[#27c93f] shadow-[0_0_5px_#27c93f]"></div>
+              <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+              <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+              <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
             </div>
             <div className="text-[10px] text-zinc-500 tracking-widest uppercase">kr-terminal_v2.0</div>
           </div>
-          <div className="p-6 space-y-3">
-            <div className="text-cyan-400">krprogram@root:~$ <span className="text-zinc-200">npm start bot-engine</span></div>
-            <div className="text-zinc-400">▶ 正在初始化核心模組... <span className="text-cyan-500/60">[完成]</span></div>
-            <div className="text-zinc-400">▶ 正在載入必要環境... <span className="text-cyan-500/60">[完成]</span></div>
+          <div className="p-6 space-y-3 bg-[#050505]">
+            <div className="text-cyan-400">krprogram@root:~$ <span className="text-zinc-200">npm start dev-server</span></div>
+            <div className="text-zinc-500">▶ 正在初始化核心模組... <span className="text-cyan-500/60">[完成]</span></div>
+            <div className="text-zinc-500">▶ 正在載入必要環境... <span className="text-cyan-500/60">[完成]</span></div>
             <div className="text-blue-400 font-bold">✔ 資料庫連線已建立。</div>
             <div className="text-emerald-400 font-bold flex items-center gap-2 mt-4">
-              <SafeIcon icon={CheckCircle2} className="w-4 h-4" /> 系統已準備就緒，隨時為您服務 <span className="w-2.5 h-5 bg-emerald-400 animate-blink inline-block ml-1"></span>
+              <SafeIcon icon={CheckCircle2} className="w-4 h-4" /> 系統已準備就緒，隨時為您服務 <span className="w-2 h-4 bg-emerald-400 animate-blink inline-block ml-1"></span>
             </div>
           </div>
         </div>
         
         <div className="flex gap-6 z-10">
-          <button onClick={() => scrollTo('pricing')} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="group relative flex items-center gap-3 px-8 py-4 bg-cyan-500 text-black rounded-2xl font-black hover:bg-cyan-400 active:scale-95 transition-all shadow-[0_0_40px_rgba(34,211,238,0.3)] hover:shadow-[0_0_60px_rgba(34,211,238,0.5)] tracking-wide">
-            <span className="relative z-10 flex flex-col items-center leading-tight">
-              <span className="font-mono text-[10px] uppercase opacity-70 tracking-widest">Start Project</span>
-              <span className="text-lg">啟動專案</span>
+          <button onClick={() => scrollTo('pricing')} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="group relative flex items-center gap-3 px-8 py-4 bg-cyan-500 text-black rounded-xl font-black hover:bg-cyan-400 active:scale-95 transition-all tracking-wide">
+            <span className="flex flex-col items-center leading-tight">
+              <span className="font-mono text-[10px] uppercase opacity-80 tracking-widest">Start Project</span>
+              <span className="text-base">啟動專案</span>
             </span>
-            <SafeIcon icon={Terminal} className="w-5 h-5 relative z-10 ml-1 group-hover:translate-x-1 transition-transform" />
+            <SafeIcon icon={Terminal} className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>
-          <a href="https://github.com/yanandhuang09190217-ctrl" target="_blank" rel="noopener noreferrer" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="flex items-center justify-center w-[72px] h-[72px] bg-[#0a0a0c]/80 backdrop-blur-md border border-white/10 rounded-2xl hover:bg-white/10 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(34,211,238,0.2)] transition-all"><SafeIcon icon={Github} className="w-6 h-6 text-zinc-300" /></a>
+          <a href="https://github.com/yanandhuang09190217-ctrl" target="_blank" rel="noopener noreferrer" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className="flex items-center justify-center w-[64px] h-[64px] bg-zinc-900 border border-zinc-800 rounded-xl hover:bg-zinc-800 hover:border-cyan-500/50 transition-all"><SafeIcon icon={Github} className="w-6 h-6 text-zinc-300" /></a>
         </div>
       </section>
 
       {/* 數據統計 */}
-      <section className="py-12 border-y border-white/5 bg-white/[0.01] backdrop-blur-sm relative z-10">
-        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-white/5">
+      <section className="py-12 border-y border-zinc-900 bg-[#08080a] relative z-10">
+        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-zinc-800">
           {stats.map((stat, i) => (
             <div key={i} className="flex flex-col items-center justify-center py-4 text-center group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-              <div className="flex items-center justify-center p-3 bg-black/40 border border-white/5 rounded-2xl mb-4 group-hover:border-cyan-500/30 group-hover:bg-cyan-500/5 transition-colors">
+              <div className="flex items-center justify-center p-3 bg-zinc-900 border border-zinc-800 rounded-2xl mb-4 group-hover:border-cyan-500/30 group-hover:bg-cyan-500/10 transition-colors">
                 {stat.icon}
               </div>
-              <div className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tighter group-hover:text-cyan-400 group-hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] transition-all duration-300 font-mono drop-shadow-md">{stat.value}</div>
+              <div className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tighter group-hover:text-cyan-400 transition-colors duration-300 font-mono">{stat.value}</div>
               <div className="text-zinc-500 text-xs font-bold uppercase tracking-[0.2em]">{stat.label}</div>
             </div>
           ))}
@@ -489,7 +407,7 @@ export default function App() {
       <section id="features" className="py-24 px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
           <div className="mb-16 flex flex-col items-center md:items-start text-center md:text-left">
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-3 flex items-center gap-4 tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-3 flex items-center gap-4 tracking-tight">
               <span className="text-cyan-500 font-mono text-3xl">{"//"}</span> 核心模組功能
             </h2>
             <div className="flex items-center gap-3 text-zinc-500 text-xs font-mono tracking-widest uppercase">
@@ -499,25 +417,25 @@ export default function App() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {botFeatures.map((feat, i) => (
-              <div key={i} className="relative p-8 bg-[#08080a]/80 border border-white/5 rounded-3xl hover:border-cyan-500/40 hover:bg-[#0a0f18]/90 hover:shadow-[0_0_40px_rgba(34,211,238,0.1)] transition-all duration-500 group overflow-hidden backdrop-blur-md" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500/0 to-transparent group-hover:via-cyan-500/60 transition-all duration-700"></div>
+              <div key={i} className="relative p-8 bg-[#0a0a0c] border border-zinc-800 rounded-2xl hover:border-cyan-500/40 hover:bg-[#0c1218] transition-all duration-300 group overflow-hidden" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500/0 to-transparent group-hover:via-cyan-500/50 transition-all duration-500"></div>
                 
                 <div className="absolute top-6 right-6 flex items-center gap-2">
-                   <div className="barcode opacity-20 group-hover:opacity-50 transition-opacity"></div>
-                   <span className="font-mono text-[9px] text-zinc-600 group-hover:text-cyan-500/70 tracking-widest">[MOD_{feat.hex}]</span>
+                   <div className="barcode opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                   <span className="font-mono text-[9px] text-zinc-600 tracking-widest">[MOD_{feat.hex}]</span>
                 </div>
 
                 <div className="flex gap-6 relative z-10">
                   <div className="shrink-0">
-                    <div className="p-4 bg-black/60 border border-white/10 rounded-2xl shadow-inner group-hover:scale-110 group-hover:border-cyan-500/40 group-hover:bg-cyan-500/10 transition-all duration-300">
+                    <div className="p-4 bg-black border border-zinc-800 rounded-xl group-hover:border-cyan-500/40 transition-all duration-300">
                       {feat.icon}
                     </div>
                   </div>
                   <div className="pt-1">
-                    <h3 className="text-xl font-bold text-zinc-100 mb-3 tracking-wide group-hover:text-white transition-colors">
+                    <h3 className="text-xl font-bold text-zinc-100 mb-2 tracking-wide group-hover:text-white transition-colors">
                       {feat.title}
                     </h3>
-                    <p className="text-zinc-400 text-sm leading-relaxed">{feat.desc}</p>
+                    <p className="text-zinc-500 text-sm leading-relaxed">{feat.desc}</p>
                   </div>
                 </div>
               </div>
@@ -526,11 +444,91 @@ export default function App() {
         </div>
       </section>
 
-      {/* 🚀 API 串接生態系 */}
-      <section className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#050508] to-[#020203]">
+      {/* Discord 實機對話模擬 */}
+      <section id="demo" className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#08080a]">
         <div className="max-w-5xl mx-auto">
           <div className="mb-16 flex flex-col items-center text-center">
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
+              <span className="text-purple-500 font-mono text-3xl">{"//"}</span> 系統實機展示
+            </h2>
+            <div className="flex items-center gap-3 text-zinc-500 text-xs font-mono tracking-widest uppercase">
+              <span className="w-8 h-[1px] bg-zinc-700"></span> DISCORD_UI_SIMULATION <span className="animate-blink text-purple-500 font-mono">_</span>
+            </div>
+          </div>
+
+          <div className="w-full max-w-3xl mx-auto bg-[#313338] rounded-xl overflow-hidden border border-zinc-700 font-sans relative" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            <div className="bg-[#2b2d31] px-5 py-3 border-b border-[#1e1f22] flex items-center gap-3">
+              <SafeIcon icon={Command} className="w-4 h-4 text-zinc-400" />
+              <span className="text-white font-bold text-sm tracking-wide">bot-指令測試區</span>
+            </div>
+            
+            <div className="p-6 md:p-8 space-y-6">
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center shrink-0">
+                  <SafeIcon icon={Users} className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <span className="text-[#f2f3f5] font-bold text-base hover:underline cursor-pointer">客戶_Client</span>
+                    <span className="text-[#949ba4] text-xs">今天 14:00</span>
+                  </div>
+                  <div className="text-[#dbdee1] font-mono bg-[#1e1f22] px-3 py-1 rounded text-sm border border-[#2b2d31]">&gt; /查詢商品 ID: 1024</div>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 bg-black">
+                  <img src="https://i.postimg.cc/pLm8hxSD/avatar.png" alt="Bot Avatar" className="w-full h-full object-cover" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <span className="text-[#f2f3f5] font-bold text-base hover:underline cursor-pointer">KrProgram Bot</span>
+                    <span className="bg-[#5865F2] text-white text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider flex items-center gap-1">
+                      <SafeIcon icon={CheckCircle2} className="w-3 h-3" /> BOT
+                    </span>
+                    <span className="text-[#949ba4] text-xs">今天 14:00</span>
+                  </div>
+                  
+                  <div className="mt-2 bg-[#2b2d31] border-l-4 border-cyan-400 rounded-md p-4 max-w-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <SafeIcon icon={ShoppingCart} className="w-4 h-4 text-white" />
+                      <span className="text-white font-bold text-sm">系統商品查詢成功</span>
+                    </div>
+                    <h3 className="text-cyan-400 font-bold text-base mb-2 cursor-pointer hover:underline">💎 頂級客製化機器人套餐</h3>
+                    <p className="text-[#dbdee1] text-sm mb-4 leading-relaxed">這是一套為您的社群量身打造的專屬系統，包含商城、經濟與進階管理防護。</p>
+                    
+                    <div className="grid grid-cols-2 gap-4 mb-4 p-3 bg-[#1e1f22] rounded border border-[#313338]">
+                      <div>
+                        <div className="text-[#dbdee1] font-bold text-xs mb-1">💰 價格</div>
+                        <div className="text-[#949ba4] text-sm font-mono">20,000 Kr 幣</div>
+                      </div>
+                      <div>
+                        <div className="text-[#dbdee1] font-bold text-xs mb-1">📦 庫存狀態</div>
+                        <div className="text-emerald-400 text-sm font-bold">充足 (無限)</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-3 flex gap-2">
+                    <button className="bg-[#248046] hover:bg-[#1a6334] text-white text-sm font-bold px-4 py-2 rounded transition-colors flex items-center gap-2">
+                      <SafeIcon icon={CreditCard} className="w-4 h-4" /> 立即購買
+                    </button>
+                    <button className="bg-[#4e5058] hover:bg-[#6d6f78] text-white text-sm font-bold px-4 py-2 rounded transition-colors flex items-center gap-2">
+                      <SafeIcon icon={MessageCircle} className="w-4 h-4" /> 聯絡客服
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* API 串接生態系 */}
+      <section className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#050505]">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-16 flex flex-col items-center text-center">
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
               <span className="text-blue-500 font-mono text-3xl">{"//"}</span> 無限 API 擴充生態
             </h2>
             <div className="flex items-center gap-3 text-zinc-500 text-xs font-mono tracking-widest uppercase">
@@ -538,42 +536,41 @@ export default function App() {
             </div>
           </div>
 
-          <div className="relative py-16" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 bg-[#050505] border-2 border-cyan-500/50 rounded-2xl flex items-center justify-center z-20 shadow-[0_0_50px_rgba(34,211,238,0.4)] backdrop-blur-md">
-              <SafeIcon icon={Cpu} className="w-12 h-12 text-cyan-400" />
-              <div className="absolute -inset-6 border border-cyan-500/20 rounded-[2rem] animate-[spin_6s_linear_infinite] will-change-transform"></div>
-              <div className="absolute -inset-10 border border-blue-500/10 rounded-full animate-[spin_8s_linear_infinite_reverse] border-dashed will-change-transform"></div>
+          <div className="relative py-12" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-zinc-900 border border-cyan-500/40 rounded-2xl flex items-center justify-center z-20">
+              <SafeIcon icon={Cpu} className="w-10 h-10 text-cyan-400" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-48 gap-y-16 relative z-10 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-40 gap-y-12 relative z-10 max-w-4xl mx-auto">
               {integrations.map((item, i) => (
-                <div key={i} className={`p-6 bg-[#08080a]/80 backdrop-blur-md border border-white/5 rounded-3xl flex items-center gap-5 hover:${item.border} transition-all duration-500 hover:-translate-y-1 ${i % 2 === 0 ? 'md:mr-12' : 'md:ml-12'} group`}>
-                  <div className={`p-4 rounded-2xl bg-black/50 border border-white/10 shadow-inner group-hover:bg-black/80 transition-colors`}>
+                <div key={i} className={`p-5 bg-zinc-900/50 border border-zinc-800 rounded-2xl flex items-center gap-4 hover:${item.border} transition-colors duration-300 ${i % 2 === 0 ? 'md:mr-8' : 'md:ml-8'}`}>
+                  <div className={`p-3 rounded-xl bg-black border border-zinc-800`}>
                     {item.icon}
                   </div>
                   <div>
-                    <h4 className="font-bold text-zinc-100 text-lg tracking-wide">{item.title}</h4>
-                    <p className="text-sm text-zinc-400 mt-1">{item.desc}</p>
+                    <h4 className="font-bold text-zinc-200 text-base">{item.title}</h4>
+                    <p className="text-xs text-zinc-500 mt-1">{item.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
             
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-full pointer-events-none z-0 hidden md:block">
-              <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 border-t border-l border-dashed border-white/10 rounded-tl-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
-              <div className="absolute bottom-1/4 right-1/4 w-1/2 h-1/2 border-b border-r border-dashed border-white/10 rounded-br-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
-              <div className="absolute top-1/4 right-1/4 w-1/2 h-1/2 border-t border-r border-dashed border-white/10 rounded-tr-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
-              <div className="absolute bottom-1/4 left-1/4 w-1/2 h-1/2 border-b border-l border-dashed border-white/10 rounded-bl-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
+            {/* 靜態連線裝飾 */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-full pointer-events-none z-0 hidden md:block opacity-30">
+              <div className="absolute top-[30%] left-[30%] w-[40%] h-[40%] border-t border-l border-zinc-600 rounded-tl-3xl"></div>
+              <div className="absolute bottom-[30%] right-[30%] w-[40%] h-[40%] border-b border-r border-zinc-600 rounded-br-3xl"></div>
+              <div className="absolute top-[30%] right-[30%] w-[40%] h-[40%] border-t border-r border-zinc-600 rounded-tr-3xl"></div>
+              <div className="absolute bottom-[30%] left-[30%] w-[40%] h-[40%] border-b border-l border-zinc-600 rounded-bl-3xl"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* 技能與實績 */}
-      <section className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#020203] to-[#050508]">
+      <section className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#08080a]">
         <div className="max-w-5xl mx-auto">
           <div className="mb-16 flex flex-col items-center md:items-start text-center md:text-left">
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-3 flex items-center gap-4 tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-3 flex items-center gap-4 tracking-tight">
               <span className="text-blue-500 font-mono text-3xl">{"//"}</span> 開發技術與實績
             </h2>
             <div className="flex items-center gap-3 text-zinc-500 text-xs font-mono tracking-widest uppercase">
@@ -581,48 +578,43 @@ export default function App() {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-6 text-left">
-              <h3 className="text-sm font-bold text-zinc-500 flex items-center gap-2 tracking-[0.2em] uppercase mb-6 font-mono">
+              <h3 className="text-sm font-bold text-zinc-500 flex items-center gap-2 tracking-[0.2em] uppercase mb-4 font-mono">
                 <SafeIcon icon={Monitor} className="w-4 h-4 text-blue-500" /> root/projects
               </h3>
               {projects.map((p, i) => (
-                <div key={i} className="p-8 bg-[#08080a]/80 border border-white/5 rounded-3xl hover:border-blue-500/40 hover:shadow-[0_0_40px_rgba(59,130,246,0.15)] transition-all duration-500 group relative overflow-hidden backdrop-blur-sm" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  
-                  <div className="absolute top-6 right-6 flex items-center gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-                    <span className="font-mono text-[9px] text-blue-500/50 tracking-widest uppercase">ID_{p.hex}</span>
+                <div key={i} className="p-6 bg-[#0a0a0c] border border-zinc-800 rounded-2xl hover:border-blue-500/40 transition-colors duration-300 relative overflow-hidden" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                  <div className="absolute top-5 right-5 flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                    <span className="font-mono text-[9px] text-zinc-600 tracking-widest uppercase">ID_{p.hex}</span>
                   </div>
 
-                  <h4 className="text-2xl font-black text-zinc-100 mb-3 flex items-center gap-3 relative z-10 tracking-wide">
+                  <h4 className="text-xl font-black text-zinc-100 mb-2 flex items-center gap-2 tracking-wide">
                     {p.title} 
-                    <a href={p.link} target="_blank" rel="noopener noreferrer"><SafeIcon icon={ExternalLink} className="w-5 h-5 text-blue-400 opacity-0 group-hover:opacity-100 transition-all translate-y-1 group-hover:translate-y-0" /></a>
+                    <a href={p.link} target="_blank" rel="noopener noreferrer"><SafeIcon icon={ExternalLink} className="w-4 h-4 text-zinc-500 hover:text-blue-400 transition-colors" /></a>
                   </h4>
-                  <p className="text-blue-400 text-xs font-bold mb-5 relative z-10 tracking-[0.2em] uppercase font-mono bg-blue-500/10 w-fit px-3 py-1 rounded-md">{p.role}</p>
-                  <p className="text-zinc-400 text-sm leading-relaxed relative z-10">{p.description}</p>
+                  <p className="text-blue-400 text-xs font-bold mb-4 tracking-widest uppercase font-mono">{p.role}</p>
+                  <p className="text-zinc-500 text-sm leading-relaxed">{p.description}</p>
                 </div>
               ))}
             </div>
 
-            <div className="p-8 bg-[#08080a]/80 border border-white/5 rounded-3xl space-y-10 text-left relative overflow-hidden backdrop-blur-sm group hover:border-cyan-500/30 transition-colors duration-500">
-              <div className="absolute -right-10 -bottom-10 text-cyan-500/5 rotate-12 pointer-events-none group-hover:text-cyan-500/10 transition-colors duration-700">
-                <SafeIcon icon={Database} className="w-48 h-48" />
+            <div className="p-6 bg-[#0a0a0c] border border-zinc-800 rounded-2xl space-y-8 text-left relative overflow-hidden group hover:border-cyan-500/30 transition-colors duration-300">
+              <div className="absolute -right-8 -bottom-8 text-zinc-800/50 rotate-12 pointer-events-none">
+                <SafeIcon icon={Database} className="w-40 h-40" />
               </div>
-              <h3 className="text-sm font-bold text-zinc-500 flex items-center gap-2 tracking-[0.2em] uppercase mb-6 font-mono">
+              <h3 className="text-sm font-bold text-zinc-500 flex items-center gap-2 tracking-[0.2em] uppercase mb-4 font-mono">
                 <SafeIcon icon={Code2} className="w-4 h-4 text-cyan-500" /> root/skills
               </h3>
               {technicalSkills.map((s, i) => (
                 <div key={i} className="relative z-10">
-                  <div className="flex justify-between text-xs font-bold mb-3 uppercase tracking-widest text-zinc-300">
+                  <div className="flex justify-between text-xs font-bold mb-2 uppercase tracking-widest text-zinc-400">
                     <span>{s.name}</span>
                     <span className="font-mono text-cyan-400">{s.percent}%</span>
                   </div>
-                  <div className="h-3 bg-black rounded-sm overflow-hidden relative border border-white/10 shadow-inner">
-                    <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0px,transparent_4px,rgba(255,255,255,0.05)_4px,rgba(255,255,255,0.05)_5px)] bg-[length:5px_100%] z-20 pointer-events-none"></div>
-                    <div className={`absolute inset-y-0 left-0 bg-gradient-to-r ${s.fromColor} ${s.toColor} transition-all duration-1000 ease-out z-10`} style={{ width: isLoaded ? `${s.percent}%` : '0%' }}>
-                      <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/50 to-transparent"></div>
-                    </div>
+                  <div className="h-2 bg-black rounded-sm overflow-hidden border border-zinc-800">
+                    <div className={`h-full bg-gradient-to-r ${s.fromColor} ${s.toColor} transition-all duration-1000 ease-out`} style={{ width: isLoaded ? `${s.percent}%` : '0%' }}></div>
                   </div>
                 </div>
               ))}
@@ -632,10 +624,10 @@ export default function App() {
       </section>
 
       {/* 選擇優勢 */}
-      <section id="advantages" className="py-24 px-6 relative z-10 border-t border-white/5 bg-[#030305]">
+      <section id="advantages" className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#050505]">
         <div className="max-w-6xl mx-auto">
           <div className="mb-16 flex flex-col items-center text-center">
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
               <span className="text-purple-500 font-mono text-3xl">{"//"}</span> 選擇我的優勢
             </h2>
             <div className="flex items-center gap-3 text-zinc-500 text-xs font-mono tracking-widest uppercase">
@@ -643,20 +635,18 @@ export default function App() {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {advantages.map((adv, i) => (
-              <div key={i} className="flex flex-col items-start text-left p-8 bg-[#08080a]/80 border border-white/5 rounded-3xl hover:border-purple-500/40 hover:bg-purple-900/10 hover:shadow-[0_0_40px_rgba(168,85,247,0.15)] transition-all duration-500 relative overflow-hidden backdrop-blur-sm group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-purple-500/10 to-transparent rounded-bl-[100%] pointer-events-none group-hover:scale-110 transition-transform"></div>
-                
-                <div className="absolute top-6 right-6 font-mono text-[9px] text-zinc-600 tracking-widest uppercase">
+              <div key={i} className="flex flex-col items-start text-left p-6 bg-[#0a0a0c] border border-zinc-800 rounded-2xl hover:border-purple-500/30 transition-colors duration-300 relative overflow-hidden group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                <div className="absolute top-4 right-4 font-mono text-[9px] text-zinc-600 tracking-widest uppercase">
                   [ADV_{adv.hex}]
                 </div>
 
-                <div className="mb-8 p-4 bg-black/60 rounded-2xl border border-white/10 shadow-inner group-hover:border-purple-500/30 transition-colors">
+                <div className="mb-6 p-3 bg-black rounded-xl border border-zinc-800 group-hover:border-purple-500/30 transition-colors">
                   {adv.icon}
                 </div>
-                <h3 className="text-xl font-bold text-zinc-100 mb-4 tracking-wide group-hover:text-purple-300 transition-colors">{adv.title}</h3>
-                <p className="text-zinc-400 text-sm leading-relaxed relative z-10">{adv.desc}</p>
+                <h3 className="text-lg font-bold text-zinc-200 mb-3 group-hover:text-purple-300 transition-colors">{adv.title}</h3>
+                <p className="text-zinc-500 text-sm leading-relaxed">{adv.desc}</p>
               </div>
             ))}
           </div>
@@ -664,10 +654,10 @@ export default function App() {
       </section>
 
       {/* 開發部署流程 */}
-      <section id="workflow" className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#030305] to-[#050508]">
+      <section id="workflow" className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#08080a]">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-20 flex flex-col items-center text-center">
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
+          <div className="mb-16 flex flex-col items-center text-center">
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
               <span className="text-emerald-500 font-mono text-3xl">{"//"}</span> 開發部署流程
             </h2>
             <div className="flex items-center gap-3 text-zinc-500 text-xs font-mono tracking-widest uppercase">
@@ -675,30 +665,28 @@ export default function App() {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-6 relative">
-            <div className="hidden md:block absolute top-[40px] left-[12%] right-[12%] h-[2px] bg-gradient-to-r from-emerald-500/10 via-cyan-500/40 to-emerald-500/10 z-0 blur-[2px]"></div>
-            <div className="hidden md:block absolute top-[41px] left-[12%] right-[12%] h-[1px] bg-gradient-to-r from-emerald-500/30 via-cyan-500/80 to-emerald-500/30 z-0"></div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-6 relative">
+            <div className="hidden md:block absolute top-[36px] left-[15%] right-[15%] h-[1px] border-t border-dashed border-zinc-700 z-0"></div>
             
             {workflows.map((flow, i) => (
               <div key={i} className="relative z-10 flex flex-col items-center text-center group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                <div className="w-20 h-20 bg-[#08080a] border border-white/10 rounded-2xl flex items-center justify-center mb-8 group-hover:border-emerald-500/60 group-hover:bg-emerald-500/10 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-all duration-500 text-zinc-500 group-hover:text-emerald-400 backdrop-blur-md relative overflow-hidden">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.1),transparent)] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="w-16 h-16 bg-[#0a0a0c] border border-zinc-700 rounded-xl flex items-center justify-center mb-6 group-hover:border-emerald-500/50 transition-colors duration-300 text-zinc-500 group-hover:text-emerald-400 bg-[#050505]">
                   {flow.icon}
                 </div>
-                <div className="text-emerald-500 font-bold font-mono text-[10px] mb-2 opacity-80 tracking-[0.3em] uppercase bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">{flow.title}</div>
-                <h3 className="text-lg font-black text-zinc-100 mb-3 tracking-wide">{flow.subtitle}</h3>
-                <p className="text-zinc-400 text-sm leading-relaxed max-w-[200px]">{flow.desc}</p>
+                <div className="text-emerald-500 font-bold font-mono text-[10px] mb-2 opacity-80 tracking-widest uppercase">{flow.title}</div>
+                <h3 className="text-base font-bold text-zinc-200 mb-2">{flow.subtitle}</h3>
+                <p className="text-zinc-500 text-xs leading-relaxed max-w-[180px]">{flow.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 🚀 方案與授權 (加入雙切換開關) */}
-      <section id="pricing" className="py-24 px-6 relative z-10 border-t border-white/5 bg-[#030305]">
+      {/* 🚀 方案與授權 (極簡版) */}
+      <section id="pricing" className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#050505]">
         <div className="max-w-6xl mx-auto text-center">
           <div className="mb-12 flex flex-col items-center">
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
               <span className="text-cyan-500 font-mono text-3xl">{"//"}</span> 方案與授權
             </h2>
             <div className="flex items-center gap-3 text-zinc-500 text-xs font-mono tracking-widest uppercase">
@@ -706,112 +694,96 @@ export default function App() {
             </div>
           </div>
 
-          {/* 🚀 雙切換開關 (Tech-Toggle) */}
-          <div className="flex justify-center mb-16 relative z-10" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-            <div className="bg-[#08080a] border border-white/10 p-1.5 rounded-[1.5rem] flex gap-2 backdrop-blur-md shadow-inner relative">
+          <div className="flex justify-center mb-12 relative z-10" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            <div className="bg-[#0a0a0c] border border-zinc-800 p-1.5 rounded-xl flex gap-1">
               <button
                 onClick={() => setPricingType('bot')}
-                className={`relative px-8 py-3.5 rounded-2xl font-mono text-sm font-bold tracking-widest transition-all duration-300 flex items-center gap-3 z-10 ${pricingMode === 'bot' ? 'text-cyan-400' : 'text-zinc-500 hover:text-zinc-300'}`}
+                className={`px-6 py-2.5 rounded-lg font-mono text-sm font-bold tracking-wider transition-colors flex items-center gap-2 ${pricingMode === 'bot' ? 'bg-cyan-500/10 text-cyan-400' : 'text-zinc-500 hover:text-zinc-300'}`}
               >
-                <SafeIcon icon={Bot} className="w-4 h-4" />
-                [ BOT_MODS ] 機器人
+                <SafeIcon icon={Bot} className="w-4 h-4" /> BOT_MODS
               </button>
               <button
                 onClick={() => setPricingType('web')}
-                className={`relative px-8 py-3.5 rounded-2xl font-mono text-sm font-bold tracking-widest transition-all duration-300 flex items-center gap-3 z-10 ${pricingMode === 'web' ? 'text-blue-400' : 'text-zinc-500 hover:text-zinc-300'}`}
+                className={`px-6 py-2.5 rounded-lg font-mono text-sm font-bold tracking-wider transition-colors flex items-center gap-2 ${pricingMode === 'web' ? 'bg-blue-500/10 text-blue-400' : 'text-zinc-500 hover:text-zinc-300'}`}
               >
-                <SafeIcon icon={Layout} className="w-4 h-4" />
-                [ WEB_DEV ] 網頁開發
+                <SafeIcon icon={Layout} className="w-4 h-4" /> WEB_DEV
               </button>
-              
-              {/* 滑動的高亮背景塊 */}
-              <div className={`absolute top-1.5 bottom-1.5 w-[calc(50%-0.375rem)] rounded-2xl transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] shadow-[0_0_20px_rgba(0,0,0,0.5)] z-0 ${pricingMode === 'bot' ? 'left-1.5 bg-cyan-500/10 border border-cyan-500/30' : 'left-[calc(50%+0.375rem)] bg-blue-500/10 border border-blue-500/30'}`}></div>
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch relative">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch relative">
             {currentPricingPlans.map((plan, i) => {
               const styles = getPlanStyles(plan.theme);
               return (
-                <div key={`${pricingMode}-${i}`} className={`group flex flex-col p-8 rounded-[2rem] transition-all duration-500 text-left relative overflow-hidden border backdrop-blur-xl animate-fade-slide ${styles.card}`} style={{ animationDelay: `${i * 0.1}s` }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                <div key={`${pricingMode}-${i}`} className={`group flex flex-col p-6 rounded-2xl transition-all duration-300 text-left relative overflow-hidden border animate-fade-slide ${styles.card}`} style={{ animationDelay: `${i * 0.1}s` }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                   
-                  <div className={`absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r ${styles.topBar}`}></div>
-                  {plan.popular && <div className="absolute top-0 right-0 bg-cyan-500/20 text-cyan-300 text-[9px] font-black px-5 py-2 font-mono tracking-[0.2em] uppercase rounded-bl-3xl border-b border-l border-cyan-500/30 shadow-lg z-20">Recommended</div>}
-                  <div className="absolute left-0 top-1/4 bottom-1/4 w-[2px] bg-gradient-to-b from-transparent via-white/5 to-transparent"></div>
+                  <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${styles.topBar}`}></div>
+                  {plan.popular && <div className="absolute top-0 right-0 bg-cyan-500/10 text-cyan-400 text-[9px] font-bold px-3 py-1.5 font-mono tracking-widest uppercase rounded-bl-lg border-b border-l border-cyan-500/20 z-20">Recommended</div>}
                   
-                  <div className="flex justify-between items-start mb-8 relative z-10">
-                    <div className={`p-4 rounded-2xl border shadow-inner ${styles.iconBg}`}>
+                  <div className="flex justify-between items-start mb-6 relative z-10">
+                    <div className={`p-3 rounded-xl border ${styles.iconBg}`}>
                       <div className={styles.iconColor}>{getIcon(plan.iconName)}</div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-[9px] font-mono text-zinc-500 tracking-widest uppercase mb-1">AUTH_LEVEL</div>
-                      <div className={`text-xs font-mono font-bold tracking-widest border px-2 py-1 rounded-md ${plan.popular ? 'border-cyan-500/40 text-cyan-400 bg-cyan-500/10' : 'border-white/10 text-zinc-400 bg-black/50'}`}>
+                    <div className="text-right mt-1">
+                      <div className={`text-[10px] font-mono font-bold tracking-widest uppercase border px-2 py-0.5 rounded ${plan.popular ? 'border-cyan-500/30 text-cyan-400' : 'border-zinc-700 text-zinc-500'}`}>
                         {plan.badge}
                       </div>
                     </div>
                   </div>
                   
-                  <h3 className="text-2xl font-black text-zinc-100 mb-6 tracking-wide relative z-10">{plan.name}</h3>
+                  <h3 className="text-xl font-bold text-zinc-100 mb-4 tracking-wide">{plan.name}</h3>
                   
-                  <div className="mb-10 flex items-baseline gap-1 border-b border-white/5 pb-8 relative z-10">
-                    <span className="text-sm font-bold text-zinc-500 font-mono">NT$</span>
-                    <span className="text-5xl font-black text-white tracking-tighter">{plan.price}</span>
+                  <div className="mb-6 flex items-baseline gap-1 border-b border-zinc-800 pb-6">
+                    <span className="text-xs font-bold text-zinc-500 font-mono">NT$</span>
+                    <span className="text-4xl font-black text-white tracking-tighter">{plan.price}</span>
                   </div>
                   
-                  <ul className="space-y-4 mb-10 flex-grow font-medium relative z-10">
-                    {plan.features.map((f, fi) => <li key={fi} className="flex items-start gap-3 text-sm"><span className={`${styles.check} font-mono text-xs mt-1`}>{">"}</span><span className="text-zinc-300 leading-relaxed">{f}</span></li>)}
+                  <ul className="space-y-3 mb-8 flex-grow font-medium">
+                    {plan.features.map((f, fi) => <li key={fi} className="flex items-start gap-2 text-sm"><span className={`${styles.check} font-mono text-xs mt-0.5`}>{">"}</span><span className="text-zinc-400 leading-snug">{f}</span></li>)}
                   </ul>
 
-                  <div className="flex justify-center mb-6 opacity-30 group-hover:opacity-70 transition-opacity">
-                    <div className="barcode"></div>
-                  </div>
-
-                  <a href="https://discordapp.com/users/1284764153038503990" target="_blank" rel="noopener noreferrer" className={`flex flex-col items-center justify-center w-full py-4 transition-all duration-300 rounded-xl relative z-10 border ${styles.button}`}>
-                    <span className="font-mono text-[9px] uppercase opacity-80 mb-0.5 tracking-[0.2em]">Request_Access</span>
-                    <span className="font-bold text-sm tracking-widest">獲取授權方案</span>
+                  <a href="https://discordapp.com/users/1284764153038503990" target="_blank" rel="noopener noreferrer" className={`flex items-center justify-center w-full py-3 transition-colors rounded-lg font-bold tracking-widest text-sm border ${styles.button}`}>
+                    獲取方案
                   </a>
                 </div>
               );
             })}
           </div>
 
-          {/* 系統監控面板 (Server Monitor) */}
-          <div className="mt-32 mb-20 max-w-4xl mx-auto">
-            <div className="bg-[#08080a]/90 border border-white/10 rounded-[2rem] p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-10 shadow-[0_30px_60px_rgba(0,0,0,0.5)] relative overflow-hidden backdrop-blur-xl" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-emerald-500/60 to-transparent animate-scan-beam blur-[2px] will-change-transform"></div>
-              <div className="absolute inset-0 tech-grid opacity-20 mix-blend-screen pointer-events-none"></div>
-
-              <div className="flex items-center gap-6 w-full md:w-auto relative z-10">
-                <div className="w-20 h-20 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(16,185,129,0.2)]">
-                  <SafeIcon icon={Globe} className="w-10 h-10 text-emerald-400" />
-                  <div className="absolute inset-0 rounded-full border border-emerald-500/20 animate-ping opacity-20 duration-1000"></div>
+          {/* 系統監控面板 (輕量化) */}
+          <div className="mt-24 mb-16 max-w-4xl mx-auto">
+            <div className="bg-[#0a0a0c] border border-zinc-800 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-8" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+              
+              <div className="flex items-center gap-5 w-full md:w-auto">
+                <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0">
+                  <SafeIcon icon={Globe} className="w-6 h-6 text-emerald-400" />
                 </div>
                 <div className="text-left">
-                  <div className="flex items-center gap-2 mb-1.5 bg-emerald-500/10 w-fit px-3 py-1 rounded-md border border-emerald-500/20">
-                    <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_5px_#34d399]"></span>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
                     <span className="font-mono text-emerald-400 text-[10px] font-bold tracking-widest uppercase">Main_Node_Online</span>
                   </div>
-                  <h4 className="text-white font-bold text-2xl tracking-wide">企業級伺服器節點</h4>
+                  <h4 className="text-zinc-100 font-bold text-lg tracking-wide">企業級伺服器節點</h4>
                 </div>
               </div>
 
-              <div className="flex gap-8 w-full md:w-auto justify-between md:justify-end relative z-10 border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0 md:pl-10">
+              <div className="flex gap-8 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 md:border-l border-zinc-800 pt-6 md:pt-0 md:pl-8">
                 <div className="text-left">
                   <div className="text-zinc-500 font-mono text-[10px] tracking-widest mb-1">CPU_LOAD</div>
-                  <div className="text-white font-mono font-black text-3xl flex items-baseline gap-1">
-                    <span ref={cpuRef}>12</span><span className="text-sm text-zinc-500 font-bold">%</span>
+                  <div className="text-zinc-200 font-mono font-bold text-2xl flex items-baseline gap-1">
+                    <span ref={cpuRef}>12</span><span className="text-xs text-zinc-600">%</span>
                   </div>
                 </div>
                 <div className="text-left">
                   <div className="text-zinc-500 font-mono text-[10px] tracking-widest mb-1">MEM_USAGE</div>
-                  <div className="text-white font-mono font-black text-3xl flex items-baseline gap-1">
-                    <span ref={ramRef}>32</span><span className="text-sm text-zinc-500 font-bold">%</span>
+                  <div className="text-zinc-200 font-mono font-bold text-2xl flex items-baseline gap-1">
+                    <span ref={ramRef}>32</span><span className="text-xs text-zinc-600">%</span>
                   </div>
                 </div>
                 <div className="text-left">
                   <div className="text-zinc-500 font-mono text-[10px] tracking-widest mb-1">NET_PING</div>
-                  <div className="text-emerald-400 font-mono font-black text-3xl flex items-baseline gap-1 drop-shadow-[0_0_10px_rgba(52,211,153,0.4)]">
-                    <span ref={pingRef}>24</span><span className="text-sm text-emerald-600 font-bold">ms</span>
+                  <div className="text-emerald-400 font-mono font-bold text-2xl flex items-baseline gap-1">
+                    <span ref={pingRef}>24</span><span className="text-xs text-emerald-600/50">ms</span>
                   </div>
                 </div>
               </div>
@@ -820,41 +792,37 @@ export default function App() {
 
           {/* 伺服器代管方案 */}
           <div className="text-center">
-             <div className="mb-12 flex flex-col items-center">
-              <h3 className="text-2xl md:text-4xl font-black text-white mb-2 inline-flex items-center gap-4 tracking-tight">
+             <div className="mb-10 flex flex-col items-center">
+              <h3 className="text-2xl md:text-3xl font-black text-white mb-2 inline-flex items-center gap-4 tracking-tight">
                 <span className="text-purple-500 font-mono text-2xl">{"//"}</span> {pricingMode === 'bot' ? '伺服器代管' : '網頁雲端代管'}
               </h3>
-              <div className="flex items-center gap-3 text-zinc-500 text-xs font-mono tracking-widest uppercase">
-                <span className="w-8 h-[1px] bg-zinc-700"></span> HOSTING_SERVICES <span className="animate-blink text-purple-500 font-mono">_</span>
-              </div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-5xl mx-auto">
               {currentHostingPlans.map((plan, i) => {
                 const styles = getPlanStyles(plan.theme);
                 return (
-                  <div key={`${pricingMode}-host-${i}`} className={`group flex flex-col p-8 bg-[#08080a]/80 rounded-3xl transition-all duration-500 relative border backdrop-blur-md animate-fade-slide ${styles.card}`} style={{ animationDelay: `${i * 0.1}s` }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                    {plan.popular && <div className="absolute top-0 right-0 bg-purple-500/20 text-purple-300 text-[9px] font-black tracking-widest uppercase px-4 py-1.5 rounded-bl-2xl border-b border-l border-purple-500/30 z-20">熱門選擇</div>}
-                    <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r ${styles.topBar}`}></div>
+                  <div key={`${pricingMode}-host-${i}`} className={`group flex flex-col p-6 bg-[#0a0a0c] rounded-2xl transition-all duration-300 relative border animate-fade-slide ${styles.card}`} style={{ animationDelay: `${i * 0.1}s` }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                    {plan.popular && <div className="absolute top-0 right-0 bg-purple-500/10 text-purple-400 text-[9px] font-bold tracking-widest uppercase px-3 py-1 rounded-bl-lg border-b border-l border-purple-500/20">熱門選擇</div>}
                     
-                    <div className="flex items-center gap-5 mb-6">
-                      <div className={`p-4 rounded-xl border shadow-inner ${styles.iconBg}`}>
+                    <div className="flex items-center gap-4 mb-5">
+                      <div className={`p-3 rounded-xl border ${styles.iconBg}`}>
                         <div className={styles.iconColor}>{getIcon(plan.iconName)}</div>
                       </div>
                       <div>
-                        <div className="text-[9px] font-mono text-zinc-600 tracking-widest uppercase mb-1.5">NODE_TYPE_{i+1}</div>
-                        <h4 className="text-xl font-bold text-zinc-100 tracking-wide">{plan.name}</h4>
+                        <div className="text-[9px] font-mono text-zinc-600 tracking-widest uppercase mb-0.5">NODE_{i+1}</div>
+                        <h4 className="text-lg font-bold text-zinc-200">{plan.name}</h4>
                       </div>
                     </div>
                     
-                    <div className="flex items-baseline gap-1 mb-8 border-b border-white/5 pb-6">
+                    <div className="flex items-baseline gap-1 mb-5 border-b border-zinc-800 pb-5">
                       <span className="text-xs font-bold text-zinc-500 font-mono">NT$</span>
-                      <span className="text-4xl font-black text-white tracking-tighter">{plan.price}</span>
+                      <span className="text-3xl font-black text-white tracking-tighter">{plan.price}</span>
                       <span className="text-xs font-bold text-zinc-500 font-mono">{plan.period}</span>
                     </div>
                     
-                    <ul className="space-y-3.5 flex-grow font-medium">
-                      {plan.features.map((f, fi) => <li key={fi} className="flex items-center gap-3 text-xs"><span className={`${styles.check} font-mono text-[10px]`}>{">"}</span><span className="text-zinc-300">{f}</span></li>)}
+                    <ul className="space-y-2.5 flex-grow font-medium">
+                      {plan.features.map((f, fi) => <li key={fi} className="flex items-center gap-2 text-xs"><span className={`${styles.check} font-mono`}>{">"}</span><span className="text-zinc-400">{f}</span></li>)}
                     </ul>
                   </div>
                 );
@@ -866,10 +834,10 @@ export default function App() {
       </section>
 
       {/* 常見問題 FAQ */}
-      <section id="faq" className="py-24 px-6 relative z-10 border-t border-white/5 bg-[#020202]">
+      <section id="faq" className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#08080a]">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-16 text-center flex flex-col items-center">
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
+          <div className="mb-12 text-center flex flex-col items-center">
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-2 inline-flex items-center gap-4 tracking-tight">
               <span className="text-blue-500 font-mono text-3xl">{"//"}</span> 常見問題 FAQ
             </h2>
             <div className="flex items-center gap-3 text-zinc-500 text-xs font-mono tracking-widest uppercase">
@@ -877,25 +845,24 @@ export default function App() {
             </div>
           </div>
           
-          <div className="space-y-4">
+          <div className="space-y-3">
             {faqs.map((faq, i) => (
               <div 
                 key={i} 
-                className="bg-[#08080a] border border-white/5 rounded-2xl transition-all duration-300 hover:border-blue-500/30 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] relative overflow-hidden group"
+                className="bg-[#0a0a0c] border border-zinc-800 rounded-xl transition-colors duration-300 hover:border-blue-500/30 overflow-hidden"
                 onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
               >
-                <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <button 
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full px-8 py-6 flex items-center justify-between text-left focus:outline-none"
+                  className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
                 >
-                  <span className="font-bold text-base md:text-lg text-zinc-200 tracking-wide flex items-center gap-4">
-                    <span className="text-blue-500 opacity-60 font-mono text-sm bg-blue-500/10 px-2 py-1 rounded">Q{i+1}</span> {faq.q}
+                  <span className="font-bold text-sm md:text-base text-zinc-300 flex items-center gap-3">
+                    <span className="text-blue-500 font-mono text-xs bg-blue-500/10 px-2 py-0.5 rounded">Q{i+1}</span> {faq.q}
                   </span>
-                  <SafeIcon icon={ChevronDown} className={`w-5 h-5 text-zinc-500 transition-transform duration-300 ${openFaq === i ? 'rotate-180 text-blue-400' : ''}`} />
+                  <SafeIcon icon={ChevronDown} className={`w-5 h-5 text-zinc-600 transition-transform duration-300 ${openFaq === i ? 'rotate-180 text-blue-400' : ''}`} />
                 </button>
-                <div className={`px-8 overflow-hidden transition-all duration-300 ease-in-out ${openFaq === i ? 'max-h-40 pb-6 opacity-100' : 'max-h-0 opacity-0'}`}>
-                  <p className="text-zinc-400 text-sm leading-relaxed border-t border-white/5 pt-5 ml-12">{faq.a}</p>
+                <div className={`px-6 overflow-hidden transition-all duration-300 ease-in-out ${openFaq === i ? 'max-h-40 pb-5 opacity-100' : 'max-h-0 opacity-0'}`}>
+                  <p className="text-zinc-500 text-sm leading-relaxed border-t border-zinc-800 pt-4 ml-10">{faq.a}</p>
                 </div>
               </div>
             ))}
@@ -904,38 +871,34 @@ export default function App() {
       </section>
 
       {/* 聯絡 CTA */}
-      <section className="py-24 px-6 relative z-10 text-center border-t border-white/5 bg-[#030305]">
-        <div className="max-w-4xl mx-auto p-12 md:p-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan-900/20 via-[#050508] to-[#050508] border border-cyan-900/40 rounded-[3rem] shadow-[0_0_100px_rgba(34,211,238,0.1)] relative overflow-hidden group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent blur-[1px] group-hover:shadow-[0_0_20px_#22d3ee] transition-all"></div>
+      <section className="py-24 px-6 relative z-10 text-center border-t border-zinc-900 bg-[#050505]">
+        <div className="max-w-4xl mx-auto p-10 md:p-16 bg-[#0a0a0c] border border-zinc-800 rounded-[2rem] relative overflow-hidden group hover:border-cyan-500/30 transition-colors duration-500" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
           
-          <div className="text-cyan-500 font-mono text-[10px] tracking-[0.4em] uppercase mb-8 flex justify-center items-center gap-3 bg-cyan-500/10 w-fit mx-auto px-4 py-1.5 rounded-full border border-cyan-500/20">
-             <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse shadow-[0_0_10px_#22d3ee]"></span> SYSTEM READY
+          <div className="text-cyan-500 font-mono text-[10px] tracking-[0.2em] uppercase mb-6 flex justify-center items-center gap-2 bg-cyan-500/10 w-fit mx-auto px-3 py-1 rounded-full border border-cyan-500/20">
+             <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse"></span> SYSTEM READY
           </div>
           
-          <h2 className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tight">準備好啟動專案了嗎？</h2>
-          <p className="text-zinc-400 mb-12 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">不論是單純的社群管理機器人，還是高度客製化的全端網站系統，<br className="hidden md:block" />我們都能為您建置最穩定、最現代化的解決方案。</p>
+          <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">準備好啟動專案了嗎？</h2>
+          <p className="text-zinc-400 mb-10 text-sm md:text-base leading-relaxed max-w-xl mx-auto">不論是單純的社群管理機器人，還是高度客製化的全端網站系統，我們都能為您建置最穩定、最現代化的解決方案。</p>
           
-          <a href="https://discordapp.com/users/1284764153038503990" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-4 px-12 py-5 bg-cyan-500 text-black rounded-2xl hover:bg-cyan-400 hover:scale-105 shadow-[0_0_40px_rgba(34,211,238,0.4)] transition-all duration-300">
-            <SafeIcon icon={Mail} className="w-6 h-6" />
-            <span className="flex flex-col items-start leading-tight">
-              <span className="font-mono text-[10px] font-black tracking-widest uppercase opacity-70">Initialize Contact</span>
-              <span className="font-bold text-lg tracking-wide">啟動專案對話</span>
-            </span>
+          <a href="https://discordapp.com/users/1284764153038503990" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black rounded-xl font-bold hover:bg-zinc-200 active:scale-95 transition-all">
+            <SafeIcon icon={Mail} className="w-5 h-5" />
+            <span className="tracking-wide">啟動專案對話</span>
           </a>
         </div>
       </section>
 
       {/* 頁尾 */}
-      <footer className="py-12 text-center border-t border-white/5 bg-[#020202] relative z-10">
-        <div className="text-2xl font-black text-zinc-200 mb-6 tracking-wider">KrProgram<span className="text-cyan-500">_</span></div>
-        <div className="flex justify-center gap-12 text-zinc-500 text-xs font-black tracking-widest font-mono mb-10">
-          <a href="https://github.com/yanandhuang09190217-ctrl" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors duration-300">GITHUB</a>
+      <footer className="py-10 text-center border-t border-zinc-900 bg-[#020202] relative z-10">
+        <div className="text-xl font-black text-zinc-400 mb-4 tracking-wider">KrProgram<span className="text-cyan-500">_</span></div>
+        <div className="flex justify-center gap-8 text-zinc-600 text-xs font-bold tracking-widest font-mono mb-8">
+          <a href="https://github.com/yanandhuang09190217-ctrl" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors">GITHUB</a>
           <span className="text-zinc-800">|</span>
-          <a href="https://discordapp.com/users/1284764153038503990" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors duration-300">DISCORD</a>
+          <a href="https://discordapp.com/users/1284764153038503990" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors">DISCORD</a>
         </div>
-        <div className="text-zinc-700 text-[9px] font-mono tracking-[0.3em] uppercase flex flex-col items-center gap-2">
+        <div className="text-zinc-600 text-[9px] font-mono tracking-[0.2em] uppercase flex flex-col items-center gap-1">
           <span>© {new Date().getFullYear()} KrProgram. All Rights Reserved.</span>
-          <span>SYS_VERSION: 3.1.6 // FULL_STACK_NODE</span>
+          <span>SYS_VERSION: 3.2.0 // PERFORMANCE_OPTIMIZED</span>
         </div>
       </footer>
     </div>
