@@ -81,19 +81,19 @@ const botHostingPlans = [
 ];
 
 const webPricingPlans = [
-  { name: '單頁形象官網', badge: 'Landing', price: '5,000', theme: 'blue', popular: false, iconName: 'Layout', features: ['RWD 響應式手機版設計', '現代化滾動與進入動畫', '聯絡表單與社群連結整合', '適合個人履歷/工作室展示', '享有「免費代管」極大優勢'] },
+  { name: '單頁形象官網', badge: 'Landing', price: '5,000', theme: 'blue', popular: false, iconName: 'Layout', features: ['RWD 響應式手機版設計', '現代化滾動與進入動畫', '聯絡表單與社群連結整合', '適合個人履歷/工作室展示', '專業雲端伺服器部署'] },
   { name: '多頁企業網站', badge: 'Corporate', price: '15,000', theme: 'cyan', popular: true, iconName: 'MonitorSmartphone', features: ['包含單頁版所有視覺功能', '多頁面路由 (關於/服務/作品)', '基礎 SEO 搜尋引擎優化設計', '整合 Google Analytics 追蹤', '輕量級系統狀態或資料展示'] },
   { name: '全端系統級應用', badge: 'Full-Stack', price: '35,000', theme: 'emerald', popular: false, iconName: 'Database', features: ['高階客製化前端互動介面', '會員註冊登入與權限系統', '專屬客製化後台管理介面', '獨立資料庫架設 (SQL/NoSQL)', '金流 / 第三方 API 深度串接'] }
 ];
 
 const webHostingPlans = [
-  { name: '靜態邊緣節點', price: '0', period: '/月', theme: 'blue', popular: false, iconName: 'Cloud', features: ['採用 Vercel 全球 CDN 節點', '自動發放免費 SSL 安全憑證', '超快的靜態頁面載入速度', '適合無後端之形象網站'] },
+  { name: '基礎靜態託管', price: '200', period: '/月', theme: 'blue', popular: false, iconName: 'Cloud', features: ['全球 CDN 邊緣節點', '自動發放 SSL 安全憑證', '超快的靜態頁面載入速度', '適合無後端之形象網站'] },
   { name: '全端雲端主機', price: '300', period: '/月', theme: 'purple', popular: true, iconName: 'Server', features: ['專屬 Node.js 執行環境', '包含基礎資料庫儲存空間', '自動化部屬與 24/7 連線監控', '適合中小型動態資料網站'] },
   { name: '企業級獨立 VPS', price: '1,000', period: '/月', theme: 'emerald', popular: false, iconName: 'Globe', features: ['獨享高規格 CPU 運算資源', '支援大型關聯式資料庫存取', '無限制流量與完整後台權限', '最高級別的客製化資安防護'] }
 ];
 
 const faqs = [
-  { q: '機器人/網頁需要我另外租伺服器來掛機嗎？', a: '您可以自行尋找主機，或者使用我提供的「伺服器代管服務」。若是單純的形象網頁，我甚至可以幫您串接 Vercel 提供永久免費的頂級代管服務！' },
+  { q: '機器人/網頁需要我另外租伺服器來掛機嗎？', a: '您可以自行租用主機，或者使用我提供的「雲端代管服務」。我會幫您處理所有環境架設、24 小時連線監控與後續的更新維護，讓您完全免除技術煩惱。' },
   { q: '如果 API 更新導致功能壞掉，會幫忙修嗎？', a: '絕對會！只要是本工作室開發的專案，在保固期內若因官方 API 更新導致的非人為故障，皆提供免費修復支援。' },
   { q: '我可以分期付款嗎？', a: '大型專案（如旗艦商城、全端系統）支援階段性付款：簽約時支付訂金 50%，測試伺服器確認功能無誤後，再支付尾款 50%，保障雙方權益。' },
   { q: '後續如果想增加新功能怎麼辦？', a: '歡迎隨時討論！我會根據新功能的複雜度進行單獨評估與報價，而且老客戶絕對享有額外折扣優惠。' }
@@ -589,7 +589,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 🚀 API 串接生態系 */}
+      {/* API 串接生態系 */}
       <section className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#050508] to-[#020203]">
         <div className="max-w-5xl mx-auto">
           <div className="mb-16 flex flex-col items-center text-center">
@@ -603,12 +603,9 @@ export default function App() {
 
           <div className="relative py-16" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
             
-            {/* 🚀 升級版動態主核心 */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 bg-[#050505] border-2 border-cyan-500/50 rounded-2xl flex items-center justify-center z-20 shadow-[0_0_50px_rgba(34,211,238,0.4)] backdrop-blur-md">
-              {/* 核心脈衝光暈 */}
               <div className="absolute inset-0 bg-cyan-500/20 rounded-xl animate-pulse blur-[12px] will-change-transform pointer-events-none"></div>
               
-              {/* 純 CSS 零效能耗損的圖示切換輪播 */}
               <div className="relative w-12 h-12 flex items-center justify-center pointer-events-none">
                 <SafeIcon icon={Cpu} className="absolute w-10 h-10 text-cyan-400 animate-cycle-1 will-change-transform" />
                 <SafeIcon icon={Globe} className="absolute w-10 h-10 text-blue-400 animate-cycle-2 will-change-transform opacity-0" />
@@ -616,11 +613,9 @@ export default function App() {
                 <SafeIcon icon={Wifi} className="absolute w-10 h-10 text-emerald-400 animate-cycle-4 will-change-transform opacity-0" />
               </div>
 
-              {/* 外圍旋轉光圈 */}
               <div className="absolute -inset-6 border border-cyan-500/20 rounded-[2rem] animate-[spin_6s_linear_infinite] will-change-transform pointer-events-none"></div>
               <div className="absolute -inset-10 border border-blue-500/10 rounded-full animate-[spin_8s_linear_infinite_reverse] border-dashed will-change-transform pointer-events-none"></div>
               
-              {/* 發射的資料流粒子 */}
               <div className="absolute w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_8px_#10b981] animate-data-shoot-1 will-change-transform pointer-events-none hidden md:block"></div>
               <div className="absolute w-1.5 h-1.5 bg-blue-400 rounded-full shadow-[0_0_8px_#3b82f6] animate-data-shoot-2 will-change-transform pointer-events-none hidden md:block"></div>
               <div className="absolute w-1.5 h-1.5 bg-red-400 rounded-full shadow-[0_0_8px_#ef4444] animate-data-shoot-3 will-change-transform pointer-events-none hidden md:block"></div>
