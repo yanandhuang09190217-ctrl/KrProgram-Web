@@ -5,7 +5,7 @@ import {
   MessageSquare, CreditCard, Settings, Rocket, ChevronDown, 
   Ticket, ShoppingCart, ShieldCheck, Gamepad2, Eye,
   Cpu, Globe, Database, Monitor, MessageCircle, 
-  Command, PlayCircle, Coins, Plus, Layout, MonitorSmartphone, Cloud
+  Command, PlayCircle, Coins, Plus, Layout, MonitorSmartphone, Cloud, Wifi
 } from 'lucide-react';
 
 // ==========================================
@@ -81,21 +81,21 @@ const botHostingPlans = [
 ];
 
 const webPricingPlans = [
-  { name: '單頁形象官網', badge: 'Landing', price: '5,000', theme: 'blue', popular: false, iconName: 'Layout', features: ['RWD 響應式手機版設計', '現代化滾動與進入動畫', '聯絡表單與社群連結整合', '適合個人履歷/工作室展示', '享有「急速代管」極大優勢'] },
+  { name: '單頁形象官網', badge: 'Landing', price: '5,000', theme: 'blue', popular: false, iconName: 'Layout', features: ['RWD 響應式手機版設計', '現代化滾動與進入動畫', '聯絡表單與社群連結整合', '適合個人履歷/工作室展示', '享有「免費代管」極大優勢'] },
   { name: '多頁企業網站', badge: 'Corporate', price: '15,000', theme: 'cyan', popular: true, iconName: 'MonitorSmartphone', features: ['包含單頁版所有視覺功能', '多頁面路由 (關於/服務/作品)', '基礎 SEO 搜尋引擎優化設計', '整合 Google Analytics 追蹤', '輕量級系統狀態或資料展示'] },
   { name: '全端系統級應用', badge: 'Full-Stack', price: '35,000', theme: 'emerald', popular: false, iconName: 'Database', features: ['高階客製化前端互動介面', '會員註冊登入與權限系統', '專屬客製化後台管理介面', '獨立資料庫架設 (SQL/NoSQL)', '金流 / 第三方 API 深度串接'] }
 ];
 
 const webHostingPlans = [
-  { name: '靜態邊緣節點', price: '200', period: '/月', theme: 'blue', popular: false, iconName: 'Cloud', features: ['採用 Vercel 全球 CDN 節點', '發放 SSL 安全憑證', '超快的靜態頁面載入速度', '適合無後端之形象網站'] },
-  { name: '全端雲端主機', price: '500', period: '/月', theme: 'purple', popular: true, iconName: 'Server', features: ['專屬 Node.js 執行環境', '包含基礎資料庫儲存空間', '自動化部屬與 24/7 連線監控', '適合中小型動態資料網站'] },
+  { name: '靜態邊緣節點', price: '0', period: '/月', theme: 'blue', popular: false, iconName: 'Cloud', features: ['採用 Vercel 全球 CDN 節點', '自動發放免費 SSL 安全憑證', '超快的靜態頁面載入速度', '適合無後端之形象網站'] },
+  { name: '全端雲端主機', price: '300', period: '/月', theme: 'purple', popular: true, iconName: 'Server', features: ['專屬 Node.js 執行環境', '包含基礎資料庫儲存空間', '自動化部屬與 24/7 連線監控', '適合中小型動態資料網站'] },
   { name: '企業級獨立 VPS', price: '1,000', period: '/月', theme: 'emerald', popular: false, iconName: 'Globe', features: ['獨享高規格 CPU 運算資源', '支援大型關聯式資料庫存取', '無限制流量與完整後台權限', '最高級別的客製化資安防護'] }
 ];
 
 const faqs = [
-  { q: '機器人/網頁需要我另外租伺服器來掛機嗎？', a: '您可以自行尋找主機，或者使用我提供的「伺服器代管服務」。若是單純的形象網頁，我甚至可以幫您串接 雲端網站託管 提供永久的頂級代管服務！' },
+  { q: '機器人/網頁需要我另外租伺服器來掛機嗎？', a: '您可以自行尋找主機，或者使用我提供的「伺服器代管服務」。若是單純的形象網頁，我甚至可以幫您串接 Vercel 提供永久免費的頂級代管服務！' },
   { q: '如果 API 更新導致功能壞掉，會幫忙修嗎？', a: '絕對會！只要是本工作室開發的專案，在保固期內若因官方 API 更新導致的非人為故障，皆提供免費修復支援。' },
-  { q: '我可以分期付款嗎？', a: '僅限大型專案（如旗艦商城、全端系統）支援階段性付款：簽約時支付訂金 60%，測試伺服器確認功能無誤後，再支付尾款 40%，保障雙方權益。' },
+  { q: '我可以分期付款嗎？', a: '大型專案（如旗艦商城、全端系統）支援階段性付款：簽約時支付訂金 50%，測試伺服器確認功能無誤後，再支付尾款 50%，保障雙方權益。' },
   { q: '後續如果想增加新功能怎麼辦？', a: '歡迎隨時討論！我會根據新功能的複雜度進行單獨評估與報價，而且老客戶絕對享有額外折扣優惠。' }
 ];
 
@@ -294,6 +294,26 @@ export default function App() {
         .sweep-emerald { background: linear-gradient(to bottom, transparent, rgba(16, 185, 129, 0.05), transparent); }
         .sweep-red { background: linear-gradient(to bottom, transparent, rgba(239, 68, 68, 0.05), transparent); }
         .sweep-yellow { background: linear-gradient(to bottom, transparent, rgba(234, 179, 8, 0.05), transparent); }
+
+        /* 🚀 API 核心動態圖示輪播 (完全由 GPU 計算，0 JS 效能負擔) */
+        @keyframes cycle-1 { 0%, 20% { opacity: 1; transform: scale(1) translateZ(0); } 25%, 95% { opacity: 0; transform: scale(0.3) translateZ(0); } 100% { opacity: 1; transform: scale(1) translateZ(0); } }
+        @keyframes cycle-2 { 0%, 20% { opacity: 0; transform: scale(0.3) translateZ(0); } 25%, 45% { opacity: 1; transform: scale(1) translateZ(0); } 50%, 100% { opacity: 0; transform: scale(0.3) translateZ(0); } }
+        @keyframes cycle-3 { 0%, 45% { opacity: 0; transform: scale(0.3) translateZ(0); } 50%, 70% { opacity: 1; transform: scale(1) translateZ(0); } 75%, 100% { opacity: 0; transform: scale(0.3) translateZ(0); } }
+        @keyframes cycle-4 { 0%, 70% { opacity: 0; transform: scale(0.3) translateZ(0); } 75%, 95% { opacity: 1; transform: scale(1) translateZ(0); } 100% { opacity: 0; transform: scale(0.3) translateZ(0); } }
+        .animate-cycle-1 { animation: cycle-1 8s infinite; }
+        .animate-cycle-2 { animation: cycle-2 8s infinite; }
+        .animate-cycle-3 { animation: cycle-3 8s infinite; }
+        .animate-cycle-4 { animation: cycle-4 8s infinite; }
+
+        /* 🚀 資料流發射特效 */
+        @keyframes data-shoot-1 { 0%, 10% { transform: translate(0, 0) scale(1); opacity: 1; } 40%, 100% { transform: translate(-180px, -80px) scale(0); opacity: 0; } }
+        @keyframes data-shoot-2 { 0%, 10% { transform: translate(0, 0) scale(1); opacity: 1; } 40%, 100% { transform: translate(180px, -80px) scale(0); opacity: 0; } }
+        @keyframes data-shoot-3 { 0%, 10% { transform: translate(0, 0) scale(1); opacity: 1; } 40%, 100% { transform: translate(-180px, 80px) scale(0); opacity: 0; } }
+        @keyframes data-shoot-4 { 0%, 10% { transform: translate(0, 0) scale(1); opacity: 1; } 40%, 100% { transform: translate(180px, 80px) scale(0); opacity: 0; } }
+        .animate-data-shoot-1 { animation: data-shoot-1 3s infinite ease-out; }
+        .animate-data-shoot-2 { animation: data-shoot-2 3.5s infinite ease-out 0.5s; }
+        .animate-data-shoot-3 { animation: data-shoot-3 2.8s infinite ease-out 1s; }
+        .animate-data-shoot-4 { animation: data-shoot-4 3.2s infinite ease-out 1.5s; }
       `}} />
 
       {/* 開機啟動畫面 */}
@@ -548,31 +568,11 @@ export default function App() {
                       </div>
                       <div>
                         <div className="text-[#dbdee1] font-bold text-xs mb-1">📦 庫存狀態</div>
-                        <div className="text-emerald-400 text-sm font-bold">充足 (無限)</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-3 flex gap-2">
-                    <button className="bg-[#248046] hover:bg-[#1a6334] text-white text-sm font-bold px-4 py-2 rounded transition-colors flex items-center gap-2">
-                      <SafeIcon icon={CreditCard} className="w-4 h-4" /> 立即購買
-                    </button>
-                    <button className="bg-[#4e5058] hover:bg-[#6d6f78] text-white text-sm font-bold px-4 py-2 rounded transition-colors flex items-center gap-2">
-                      <SafeIcon icon={MessageCircle} className="w-4 h-4" /> 聯絡客服
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* API 串接生態系 */}
-      <section className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#050505]">
+      {/* 🚀 API 串接生態系 */}
+      <section className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#050508] to-[#020203]">
         <div className="max-w-5xl mx-auto">
           <div className="mb-16 flex flex-col items-center text-center">
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
+            <h2 className="text-3xl md:text-5xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
               <span className="text-blue-500 font-mono text-3xl">{"//"}</span> 無限 API 擴充生態
             </h2>
             <div className="flex items-center gap-3 text-zinc-500 text-xs font-mono tracking-widest uppercase">
@@ -580,13 +580,33 @@ export default function App() {
             </div>
           </div>
 
-          <div className="relative py-12" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-zinc-900 border border-cyan-500/40 rounded-2xl flex items-center justify-center z-20 group">
-              <SafeIcon icon={Cpu} className="w-10 h-10 text-cyan-400 group-hover:scale-110 transition-transform" />
-              <div className="absolute -inset-2 border border-cyan-500/30 rounded-[1.25rem] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="relative py-16" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            
+            {/* 🚀 升級版動態主核心 */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 bg-[#050505] border-2 border-cyan-500/50 rounded-2xl flex items-center justify-center z-20 shadow-[0_0_50px_rgba(34,211,238,0.4)] backdrop-blur-md">
+              {/* 核心脈衝光暈 */}
+              <div className="absolute inset-0 bg-cyan-500/20 rounded-xl animate-pulse blur-[12px] will-change-transform pointer-events-none"></div>
+              
+              {/* 純 CSS 零效能耗損的圖示切換輪播 */}
+              <div className="relative w-12 h-12 flex items-center justify-center pointer-events-none">
+                <SafeIcon icon={Cpu} className="absolute w-10 h-10 text-cyan-400 animate-cycle-1 will-change-transform" />
+                <SafeIcon icon={Globe} className="absolute w-10 h-10 text-blue-400 animate-cycle-2 will-change-transform opacity-0" />
+                <SafeIcon icon={Database} className="absolute w-10 h-10 text-purple-400 animate-cycle-3 will-change-transform opacity-0" />
+                <SafeIcon icon={Wifi} className="absolute w-10 h-10 text-emerald-400 animate-cycle-4 will-change-transform opacity-0" />
+              </div>
+
+              {/* 外圍旋轉光圈 */}
+              <div className="absolute -inset-6 border border-cyan-500/20 rounded-[2rem] animate-[spin_6s_linear_infinite] will-change-transform pointer-events-none"></div>
+              <div className="absolute -inset-10 border border-blue-500/10 rounded-full animate-[spin_8s_linear_infinite_reverse] border-dashed will-change-transform pointer-events-none"></div>
+              
+              {/* 發射的資料流粒子 (精準射向四個角落) */}
+              <div className="absolute w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_8px_#10b981] animate-data-shoot-1 will-change-transform pointer-events-none hidden md:block"></div>
+              <div className="absolute w-1.5 h-1.5 bg-blue-400 rounded-full shadow-[0_0_8px_#3b82f6] animate-data-shoot-2 will-change-transform pointer-events-none hidden md:block"></div>
+              <div className="absolute w-1.5 h-1.5 bg-red-400 rounded-full shadow-[0_0_8px_#ef4444] animate-data-shoot-3 will-change-transform pointer-events-none hidden md:block"></div>
+              <div className="absolute w-1.5 h-1.5 bg-yellow-400 rounded-full shadow-[0_0_8px_#eab308] animate-data-shoot-4 will-change-transform pointer-events-none hidden md:block"></div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-40 gap-y-12 relative z-10 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-48 gap-y-16 relative z-10 max-w-4xl mx-auto">
               {integrations.map((item, i) => {
                 // Determine sweep color based on integration border
                 const sweepClass = item.border.includes('emerald') ? 'sweep-emerald' : 
@@ -597,16 +617,16 @@ export default function App() {
                                     item.border.includes('red') ? 'bg-red-500 shadow-[0_0_10px_#ef4444]' : 'bg-yellow-500 shadow-[0_0_10px_#eab308]';
 
                 return (
-                  <div key={i} className={`p-5 bg-zinc-900/50 border border-zinc-800 rounded-2xl flex items-center gap-4 hover:${item.border} transition-colors duration-300 ${i % 2 === 0 ? 'md:mr-8' : 'md:ml-8'} relative overflow-hidden group`}>
+                  <div key={i} className={`p-6 bg-[#08080a]/80 backdrop-blur-md border border-white/5 rounded-3xl flex items-center gap-5 hover:${item.border} transition-all duration-500 hover:-translate-y-1 ${i % 2 === 0 ? 'md:mr-12' : 'md:ml-12'} relative overflow-hidden group`}>
                     <div className={`card-sweep-fx ${sweepClass}`}></div>
                     <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 group-hover:h-2/3 transition-all duration-500 z-20 ${accentColor}`}></div>
                     
-                    <div className={`p-3 rounded-xl bg-black border border-zinc-800 relative z-10`}>
+                    <div className={`p-4 rounded-2xl bg-black/50 border border-white/10 shadow-inner group-hover:bg-black/80 transition-colors relative z-10`}>
                       {item.icon}
                     </div>
                     <div className="relative z-10">
-                      <h4 className="font-bold text-zinc-200 text-base group-hover:text-white transition-colors">{item.title}</h4>
-                      <p className="text-xs text-zinc-500 mt-1">{item.desc}</p>
+                      <h4 className="font-bold text-zinc-100 text-lg tracking-wide group-hover:text-white transition-colors">{item.title}</h4>
+                      <p className="text-sm text-zinc-400 mt-1">{item.desc}</p>
                     </div>
                   </div>
                 )
@@ -614,11 +634,11 @@ export default function App() {
             </div>
             
             {/* 靜態連線裝飾 */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-full pointer-events-none z-0 hidden md:block opacity-30">
-              <div className="absolute top-[30%] left-[30%] w-[40%] h-[40%] border-t border-l border-zinc-600 rounded-tl-3xl"></div>
-              <div className="absolute bottom-[30%] right-[30%] w-[40%] h-[40%] border-b border-r border-zinc-600 rounded-br-3xl"></div>
-              <div className="absolute top-[30%] right-[30%] w-[40%] h-[40%] border-t border-r border-zinc-600 rounded-tr-3xl"></div>
-              <div className="absolute bottom-[30%] left-[30%] w-[40%] h-[40%] border-b border-l border-zinc-600 rounded-bl-3xl"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-full pointer-events-none z-0 hidden md:block opacity-30">
+              <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 border-t border-l border-dashed border-white/10 rounded-tl-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
+              <div className="absolute bottom-1/4 right-1/4 w-1/2 h-1/2 border-b border-r border-dashed border-white/10 rounded-br-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
+              <div className="absolute top-1/4 right-1/4 w-1/2 h-1/2 border-t border-r border-dashed border-white/10 rounded-tr-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
+              <div className="absolute bottom-1/4 left-1/4 w-1/2 h-1/2 border-b border-l border-dashed border-white/10 rounded-bl-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
             </div>
           </div>
         </div>
