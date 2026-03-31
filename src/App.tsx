@@ -395,6 +395,7 @@ export default function App() {
           <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full bg-[#0a0a0a] border border-cyan-500/30 overflow-hidden flex items-center justify-center p-1 z-10">
              <img src="https://i.postimg.cc/pLm8hxSD/avatar.png" alt="Profile" className="w-full h-full object-cover rounded-full transform group-hover:scale-110 transition duration-500 ease-out" />
           </div>
+          {/* 靜態科技裝飾圈，不使用高耗能動畫 */}
           <svg className="absolute -inset-8 w-[calc(100%+64px)] h-[calc(100%+64px)] opacity-30 pointer-events-none z-0" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="48" fill="none" stroke="#22d3ee" strokeWidth="0.4" strokeDasharray="4 8" />
             <circle cx="50" cy="50" r="44" fill="none" stroke="#3b82f6" strokeWidth="0.8" strokeDasharray="20 10" opacity="0.5" />
@@ -568,6 +569,26 @@ export default function App() {
                       </div>
                       <div>
                         <div className="text-[#dbdee1] font-bold text-xs mb-1">📦 庫存狀態</div>
+                        <div className="text-emerald-400 text-sm font-bold">充足 (無限)</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-3 flex gap-2">
+                    <button className="bg-[#248046] hover:bg-[#1a6334] text-white text-sm font-bold px-4 py-2 rounded transition-colors flex items-center gap-2">
+                      <SafeIcon icon={CreditCard} className="w-4 h-4" /> 立即購買
+                    </button>
+                    <button className="bg-[#4e5058] hover:bg-[#6d6f78] text-white text-sm font-bold px-4 py-2 rounded transition-colors flex items-center gap-2">
+                      <SafeIcon icon={MessageCircle} className="w-4 h-4" /> 聯絡客服
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 🚀 API 串接生態系 */}
       <section className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#050508] to-[#020203]">
         <div className="max-w-5xl mx-auto">
@@ -599,7 +620,7 @@ export default function App() {
               <div className="absolute -inset-6 border border-cyan-500/20 rounded-[2rem] animate-[spin_6s_linear_infinite] will-change-transform pointer-events-none"></div>
               <div className="absolute -inset-10 border border-blue-500/10 rounded-full animate-[spin_8s_linear_infinite_reverse] border-dashed will-change-transform pointer-events-none"></div>
               
-              {/* 發射的資料流粒子 (精準射向四個角落) */}
+              {/* 發射的資料流粒子 */}
               <div className="absolute w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_8px_#10b981] animate-data-shoot-1 will-change-transform pointer-events-none hidden md:block"></div>
               <div className="absolute w-1.5 h-1.5 bg-blue-400 rounded-full shadow-[0_0_8px_#3b82f6] animate-data-shoot-2 will-change-transform pointer-events-none hidden md:block"></div>
               <div className="absolute w-1.5 h-1.5 bg-red-400 rounded-full shadow-[0_0_8px_#ef4444] animate-data-shoot-3 will-change-transform pointer-events-none hidden md:block"></div>
@@ -608,7 +629,6 @@ export default function App() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-48 gap-y-16 relative z-10 max-w-4xl mx-auto">
               {integrations.map((item, i) => {
-                // Determine sweep color based on integration border
                 const sweepClass = item.border.includes('emerald') ? 'sweep-emerald' : 
                                    item.border.includes('blue') ? 'sweep-blue' : 
                                    item.border.includes('red') ? 'sweep-red' : 'sweep-yellow';
@@ -633,7 +653,6 @@ export default function App() {
               })}
             </div>
             
-            {/* 靜態連線裝飾 */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-full pointer-events-none z-0 hidden md:block opacity-30">
               <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 border-t border-l border-dashed border-white/10 rounded-tl-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
               <div className="absolute bottom-1/4 right-1/4 w-1/2 h-1/2 border-b border-r border-dashed border-white/10 rounded-br-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
@@ -758,7 +777,6 @@ export default function App() {
             {workflows.map((flow, i) => (
               <div key={i} className="relative z-10 flex flex-col items-center text-center group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                 <div className="w-16 h-16 bg-[#0a0a0c] border border-zinc-700 rounded-xl flex items-center justify-center mb-6 group-hover:border-emerald-500/50 transition-colors duration-300 text-zinc-500 group-hover:text-emerald-400 bg-[#050505] relative overflow-hidden">
-                  {/* 流程圖標的專屬掃描 */}
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/10 to-transparent -translate-y-[100%] group-hover:animate-[card-sweep_1.5s_linear_infinite] pointer-events-none will-change-transform z-0"></div>
                   <div className="relative z-10">{flow.icon}</div>
                 </div>
@@ -771,7 +789,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 🚀 方案與授權 (極簡版 + 側邊光條) */}
+      {/* 🚀 方案與授權 (雙切換開關) */}
       <section id="pricing" className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#050505]">
         <div className="max-w-6xl mx-auto text-center">
           <div className="mb-12 flex flex-col items-center">
@@ -807,7 +825,6 @@ export default function App() {
               return (
                 <div key={`${pricingMode}-${i}`} className={`group flex flex-col p-6 rounded-2xl transition-all duration-300 text-left relative overflow-hidden border animate-fade-slide ${styles.card}`} style={{ animationDelay: `${i * 0.1}s` }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
                   
-                  {/* 🚀 卡片專屬科技光束與側邊資料條 */}
                   <div className={`card-sweep-fx ${styles.sweep}`}></div>
                   <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 group-hover:h-3/4 transition-all duration-500 z-20 ${styles.accent}`}></div>
 
@@ -844,10 +861,9 @@ export default function App() {
             })}
           </div>
 
-          {/* 系統監控面板 (輕量化) */}
+          {/* 系統監控面板 */}
           <div className="mt-24 mb-16 max-w-4xl mx-auto">
             <div className="bg-[#0a0a0c] border border-zinc-800 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-              {/* 監控面板專屬掃描 */}
               <div className="card-sweep-fx sweep-emerald"></div>
               
               <div className="flex items-center gap-5 w-full md:w-auto relative z-10">
@@ -899,7 +915,6 @@ export default function App() {
                 const styles = getPlanStyles(plan.theme);
                 return (
                   <div key={`${pricingMode}-host-${i}`} className={`group flex flex-col p-6 bg-[#0a0a0c] rounded-2xl transition-all duration-300 relative border animate-fade-slide overflow-hidden ${styles.card}`} style={{ animationDelay: `${i * 0.1}s` }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                    {/* 🚀 卡片專屬科技光束與側邊資料條 */}
                     <div className={`card-sweep-fx ${styles.sweep}`}></div>
                     <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 group-hover:h-2/3 transition-all duration-500 z-20 ${styles.accent}`}></div>
 
@@ -952,7 +967,6 @@ export default function App() {
                 className="bg-[#0a0a0c] border border-zinc-800 rounded-xl transition-colors duration-300 hover:border-blue-500/30 overflow-hidden relative group"
                 onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
               >
-                {/* 簡單的 Hover 左側邊條 */}
                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 h-0 group-hover:h-full transition-all duration-300 ease-out"></div>
                 <button 
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
