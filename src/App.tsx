@@ -26,7 +26,6 @@ const SafeIcon = ({ icon: IconComp, className }: any) => {
 
 const generateHexId = () => Math.random().toString(16).substring(2, 6).toUpperCase();
 
-// 🚀 新增 Gemini AI 專案，並加入主題與狀態標記
 const projects = [
   { title: '幻小月 (Huan-Yue)', role: '幻悅陪伴所常駐工程師', description: '一個專注於服務、商城、遊戲社群製作的客製化機器人', link: 'https://discord.gg/AjmaRwrw4m', hex: generateHexId(), theme: 'blue', status: 'ACTIVE' },
   { title: 'Gemini AI 智能助手', role: 'AI 核心實驗專案', description: '無縫串接 Google Gemini 模型，具備高階自然語言理解與即時上下文對答能力的智能實驗機器人。', link: 'https://discord.gg/aN4YRrpQ5x', hex: generateHexId(), theme: 'purple', status: 'BETA_TEST' }
@@ -159,6 +158,9 @@ export default function App() {
   const [bootLogs, setBootLogs] = useState<string[]>(['> SYS.INIT()']);
   
   const [pricingMode, setPricingType] = useState<'bot' | 'web'>('bot');
+  
+  // 🚀 新增：網站瀏覽人次狀態
+  const [visitCount, setVisitCount] = useState<string>('LOADING...');
 
   const cursorOuterRef = useRef<HTMLDivElement>(null);
   const cursorInnerRef = useRef<HTMLDivElement>(null);
@@ -168,6 +170,16 @@ export default function App() {
   const pingRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
+    // 🚀 呼叫免費計數器 API 取得並增加瀏覽次數
+    fetch('https://api.counterapi.dev/v1/krprogram_portfolio/visits/up')
+      .then(res => res.json())
+      .then(data => {
+        setVisitCount(data.count.toLocaleString()); // 加上千分位逗號
+      })
+      .catch(() => {
+        setVisitCount('SYS_ACTIVE'); // 若 API 失敗則顯示預準備用字眼，維持科技感
+      });
+
     const logs = [
       '> MOUNTING_FILE_SYSTEM... [OK]',
       '> ALLOCATING_MEMORY... [OK]',
@@ -792,7 +804,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 方案與授權 */}
+      {/* 🚀 方案與授權 (雙切換開關) */}
       <section id="pricing" className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#050505]">
         <div className="max-w-6xl mx-auto text-center">
           <div className="mb-12 flex flex-col items-center">
@@ -864,7 +876,7 @@ export default function App() {
             })}
           </div>
 
-          {/* 系統監控面板 (輕量化) */}
+          {/* 系統監控面板 */}
           <div className="mt-24 mb-16 max-w-4xl mx-auto">
             <div className="bg-[#0a0a0c] border border-zinc-800 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
               <div className="card-sweep-fx sweep-emerald"></div>
@@ -1009,7 +1021,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 頁尾 */}
+      {/* 頁尾與瀏覽人次 */}
       <footer className="py-10 text-center border-t border-zinc-900 bg-[#020202] relative z-10">
         <div className="text-xl font-black text-zinc-400 mb-4 tracking-wider">KrProgram<span className="text-cyan-500">_</span></div>
         <div className="flex justify-center gap-8 text-zinc-600 text-xs font-bold tracking-widest font-mono mb-8">
@@ -1017,9 +1029,15 @@ export default function App() {
           <span className="text-zinc-800">|</span>
           <a href="https://discordapp.com/users/1284764153038503990" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors">DISCORD</a>
         </div>
-        <div className="text-zinc-600 text-[9px] font-mono tracking-[0.2em] uppercase flex flex-col items-center gap-1">
+        <div className="text-zinc-600 text-[9px] font-mono tracking-[0.2em] uppercase flex flex-col items-center gap-2">
           <span>© {new Date().getFullYear()} KrProgram. All Rights Reserved.</span>
-          <span>SYS_VERSION: 3.3.0 // HIGH_PERF_HUD</span>
+          <span>SYS_VERSION: 3.3.1 // HIGH_PERF_HUD</span>
+          
+          {/* 🚀 網頁連線計數器 */}
+          <div className="mt-2 flex items-center gap-2 bg-[#0a0a0c] px-3 py-1.5 rounded-full border border-zinc-800 shadow-inner">
+            <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_5px_#10b981]"></span>
+            <span>TOTAL_CONNECTIONS: <span className="text-emerald-400 font-bold">{visitCount}</span></span>
+          </div>
         </div>
       </footer>
     </div>
