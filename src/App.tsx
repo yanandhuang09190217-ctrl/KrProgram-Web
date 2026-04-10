@@ -655,7 +655,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 🚀 技能與實績 (已加入一鍵點擊跳轉) */}
+      {/* 🚀 技能與實績 (已修復點擊跳轉) */}
       <section className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#08080a]">
         <div className="max-w-5xl mx-auto">
           <div className="mb-16 flex flex-col items-center md:items-start text-center md:text-left">
@@ -694,8 +694,8 @@ export default function App() {
                   statusColor: 'text-blue-500/50 border-blue-500/20'
                 };
 
+                // 🚀 已修復此處的 JSX 語法錯誤
                 return (
-                  {/* 🚀 加入 onClick 事件與 cursor-pointer，讓整張卡片可以直接點擊跳轉 */}
                   <div 
                     key={i} 
                     onClick={() => window.open(p.link, '_blank')}
@@ -1037,7 +1037,7 @@ export default function App() {
           <span className="text-zinc-800">|</span>
           <a href="https://discordapp.com/users/1284764153038503990" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors">DISCORD</a>
         </div>
-        <div className="text-zinc-600 text-[9px] font-mono tracking-[0.2em] uppercase flex flex-col items-center gap-2">
+        <div className="text-zinc-600 text-[9px] font-mono tracking-[0.2em] uppercase flex flex-col items-center gap-1">
           <span>© {new Date().getFullYear()} KrProgram. All Rights Reserved.</span>
           <span>SYS_VERSION: 3.3.1 // HIGH_PERF_HUD</span>
           
