@@ -26,8 +26,10 @@ const SafeIcon = ({ icon: IconComp, className }: any) => {
 
 const generateHexId = () => Math.random().toString(16).substring(2, 6).toUpperCase();
 
+// 🚀 新增 Gemini AI 專案，並加入主題與狀態標記
 const projects = [
-  { title: '幻小月 (Huan-Yue)', role: '幻悅陪伴所常駐工程師', description: '一個專注於服務、商城、遊戲社群製作的客製化機器人', iconName: 'Terminal', link: 'https://discord.gg/AjmaRwrw4m', hex: generateHexId() }
+  { title: '幻小月 (Huan-Yue)', role: '幻悅陪伴所常駐工程師', description: '一個專注於服務、商城、遊戲社群製作的客製化機器人', link: 'https://discord.gg/AjmaRwrw4m', hex: generateHexId(), theme: 'blue', status: 'ACTIVE' },
+  { title: 'Gemini AI 智能助手', role: 'AI 核心實驗專案', description: '無縫串接 Google Gemini 模型，具備高階自然語言理解與即時上下文對答能力的智能實驗機器人。', link: 'https://discord.gg/aN4YRrpQ5x', hex: generateHexId(), theme: 'purple', status: 'BETA_TEST' }
 ];
 
 const technicalSkills = [
@@ -88,7 +90,7 @@ const webPricingPlans = [
 
 const webHostingPlans = [
   { name: '基礎靜態託管', price: '200', period: '/月', theme: 'blue', popular: false, iconName: 'Cloud', features: ['全球 CDN 邊緣節點', '自動發放 SSL 安全憑證', '超快的靜態頁面載入速度', '適合無後端之形象網站'] },
-  { name: '全端雲端主機', price: '500', period: '/月', theme: 'purple', popular: true, iconName: 'Server', features: ['專屬 Node.js 執行環境', '包含基礎資料庫儲存空間', '自動化部屬與 24/7 連線監控', '適合中小型動態資料網站'] },
+  { name: '全端雲端主機', price: '300', period: '/月', theme: 'purple', popular: true, iconName: 'Server', features: ['專屬 Node.js 執行環境', '包含基礎資料庫儲存空間', '自動化部屬與 24/7 連線監控', '適合中小型動態資料網站'] },
   { name: '企業級獨立 VPS', price: '1,000', period: '/月', theme: 'emerald', popular: false, iconName: 'Globe', features: ['獨享高規格 CPU 運算資源', '支援大型關聯式資料庫存取', '無限制流量與完整後台權限', '最高級別的客製化資安防護'] }
 ];
 
@@ -166,7 +168,6 @@ export default function App() {
   const pingRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    // 快速流暢的開機動畫
     const logs = [
       '> MOUNTING_FILE_SYSTEM... [OK]',
       '> ALLOCATING_MEMORY... [OK]',
@@ -192,14 +193,12 @@ export default function App() {
       }, 400); 
     }, 1200);
 
-    // 面板數字跳動
     const statsInterval = setInterval(() => {
       if (cpuRef.current) cpuRef.current.innerText = String(Math.floor(Math.random() * 5) + 10);
       if (ramRef.current) ramRef.current.innerText = String(Math.floor(Math.random() * 4) + 30);
       if (pingRef.current) pingRef.current.innerText = String(Math.floor(Math.random() * 8) + 20);
     }, 2000);
 
-    // 輕量級滑鼠游標追蹤
     const handleMouseMove = (e: MouseEvent) => {
       if (cursorOuterRef.current) {
         cursorOuterRef.current.style.transform = `translate3d(${e.clientX - 20}px, ${e.clientY - 20}px, 0)`;
@@ -211,7 +210,6 @@ export default function App() {
     
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
-    // 滾動偵測
     const observerOptions = { root: null, rootMargin: '-20% 0px -60% 0px', threshold: 0 };
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
@@ -255,7 +253,6 @@ export default function App() {
           background-size: 40px 40px;
         }
 
-        /* 輕量級動畫 */
         @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
         .animate-shimmer { animation: shimmer 2.5s infinite linear; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
@@ -270,7 +267,6 @@ export default function App() {
         }
         .animate-fade-slide { animation: fade-slide-up 0.4s ease-out forwards; }
 
-        /* 🚀 科技卡片專屬的 GPU 加速特效 */
         @keyframes card-sweep {
           0% { transform: translateY(-100%); }
           100% { transform: translateY(200%); }
@@ -283,11 +279,9 @@ export default function App() {
           will-change: transform;
           transform: translateY(-100%);
         }
-        /* 只有在 hover 時才執行動畫，節省效能 */
         .group:hover .card-sweep-fx {
           animation: card-sweep 2s linear infinite;
         }
-        /* 為不同主題調配對應的掃描光束顏色 */
         .sweep-cyan { background: linear-gradient(to bottom, transparent, rgba(34, 211, 238, 0.05), transparent); }
         .sweep-blue { background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.05), transparent); }
         .sweep-purple { background: linear-gradient(to bottom, transparent, rgba(168, 85, 247, 0.05), transparent); }
@@ -295,7 +289,6 @@ export default function App() {
         .sweep-red { background: linear-gradient(to bottom, transparent, rgba(239, 68, 68, 0.05), transparent); }
         .sweep-yellow { background: linear-gradient(to bottom, transparent, rgba(234, 179, 8, 0.05), transparent); }
 
-        /* 🚀 API 核心動態圖示輪播 (完全由 GPU 計算，0 JS 效能負擔) */
         @keyframes cycle-1 { 0%, 20% { opacity: 1; transform: scale(1) translateZ(0); } 25%, 95% { opacity: 0; transform: scale(0.3) translateZ(0); } 100% { opacity: 1; transform: scale(1) translateZ(0); } }
         @keyframes cycle-2 { 0%, 20% { opacity: 0; transform: scale(0.3) translateZ(0); } 25%, 45% { opacity: 1; transform: scale(1) translateZ(0); } 50%, 100% { opacity: 0; transform: scale(0.3) translateZ(0); } }
         @keyframes cycle-3 { 0%, 45% { opacity: 0; transform: scale(0.3) translateZ(0); } 50%, 70% { opacity: 1; transform: scale(1) translateZ(0); } 75%, 100% { opacity: 0; transform: scale(0.3) translateZ(0); } }
@@ -305,7 +298,6 @@ export default function App() {
         .animate-cycle-3 { animation: cycle-3 8s infinite; }
         .animate-cycle-4 { animation: cycle-4 8s infinite; }
 
-        /* 🚀 資料流發射特效 */
         @keyframes data-shoot-1 { 0%, 10% { transform: translate(0, 0) scale(1); opacity: 1; } 40%, 100% { transform: translate(-180px, -80px) scale(0); opacity: 0; } }
         @keyframes data-shoot-2 { 0%, 10% { transform: translate(0, 0) scale(1); opacity: 1; } 40%, 100% { transform: translate(180px, -80px) scale(0); opacity: 0; } }
         @keyframes data-shoot-3 { 0%, 10% { transform: translate(0, 0) scale(1); opacity: 1; } 40%, 100% { transform: translate(-180px, 80px) scale(0); opacity: 0; } }
@@ -339,11 +331,9 @@ export default function App() {
         </div>
       )}
 
-      {/* 🚀 極簡靜態背景 */}
+      {/* 極簡靜態背景 */}
       <div className="fixed inset-0 pointer-events-none z-0 bg-[#050505]">
         <div className="absolute inset-0 tech-grid opacity-30" style={{ maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)', WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)' }}></div>
-        
-        {/* 靜態光暈 */}
         <div className="absolute top-[10%] left-[10%] w-[500px] h-[500px] bg-cyan-900/20 rounded-full blur-[100px]"></div>
         <div className="absolute bottom-[20%] right-[10%] w-[400px] h-[400px] bg-indigo-900/20 rounded-full blur-[100px]"></div>
       </div>
@@ -395,7 +385,6 @@ export default function App() {
           <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full bg-[#0a0a0a] border border-cyan-500/30 overflow-hidden flex items-center justify-center p-1 z-10">
              <img src="https://i.postimg.cc/pLm8hxSD/avatar.png" alt="Profile" className="w-full h-full object-cover rounded-full transform group-hover:scale-110 transition duration-500 ease-out" />
           </div>
-          {/* 靜態科技裝飾圈，不使用高耗能動畫 */}
           <svg className="absolute -inset-8 w-[calc(100%+64px)] h-[calc(100%+64px)] opacity-30 pointer-events-none z-0" viewBox="0 0 100 100">
             <circle cx="50" cy="50" r="48" fill="none" stroke="#22d3ee" strokeWidth="0.4" strokeDasharray="4 8" />
             <circle cx="50" cy="50" r="44" fill="none" stroke="#3b82f6" strokeWidth="0.8" strokeDasharray="20 10" opacity="0.5" />
@@ -409,9 +398,7 @@ export default function App() {
         </div>
 
         <div className="w-full max-w-lg mx-auto bg-[#0a0a0c] border border-zinc-800 rounded-xl mb-12 text-left font-mono text-sm md:text-base overflow-hidden z-10 hover:border-cyan-500/40 transition-colors shadow-lg relative group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-          {/* 掃描線 */}
           <div className="card-sweep-fx sweep-cyan"></div>
-          {/* 側邊科幻資料條 */}
           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-cyan-500 group-hover:h-1/2 transition-all duration-500 shadow-[0_0_10px_#22d3ee] z-20"></div>
           
           <div className="flex items-center justify-between px-4 py-3 bg-zinc-900 border-b border-zinc-800 relative z-10">
@@ -475,9 +462,7 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             {botFeatures.map((feat, i) => (
               <div key={i} className="relative p-8 bg-[#0a0a0c] border border-zinc-800 rounded-2xl hover:border-cyan-500/40 hover:bg-[#0c1218] transition-all duration-300 group overflow-hidden" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                {/* 🚀 卡片專屬科技光束 */}
                 <div className="card-sweep-fx sweep-cyan"></div>
-                {/* 🚀 側邊科幻資料條 */}
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-cyan-500 group-hover:h-2/3 transition-all duration-500 shadow-[0_0_10px_#22d3ee] z-20"></div>
                 
                 <div className="absolute top-6 right-6 flex items-center gap-2 relative z-10">
@@ -518,7 +503,6 @@ export default function App() {
           </div>
 
           <div className="w-full max-w-3xl mx-auto bg-[#313338] rounded-xl overflow-hidden border border-zinc-700 font-sans relative group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-            {/* 實機面板也加入掃描光 */}
             <div className="card-sweep-fx sweep-purple"></div>
             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-purple-500 group-hover:h-3/4 transition-all duration-700 shadow-[0_0_10px_#c084fc] z-20"></div>
 
@@ -590,10 +574,10 @@ export default function App() {
       </section>
 
       {/* API 串接生態系 */}
-      <section className="py-24 px-6 relative z-10 border-t border-white/5 bg-gradient-to-b from-[#050508] to-[#020203]">
+      <section className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#050505]">
         <div className="max-w-5xl mx-auto">
           <div className="mb-16 flex flex-col items-center text-center">
-            <h2 className="text-3xl md:text-5xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-3 inline-flex items-center gap-4 tracking-tight">
               <span className="text-blue-500 font-mono text-3xl">{"//"}</span> 無限 API 擴充生態
             </h2>
             <div className="flex items-center gap-3 text-zinc-500 text-xs font-mono tracking-widest uppercase">
@@ -601,20 +585,19 @@ export default function App() {
             </div>
           </div>
 
-          <div className="relative py-16" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-            
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 bg-[#050505] border-2 border-cyan-500/50 rounded-2xl flex items-center justify-center z-20 shadow-[0_0_50px_rgba(34,211,238,0.4)] backdrop-blur-md">
-              <div className="absolute inset-0 bg-cyan-500/20 rounded-xl animate-pulse blur-[12px] will-change-transform pointer-events-none"></div>
+          <div className="relative py-12" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-zinc-900 border border-cyan-500/40 rounded-2xl flex items-center justify-center z-20 group shadow-[0_0_30px_rgba(34,211,238,0.2)]">
+              <div className="absolute inset-0 bg-cyan-500/20 rounded-xl animate-pulse blur-[10px] will-change-transform pointer-events-none"></div>
               
-              <div className="relative w-12 h-12 flex items-center justify-center pointer-events-none">
-                <SafeIcon icon={Cpu} className="absolute w-10 h-10 text-cyan-400 animate-cycle-1 will-change-transform" />
-                <SafeIcon icon={Globe} className="absolute w-10 h-10 text-blue-400 animate-cycle-2 will-change-transform opacity-0" />
-                <SafeIcon icon={Database} className="absolute w-10 h-10 text-purple-400 animate-cycle-3 will-change-transform opacity-0" />
-                <SafeIcon icon={Wifi} className="absolute w-10 h-10 text-emerald-400 animate-cycle-4 will-change-transform opacity-0" />
+              <div className="relative w-10 h-10 flex items-center justify-center pointer-events-none">
+                <SafeIcon icon={Cpu} className="absolute w-8 h-8 text-cyan-400 animate-cycle-1 will-change-transform" />
+                <SafeIcon icon={Globe} className="absolute w-8 h-8 text-blue-400 animate-cycle-2 will-change-transform opacity-0" />
+                <SafeIcon icon={Database} className="absolute w-8 h-8 text-purple-400 animate-cycle-3 will-change-transform opacity-0" />
+                <SafeIcon icon={Wifi} className="absolute w-8 h-8 text-emerald-400 animate-cycle-4 will-change-transform opacity-0" />
               </div>
 
-              <div className="absolute -inset-6 border border-cyan-500/20 rounded-[2rem] animate-[spin_6s_linear_infinite] will-change-transform pointer-events-none"></div>
-              <div className="absolute -inset-10 border border-blue-500/10 rounded-full animate-[spin_8s_linear_infinite_reverse] border-dashed will-change-transform pointer-events-none"></div>
+              <div className="absolute -inset-4 border border-cyan-500/20 rounded-[1.5rem] animate-[spin_6s_linear_infinite] will-change-transform pointer-events-none"></div>
+              <div className="absolute -inset-8 border border-blue-500/10 rounded-full animate-[spin_8s_linear_infinite_reverse] border-dashed will-change-transform pointer-events-none"></div>
               
               <div className="absolute w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_8px_#10b981] animate-data-shoot-1 will-change-transform pointer-events-none hidden md:block"></div>
               <div className="absolute w-1.5 h-1.5 bg-blue-400 rounded-full shadow-[0_0_8px_#3b82f6] animate-data-shoot-2 will-change-transform pointer-events-none hidden md:block"></div>
@@ -622,7 +605,7 @@ export default function App() {
               <div className="absolute w-1.5 h-1.5 bg-yellow-400 rounded-full shadow-[0_0_8px_#eab308] animate-data-shoot-4 will-change-transform pointer-events-none hidden md:block"></div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-48 gap-y-16 relative z-10 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-40 gap-y-12 relative z-10 max-w-4xl mx-auto">
               {integrations.map((item, i) => {
                 const sweepClass = item.border.includes('emerald') ? 'sweep-emerald' : 
                                    item.border.includes('blue') ? 'sweep-blue' : 
@@ -632,33 +615,34 @@ export default function App() {
                                     item.border.includes('red') ? 'bg-red-500 shadow-[0_0_10px_#ef4444]' : 'bg-yellow-500 shadow-[0_0_10px_#eab308]';
 
                 return (
-                  <div key={i} className={`p-6 bg-[#08080a]/80 backdrop-blur-md border border-white/5 rounded-3xl flex items-center gap-5 hover:${item.border} transition-all duration-500 hover:-translate-y-1 ${i % 2 === 0 ? 'md:mr-12' : 'md:ml-12'} relative overflow-hidden group`}>
+                  <div key={i} className={`p-5 bg-zinc-900/50 border border-zinc-800 rounded-2xl flex items-center gap-4 hover:${item.border} transition-colors duration-300 ${i % 2 === 0 ? 'md:mr-8' : 'md:ml-8'} relative overflow-hidden group`}>
                     <div className={`card-sweep-fx ${sweepClass}`}></div>
                     <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 group-hover:h-2/3 transition-all duration-500 z-20 ${accentColor}`}></div>
                     
-                    <div className={`p-4 rounded-2xl bg-black/50 border border-white/10 shadow-inner group-hover:bg-black/80 transition-colors relative z-10`}>
+                    <div className={`p-3 rounded-xl bg-black border border-zinc-800 relative z-10`}>
                       {item.icon}
                     </div>
                     <div className="relative z-10">
-                      <h4 className="font-bold text-zinc-100 text-lg tracking-wide group-hover:text-white transition-colors">{item.title}</h4>
-                      <p className="text-sm text-zinc-400 mt-1">{item.desc}</p>
+                      <h4 className="font-bold text-zinc-200 text-base group-hover:text-white transition-colors">{item.title}</h4>
+                      <p className="text-xs text-zinc-500 mt-1">{item.desc}</p>
                     </div>
                   </div>
                 )
               })}
             </div>
             
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-full pointer-events-none z-0 hidden md:block opacity-30">
-              <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 border-t border-l border-dashed border-white/10 rounded-tl-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
-              <div className="absolute bottom-1/4 right-1/4 w-1/2 h-1/2 border-b border-r border-dashed border-white/10 rounded-br-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
-              <div className="absolute top-1/4 right-1/4 w-1/2 h-1/2 border-t border-r border-dashed border-white/10 rounded-tr-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
-              <div className="absolute bottom-1/4 left-1/4 w-1/2 h-1/2 border-b border-l border-dashed border-white/10 rounded-bl-[3rem] shadow-[0_0_15px_rgba(255,255,255,0.05)]"></div>
+            {/* 靜態連線裝飾 */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-full pointer-events-none z-0 hidden md:block opacity-30">
+              <div className="absolute top-[30%] left-[30%] w-[40%] h-[40%] border-t border-l border-zinc-600 rounded-tl-3xl"></div>
+              <div className="absolute bottom-[30%] right-[30%] w-[40%] h-[40%] border-b border-r border-zinc-600 rounded-br-3xl"></div>
+              <div className="absolute top-[30%] right-[30%] w-[40%] h-[40%] border-t border-r border-zinc-600 rounded-tr-3xl"></div>
+              <div className="absolute bottom-[30%] left-[30%] w-[40%] h-[40%] border-b border-l border-zinc-600 rounded-bl-3xl"></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 技能與實績 */}
+      {/* 🚀 技能與實績 (加入 Gemini AI 專案) */}
       <section className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#08080a]">
         <div className="max-w-5xl mx-auto">
           <div className="mb-16 flex flex-col items-center md:items-start text-center md:text-left">
@@ -675,24 +659,48 @@ export default function App() {
               <h3 className="text-sm font-bold text-zinc-500 flex items-center gap-2 tracking-[0.2em] uppercase mb-4 font-mono">
                 <SafeIcon icon={Monitor} className="w-4 h-4 text-blue-500" /> root/projects
               </h3>
-              {projects.map((p, i) => (
-                <div key={i} className="p-6 bg-[#0a0a0c] border border-zinc-800 rounded-2xl hover:border-blue-500/40 transition-colors duration-300 relative overflow-hidden group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-                  <div className="card-sweep-fx sweep-blue"></div>
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 bg-blue-500 group-hover:h-2/3 transition-all duration-500 shadow-[0_0_10px_#3b82f6] z-20"></div>
+              {projects.map((p, i) => {
+                // 為不同專案配置專屬的風格設定
+                const tStyle = p.theme === 'purple' ? {
+                  hoverBorder: 'hover:border-purple-500/40',
+                  sweep: 'sweep-purple',
+                  bar: 'bg-purple-500 shadow-[0_0_10px_#c084fc]',
+                  dot: 'bg-purple-500',
+                  titleHover: 'group-hover:text-purple-300',
+                  linkHover: 'hover:text-purple-400',
+                  roleText: 'text-purple-400',
+                  statusColor: 'text-purple-500/50 border-purple-500/20'
+                } : {
+                  hoverBorder: 'hover:border-blue-500/40',
+                  sweep: 'sweep-blue',
+                  bar: 'bg-blue-500 shadow-[0_0_10px_#3b82f6]',
+                  dot: 'bg-blue-500',
+                  titleHover: 'group-hover:text-blue-300',
+                  linkHover: 'hover:text-blue-400',
+                  roleText: 'text-blue-400',
+                  statusColor: 'text-blue-500/50 border-blue-500/20'
+                };
 
-                  <div className="absolute top-5 right-5 flex items-center gap-2 relative z-10">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 group-hover:animate-ping"></span>
-                    <span className="font-mono text-[9px] text-zinc-600 tracking-widest uppercase">ID_{p.hex}</span>
+                return (
+                  <div key={i} className={`p-6 bg-[#0a0a0c] border border-zinc-800 rounded-2xl ${tStyle.hoverBorder} transition-colors duration-300 relative overflow-hidden group`} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                    <div className={`card-sweep-fx ${tStyle.sweep}`}></div>
+                    <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 group-hover:h-2/3 transition-all duration-500 z-20 ${tStyle.bar}`}></div>
+
+                    <div className="absolute top-5 right-5 flex items-center gap-2 z-10">
+                      <span className={`font-mono text-[8px] tracking-widest border px-1.5 py-0.5 rounded ${tStyle.statusColor}`}>[{p.status}]</span>
+                      <span className={`w-1.5 h-1.5 rounded-full ${tStyle.dot} group-hover:animate-ping`}></span>
+                      <span className="font-mono text-[9px] text-zinc-600 tracking-widest uppercase">ID_{p.hex}</span>
+                    </div>
+
+                    <h4 className={`text-xl font-black text-zinc-100 mb-2 flex items-center gap-2 tracking-wide relative z-10 ${tStyle.titleHover} transition-colors`}>
+                      {p.title} 
+                      <a href={p.link} target="_blank" rel="noopener noreferrer"><SafeIcon icon={ExternalLink} className={`w-4 h-4 text-zinc-500 ${tStyle.linkHover} transition-colors`} /></a>
+                    </h4>
+                    <p className={`${tStyle.roleText} text-xs font-bold mb-4 tracking-widest uppercase font-mono relative z-10`}>{p.role}</p>
+                    <p className="text-zinc-500 text-sm leading-relaxed relative z-10">{p.description}</p>
                   </div>
-
-                  <h4 className="text-xl font-black text-zinc-100 mb-2 flex items-center gap-2 tracking-wide relative z-10 group-hover:text-blue-300 transition-colors">
-                    {p.title} 
-                    <a href={p.link} target="_blank" rel="noopener noreferrer"><SafeIcon icon={ExternalLink} className="w-4 h-4 text-zinc-500 hover:text-blue-400 transition-colors" /></a>
-                  </h4>
-                  <p className="text-blue-400 text-xs font-bold mb-4 tracking-widest uppercase font-mono relative z-10">{p.role}</p>
-                  <p className="text-zinc-500 text-sm leading-relaxed relative z-10">{p.description}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="p-6 bg-[#0a0a0c] border border-zinc-800 rounded-2xl space-y-8 text-left relative overflow-hidden group hover:border-cyan-500/30 transition-colors duration-300">
@@ -784,7 +792,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 🚀 方案與授權 (雙切換開關) */}
+      {/* 方案與授權 */}
       <section id="pricing" className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#050505]">
         <div className="max-w-6xl mx-auto text-center">
           <div className="mb-12 flex flex-col items-center">
@@ -856,7 +864,7 @@ export default function App() {
             })}
           </div>
 
-          {/* 系統監控面板 */}
+          {/* 系統監控面板 (輕量化) */}
           <div className="mt-24 mb-16 max-w-4xl mx-auto">
             <div className="bg-[#0a0a0c] border border-zinc-800 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden group" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
               <div className="card-sweep-fx sweep-emerald"></div>
