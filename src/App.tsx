@@ -29,7 +29,7 @@ const generateHexId = () => Math.random().toString(16).substring(2, 6).toUpperCa
 // 🚀 已經幫你更新了專案名稱與對應的 Discord 邀請連結
 const projects = [
   { title: '幻小悅 (Huan-Yue)', role: '幻悅陪伴所常駐工程師', description: '一個專注於服務、商城、遊戲社群製作的客製化機器人', link: 'https://discord.gg/CKYAWfheCy', hex: generateHexId(), theme: 'blue', status: 'ACTIVE' },
-  { title: 'Gemini AI智慧助手(DC版)', role: 'AI 核心實驗專案', description: '無縫串接 Google Gemini 模型，具備高階自然語言理解與即時上下文對答能力的智能實驗機器人。', link: 'https://discord.gg/CKYAWfheCy', hex: generateHexId(), theme: 'purple', status: 'BETA_TEST' }
+  { title: 'Gemini AI智慧助手(DC版)', role: 'AI 核心實驗專案', description: '無縫串接 Google Gemini 模型，具備高階自然語言理解與即時上下文對答能力的智能實驗機器人。', link: 'https://discord.gg/aN4YRrpQ5x', hex: generateHexId(), theme: 'purple', status: 'BETA_TEST' }
 ];
 
 const technicalSkills = [
