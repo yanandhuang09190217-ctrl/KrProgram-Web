@@ -26,9 +26,10 @@ const SafeIcon = ({ icon: IconComp, className }: any) => {
 
 const generateHexId = () => Math.random().toString(16).substring(2, 6).toUpperCase();
 
+// 🚀 已經幫你更新了專案名稱與對應的 Discord 邀請連結
 const projects = [
-  { title: '幻小月 (Huan-Yue)', role: '幻悅陪伴所常駐工程師', description: '一個專注於服務、商城、遊戲社群製作的客製化機器人', link: 'https://discord.gg/AjmaRwrw4m', hex: generateHexId(), theme: 'blue', status: 'ACTIVE' },
-  { title: 'Gemini AI 智能助手', role: 'AI 核心實驗專案', description: '無縫串接 Google Gemini 模型，具備高階自然語言理解與即時上下文對答能力的智能實驗機器人。', link: 'https://discord.gg/aN4YRrpQ5x', hex: generateHexId(), theme: 'purple', status: 'BETA_TEST' }
+  { title: '幻小悅 (Huan-Yue)', role: '幻悅陪伴所常駐工程師', description: '一個專注於服務、商城、遊戲社群製作的客製化機器人', link: 'https://discord.gg/CKYAWfheCy', hex: generateHexId(), theme: 'blue', status: 'ACTIVE' },
+  { title: 'Gemini AI智慧助手(DC版)', role: 'AI 核心實驗專案', description: '無縫串接 Google Gemini 模型，具備高階自然語言理解與即時上下文對答能力的智能實驗機器人。', link: 'https://discord.gg/CKYAWfheCy', hex: generateHexId(), theme: 'purple', status: 'BETA_TEST' }
 ];
 
 const technicalSkills = [
@@ -654,7 +655,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 🚀 技能與實績 (加入 Gemini AI 專案) */}
+      {/* 🚀 技能與實績 (已加入一鍵點擊跳轉) */}
       <section className="py-24 px-6 relative z-10 border-t border-zinc-900 bg-[#08080a]">
         <div className="max-w-5xl mx-auto">
           <div className="mb-16 flex flex-col items-center md:items-start text-center md:text-left">
@@ -679,7 +680,7 @@ export default function App() {
                   bar: 'bg-purple-500 shadow-[0_0_10px_#c084fc]',
                   dot: 'bg-purple-500',
                   titleHover: 'group-hover:text-purple-300',
-                  linkHover: 'hover:text-purple-400',
+                  linkHover: 'group-hover:text-purple-400',
                   roleText: 'text-purple-400',
                   statusColor: 'text-purple-500/50 border-purple-500/20'
                 } : {
@@ -688,13 +689,20 @@ export default function App() {
                   bar: 'bg-blue-500 shadow-[0_0_10px_#3b82f6]',
                   dot: 'bg-blue-500',
                   titleHover: 'group-hover:text-blue-300',
-                  linkHover: 'hover:text-blue-400',
+                  linkHover: 'group-hover:text-blue-400',
                   roleText: 'text-blue-400',
                   statusColor: 'text-blue-500/50 border-blue-500/20'
                 };
 
                 return (
-                  <div key={i} className={`p-6 bg-[#0a0a0c] border border-zinc-800 rounded-2xl ${tStyle.hoverBorder} transition-colors duration-300 relative overflow-hidden group`} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+                  {/* 🚀 加入 onClick 事件與 cursor-pointer，讓整張卡片可以直接點擊跳轉 */}
+                  <div 
+                    key={i} 
+                    onClick={() => window.open(p.link, '_blank')}
+                    className={`cursor-pointer p-6 bg-[#0a0a0c] border border-zinc-800 rounded-2xl ${tStyle.hoverBorder} transition-colors duration-300 relative overflow-hidden group`} 
+                    onMouseEnter={() => setIsHovering(true)} 
+                    onMouseLeave={() => setIsHovering(false)}
+                  >
                     <div className={`card-sweep-fx ${tStyle.sweep}`}></div>
                     <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-0 group-hover:h-2/3 transition-all duration-500 z-20 ${tStyle.bar}`}></div>
 
@@ -706,7 +714,7 @@ export default function App() {
 
                     <h4 className={`text-xl font-black text-zinc-100 mb-2 flex items-center gap-2 tracking-wide relative z-10 ${tStyle.titleHover} transition-colors`}>
                       {p.title} 
-                      <a href={p.link} target="_blank" rel="noopener noreferrer"><SafeIcon icon={ExternalLink} className={`w-4 h-4 text-zinc-500 ${tStyle.linkHover} transition-colors`} /></a>
+                      <SafeIcon icon={ExternalLink} className={`w-4 h-4 text-zinc-500 ${tStyle.linkHover} transition-colors`} />
                     </h4>
                     <p className={`${tStyle.roleText} text-xs font-bold mb-4 tracking-widest uppercase font-mono relative z-10`}>{p.role}</p>
                     <p className="text-zinc-500 text-sm leading-relaxed relative z-10">{p.description}</p>
